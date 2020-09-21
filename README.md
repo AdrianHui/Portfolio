@@ -1,2 +1,1 @@
 # JuniorMind-OOP
-Adi H
