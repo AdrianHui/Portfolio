@@ -7,7 +7,7 @@ namespace Json
         public static bool IsJsonString(string input)
         {
             return !StringIsNullOrEmptyCheck(input) && HasDoubleQuotes(input) &&
-                ContainsControlCharacters(input) && !EndsWithReverseSolidus(input);
+                !ContainsRestrictedCharacters(input) && !EndsWithReverseSolidus(input);
         }
 
         private static bool StringIsNullOrEmptyCheck(string input)
@@ -26,42 +26,38 @@ namespace Json
             return input[lastChar] == '\\';
         }
 
-        private static bool ContainsControlCharacters(string input)
+        private static bool ContainsRestrictedCharacters(string input)
         {
-            int[] controlChars = { 9, 10, 11, 12, 13 };
-
+            const int asciiControlCharsEnd = 31;
+            char[] escapedChars = { 'a', 'b', 'f', 'n', 'r', 't', 'u', 'v', '\\', '/', '"' };
             for (int i = 1; i < input.Length - 1; i++)
             {
-                if (Array.IndexOf(controlChars, input[i]) != -1 || input[i - 1].ToString() + input[i].ToString() == "\\u")
+                if (input[i] <= asciiControlCharsEnd)
                 {
-                    return IsValidUnicode(input, i) && IsValidEscapedChar(input, i);
+                    return true;
                 }
-                else if (input[i - 1] == '\\' && input[i] >= 'a' && input[i] <= 'z')
+                else if (input[i - 1] == '\\' && input[i] != ' ' && Array.IndexOf(escapedChars, input[i]) == -1)
                 {
-                    return IsValidEscapedChar(input, i);
+                    return true;
+                }
+                else if (input[i - 1] == '\\' && input[i] == 'u')
+                {
+                    return !IsValidHexNumber(input.Substring(i + 1));
                 }
             }
 
-            return true;
-        }
-
-        private static bool IsValidEscapedChar(string input, int i)
-        {
-            string[] validEscapedChars = { "\\a", "\\b", "\\f", "\\n", "\\r", "\\t", "\\u", "\\v" };
-
-            return Array.IndexOf(validEscapedChars, input[i - 1].ToString() + input[i].ToString()) != -1;
-        }
-
-        private static bool IsValidUnicode(string input, int i)
-        {
-            return IsValidHexNumber(input.Substring(i + 1));
+            return false;
         }
 
         private static bool IsValidHexNumber(string input)
         {
+            char[] hexChars =
+            {
+                '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                'a', 'b', 'c', 'd', 'e', 'f',
+                'A', 'B', 'B', 'D', 'E', 'F'
+            };
             const int validUnicodeLength = 4;
-            string hexNumber = "";
-            int result = 0;
 
             if (input.Length < validUnicodeLength)
             {
@@ -70,14 +66,13 @@ namespace Json
 
             for (int i = 0; i < validUnicodeLength; i++)
             {
-                hexNumber += input[i].ToString();
+                if (Array.IndexOf(hexChars, input[i]) == -1)
+                {
+                    return false;
+                }
             }
 
-            return int.TryParse(
-                                hexNumber,
-                                System.Globalization.NumberStyles.HexNumber,
-                                System.Globalization.CultureInfo.CurrentCulture,
-                                out result);
+            return true;
         }
     }
 }
