@@ -29,20 +29,20 @@ namespace Json
         private static bool ContainsRestrictedCharacters(string input)
         {
             const int asciiControlCharsEnd = 31;
-            char[] escapedChars = { 'a', 'b', 'f', 'n', 'r', 't', 'u', 'v', '\\', '/', '"' };
+            const string escapedChars = "abfnrtuv\\/\"\\ ";
             for (int i = 1; i < input.Length - 1; i++)
             {
                 if (input[i] <= asciiControlCharsEnd)
                 {
                     return true;
                 }
-                else if (input[i - 1] == '\\' && input[i] != ' ' && Array.IndexOf(escapedChars, input[i]) == -1)
-                {
-                    return true;
-                }
                 else if (input[i - 1] == '\\' && input[i] == 'u')
                 {
                     return !IsValidHexNumber(input.Substring(i + 1));
+                }
+                else if (input[i] == '\\' && !ContainsChar(escapedChars, input[i + 1]))
+                {
+                    return true;
                 }
             }
 
@@ -51,12 +51,7 @@ namespace Json
 
         private static bool IsValidHexNumber(string input)
         {
-            char[] hexChars =
-            {
-                '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-                'a', 'b', 'c', 'd', 'e', 'f',
-                'A', 'B', 'B', 'D', 'E', 'F'
-            };
+            const string hexChars = "0123456789abcdefABCDEF";
             const int validUnicodeLength = 4;
 
             if (input.Length < validUnicodeLength)
@@ -66,13 +61,26 @@ namespace Json
 
             for (int i = 0; i < validUnicodeLength; i++)
             {
-                if (Array.IndexOf(hexChars, input[i]) == -1)
+                if (!ContainsChar(hexChars, input[i]))
                 {
                     return false;
                 }
             }
 
             return true;
+        }
+
+        private static bool ContainsChar(string input, char c)
+        {
+            foreach (char element in input)
+            {
+                if (element == c)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }
