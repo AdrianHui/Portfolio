@@ -6,17 +6,28 @@ namespace Json
     {
         public static bool IsJsonNumber(string input)
         {
-            if (!StringIsNullOrEmptyCheck(input) && IsValidFraction(input) && !EndsWithDot(input))
+            if (StringIsNullOrEmptyCheck(input))
             {
-                return ExponentIsValid(input);
+                return false;
             }
 
-            return !StringIsNullOrEmptyCheck(input) && IsAValidNumber(input) && !EndsWithDot(input) && ExponentIsValid(input);
+            bool isFraction = ContainsChar(input, '.');
+            bool hasExponent = ContainsChar(input, 'e') || ContainsChar(input, 'E');
+            if (isFraction && !EndsWithDot(input))
+            {
+                return hasExponent ? ExponentIsValid(input) : IsValidFraction(input);
+            }
+            else if (hasExponent)
+            {
+                return IsAValidNumber(input) && ExponentIsValid(input) && !EndsWithDot(input);
+            }
+
+            return IsAValidNumber(input) && !EndsWithDot(input);
         }
 
-        public static bool IsAValidNumber(string input)
+        private static bool IsAValidNumber(string input)
         {
-            char[] validChars = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '+', 'e', 'E' };
+            char[] validChars = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '+', '.', 'e', 'E' };
             if (input.Length == 1 && Array.IndexOf(validChars, input[0]) != -1)
             {
                 return true;
@@ -69,12 +80,9 @@ namespace Json
                 }
             }
 
-            if (IsValidFraction(input) && exponentCount == 1)
-            {
-                return ExponentIsAfterTheFraction(input);
-            }
-
-            return exponentCount <= 1;
+            return IsValidFraction(input) ?
+                exponentCount == 1 && ExponentIsAfterTheFraction(input) :
+                exponentCount == 1;
         }
 
         private static bool ExponentIsComplete(string input)
@@ -84,7 +92,8 @@ namespace Json
 
         private static bool ExponentIsAfterTheFraction(string input)
         {
-            return input.IndexOf('e') > input.IndexOf('.') || input.IndexOf('E') > input.IndexOf('.');
+            return GetIndex(input, 'e') > GetIndex(input, '.') ||
+                GetIndex(input, 'E') > GetIndex(input, '.');
         }
 
         private static bool EndsWithDot(string input)
@@ -95,6 +104,32 @@ namespace Json
         private static bool StringIsNullOrEmptyCheck(string input)
         {
             return string.IsNullOrEmpty(input);
+        }
+
+        private static bool ContainsChar(string input, char c)
+        {
+            foreach (char element in input)
+            {
+                if (element == c)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static int GetIndex(string input, char c)
+        {
+            for (int i = 0; i < input.Length; i++)
+            {
+                if (input[i] == c)
+                {
+                    return i;
+                }
+            }
+
+            return -1;
         }
     }
 }
