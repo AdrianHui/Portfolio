@@ -29,18 +29,18 @@ namespace Json
         private static bool ContainsRestrictedCharacters(string input)
         {
             const int asciiControlCharsEnd = 31;
-            const string escapedChars = "abfnrtuv\\/\"\\ ";
+            const string escapedChars = "0abfnrtuv/\"\\";
             for (int i = 1; i < input.Length - 1; i++)
             {
                 if (input[i] <= asciiControlCharsEnd)
                 {
                     return true;
                 }
-                else if (input[i - 1] == '\\' && input[i] == 'u')
+                else if (input[i - 1] == '\\' && input[i] == 'u' && !IsValidHexNumber(input.Substring(i + 1)))
                 {
-                    return !IsValidHexNumber(input.Substring(i + 1));
+                    return true;
                 }
-                else if (input[i] == '\\' && !ContainsChar(escapedChars, input[i + 1]))
+                else if (input[i - 1] != '\\' && input[i] == '\\' && escapedChars.IndexOf(input[i + 1]) == -1)
                 {
                     return true;
                 }
@@ -51,7 +51,6 @@ namespace Json
 
         private static bool IsValidHexNumber(string input)
         {
-            const string hexChars = "0123456789abcdefABCDEF";
             const int validUnicodeLength = 4;
 
             if (input.Length < validUnicodeLength)
@@ -61,7 +60,9 @@ namespace Json
 
             for (int i = 0; i < validUnicodeLength; i++)
             {
-                if (!ContainsChar(hexChars, input[i]))
+                if (!CharIsInRange(input[i], '0', '9') &&
+                    !CharIsInRange(input[i], 'a', 'f') &&
+                    !CharIsInRange(input[i], 'A', 'F'))
                 {
                     return false;
                 }
@@ -70,17 +71,9 @@ namespace Json
             return true;
         }
 
-        private static bool ContainsChar(string input, char c)
+        private static bool CharIsInRange(char charToCheck, char rangeLowIndex, char rangeHighIndex)
         {
-            foreach (char element in input)
-            {
-                if (element == c)
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return charToCheck >= rangeLowIndex && charToCheck <= rangeHighIndex;
         }
     }
 }
