@@ -10,10 +10,6 @@ namespace Json
             {
                 return false;
             }
-            else if (input.Contains('.') && (input.Contains('e') || input.Contains('E')))
-            {
-                return input.IndexOf('e') > input.IndexOf('.') || input.IndexOf('E') > input.IndexOf('.');
-            }
 
             return IsAValidNumber(input) && !EndsWithDot(input);
         }
@@ -29,29 +25,34 @@ namespace Json
 
             for (int i = 0; i < input.Length; i++)
             {
-                if (StartsWithZero(input) || !validChars.Contains(input[i]))
+                if ((!input.Contains('.') && StartsWithZero(input)) || !validChars.Contains(input[i]))
                 {
                     return false;
                 }
-                else if (input[i] == 'e' || input[i] == 'E')
+                else if (IsExponent(input[i]) && !IsValidExponent(input.Substring(i)))
                 {
-                    return ExponentIsComplete(input.Substring(i), validChars);
+                    return false;
                 }
             }
 
             return CountChar(input, '.') <= 1 && numberOfExponents <= 1;
         }
 
-        private static bool ExponentIsComplete(string exponent, string validChars)
+        private static bool IsExponent(char c)
         {
-            if (exponent.Length <= 1 || exponent[exponent.Length - 1] < '0' || exponent[exponent.Length - 1] > '9')
+            return c == 'e' || c == 'E';
+        }
+
+        private static bool IsValidExponent(string exponent)
+        {
+            if (exponent.Length <= 1 || !CharIsInRange(exponent[exponent.Length - 1], '0', '9'))
             {
                 return false;
             }
 
             for (int i = 1; i < exponent.Length; i++)
             {
-                if (!validChars.Contains(exponent[i]) || exponent[i] == 'e' || exponent[i] == 'E')
+                if (!IsExponent(exponent[i]) && exponent[i] != '+' && exponent[i] != '-' && !CharIsInRange(exponent[i], '1', '9'))
                 {
                     return false;
                 }
@@ -62,7 +63,7 @@ namespace Json
 
         private static bool StartsWithZero(string input)
         {
-            return !input.Contains('.') && input[0] == '0';
+            return input[0] == '0';
         }
 
         private static bool EndsWithDot(string input)
@@ -73,6 +74,11 @@ namespace Json
         private static bool StringIsNullOrEmptyCheck(string input)
         {
             return string.IsNullOrEmpty(input);
+        }
+
+        private static bool CharIsInRange(char charToCheck, char rangeLowIndex, char rangeHighIndex)
+        {
+            return charToCheck >= rangeLowIndex && charToCheck <= rangeHighIndex;
         }
 
         private static int CountChar(string input, char c)

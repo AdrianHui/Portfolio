@@ -122,6 +122,12 @@ namespace Json.Facts
         }
 
         [Fact]
+        public void DoesNotHaveFractionAndIncompleteExponent()
+        {
+            Assert.False(IsJsonNumber("12.34E+"));
+        }
+
+        [Fact]
         public void TheExponentDoesNotAllowLetters()
         {
             Assert.False(IsJsonNumber("22e3x3"));
