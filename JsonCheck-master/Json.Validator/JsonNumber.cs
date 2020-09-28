@@ -1,5 +1,3 @@
-using System;
-
 namespace Json
 {
     public static class JsonNumber
@@ -11,6 +9,11 @@ namespace Json
                 return false;
             }
 
+            if (input.Length == 1 && CharIsInRange(input[0], '0', '9'))
+            {
+                return true;
+            }
+
             return IsAValidNumber(input) && !EndsWithDot(input);
         }
 
@@ -18,18 +21,19 @@ namespace Json
         {
             const string validChars = "0123456789-+.eE";
             int numberOfExponents = CountChar(input, 'e') + CountChar(input, 'E');
-            if (input.Length == 1 && validChars.Contains(input[0]))
+            if (!input.Contains('.') && StartsWithZero(input))
             {
-                return true;
+                return false;
             }
 
             for (int i = 0; i < input.Length; i++)
             {
-                if ((!input.Contains('.') && StartsWithZero(input)) || !validChars.Contains(input[i]))
+                if (!validChars.Contains(input[i]))
                 {
                     return false;
                 }
-                else if (IsExponent(input[i]) && !IsValidExponent(input.Substring(i)))
+
+                if (IsExponent(input[i]) && (input.IndexOf(input[i]) < input.IndexOf('.') || !IsValidExponent(input.Substring(i))))
                 {
                     return false;
                 }
@@ -52,7 +56,7 @@ namespace Json
 
             for (int i = 1; i < exponent.Length; i++)
             {
-                if (!IsExponent(exponent[i]) && exponent[i] != '+' && exponent[i] != '-' && !CharIsInRange(exponent[i], '1', '9'))
+                if (!IsExponent(exponent[i]) && exponent[i] != '+' && exponent[i] != '-' && !CharIsInRange(exponent[i], '0', '9'))
                 {
                     return false;
                 }

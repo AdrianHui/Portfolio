@@ -29,18 +29,20 @@ namespace Json
         private static bool ContainsRestrictedCharacters(string input)
         {
             const int asciiControlCharsEnd = 31;
-            const string escapedChars = "0abfnrtuv/\"\\";
+            const string escapeChars = "bfnrtu/\"\\";
             for (int i = 1; i < input.Length - 1; i++)
             {
                 if (input[i] <= asciiControlCharsEnd)
                 {
                     return true;
                 }
-                else if (input[i - 1] == '\\' && input[i] == 'u' && !IsValidHexNumber(input.Substring(i + 1)))
+
+                if (input[i - 1] == '\\' && input[i] == 'u' && !IsValidHexNumber(input.Substring(i + 1)))
                 {
                     return true;
                 }
-                else if (input[i - 1] != '\\' && input[i] == '\\' && escapedChars.IndexOf(input[i + 1]) == -1)
+
+                if (input[i - 1] != '\\' && input[i] == '\\' && escapeChars.IndexOf(input[i + 1]) == -1)
                 {
                     return true;
                 }

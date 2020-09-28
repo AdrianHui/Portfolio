@@ -152,5 +152,11 @@ namespace Json.Facts
         {
             Assert.False(IsJsonNumber("22e3.3"));
         }
+
+        [Fact]
+        public void NegativeNumberIsAfterTheFraction()
+        {
+            Assert.False(IsJsonNumber("22-3.e3"));
+        }
     }
 }
