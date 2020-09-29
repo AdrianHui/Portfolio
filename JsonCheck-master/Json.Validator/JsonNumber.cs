@@ -20,7 +20,7 @@ namespace Json
                         IsAValidNumber(input.Substring(input.IndexOf('.') + 1));
             }
 
-            return IsValidInteger(input) && !StartsWithZero(input) && !EndsWithDot(input);
+            return input[0] != '0' && IsValidInteger(input) && !EndsWithDot(input);
         }
 
         private static bool IsValidInteger(string input)
@@ -71,7 +71,8 @@ namespace Json
 
         private static bool IsValidExponent(string exponent)
         {
-            if (exponent.Length <= 1 || !CharIsInRange(exponent[exponent.Length - 1], '0', '9'))
+            if (exponent.Length <= 1 ||
+                !CharIsInRange(exponent[exponent.Length - 1], '0', '9'))
             {
                 return false;
             }
@@ -79,7 +80,9 @@ namespace Json
             int exponentCount = 0;
             for (int i = 0; i < exponent.Length; i++)
             {
-                if (!IsExponent(exponent[i]) && exponent[i] != '+' && exponent[i] != '-' && !CharIsInRange(exponent[i], '0', '9'))
+                if (!IsExponent(exponent[i]) &&
+                    exponent[i] != '+' && exponent[i] != '-' &&
+                    !CharIsInRange(exponent[i], '0', '9'))
                 {
                     return false;
                 }
@@ -91,11 +94,6 @@ namespace Json
             }
 
             return exponentCount == 1;
-        }
-
-        private static bool StartsWithZero(string input)
-        {
-            return input[0] == '0';
         }
 
         private static bool EndsWithDot(string input)
