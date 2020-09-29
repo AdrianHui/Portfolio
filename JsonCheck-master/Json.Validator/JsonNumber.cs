@@ -14,32 +14,54 @@ namespace Json
                 return true;
             }
 
-            return IsAValidNumber(input) && !EndsWithDot(input);
+            if (input.Contains('.') && !EndsWithDot(input))
+            {
+                return NumberIsOnlyDigits(input.Substring(0, input.IndexOf('.'))) &&
+                        IsAValidNumber(input.Substring(input.IndexOf('.') + 1));
+            }
+
+            return IsValidInteger(input) && !StartsWithZero(input) && !EndsWithDot(input);
+        }
+
+        private static bool IsValidInteger(string input)
+        {
+            if (input[0] == '-' || input[0] == '+')
+            {
+                return IsAValidNumber(input.Substring(1));
+            }
+
+            return IsAValidNumber(input);
+        }
+
+        private static bool NumberIsOnlyDigits(string numberToCheck)
+        {
+            for (int i = 0; i < numberToCheck.Length; i++)
+            {
+                if (!CharIsInRange(numberToCheck[i], '0', '9'))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         private static bool IsAValidNumber(string input)
         {
-            const string validChars = "0123456789-+.eE";
-            int numberOfExponents = CountChar(input, 'e') + CountChar(input, 'E');
-            if (!input.Contains('.') && StartsWithZero(input))
-            {
-                return false;
-            }
-
             for (int i = 0; i < input.Length; i++)
             {
-                if (!validChars.Contains(input[i]))
+                if (IsExponent(input[i]) && IsValidExponent(input.Substring(i)))
                 {
-                    return false;
+                    return true;
                 }
 
-                if (IsExponent(input[i]) && (input.IndexOf(input[i]) < input.IndexOf('.') || !IsValidExponent(input.Substring(i))))
+                if (!CharIsInRange(input[i], '0', '9'))
                 {
                     return false;
                 }
             }
 
-            return CountChar(input, '.') <= 1 && numberOfExponents <= 1;
+            return true;
         }
 
         private static bool IsExponent(char c)
@@ -54,15 +76,21 @@ namespace Json
                 return false;
             }
 
-            for (int i = 1; i < exponent.Length; i++)
+            int exponentCount = 0;
+            for (int i = 0; i < exponent.Length; i++)
             {
                 if (!IsExponent(exponent[i]) && exponent[i] != '+' && exponent[i] != '-' && !CharIsInRange(exponent[i], '0', '9'))
                 {
                     return false;
                 }
+
+                if (IsExponent(exponent[i]))
+                {
+                    exponentCount++;
+                }
             }
 
-            return true;
+            return exponentCount == 1;
         }
 
         private static bool StartsWithZero(string input)
@@ -83,20 +111,6 @@ namespace Json
         private static bool CharIsInRange(char charToCheck, char rangeLowIndex, char rangeHighIndex)
         {
             return charToCheck >= rangeLowIndex && charToCheck <= rangeHighIndex;
-        }
-
-        private static int CountChar(string input, char c)
-        {
-            int count = 0;
-            for (int i = 0; i < input.Length; i++)
-            {
-                if (input[i] == c)
-                {
-                    count++;
-                }
-            }
-
-            return count;
         }
     }
 }
