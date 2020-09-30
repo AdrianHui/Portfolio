@@ -133,6 +133,12 @@ namespace Json.Facts
             Assert.False(IsJsonString(Quoted(@"a\u123")));
         }
 
+        [Fact]
+        public void CanContainMultipleEscapedReverseSolidus()
+        {
+            Assert.True(IsJsonString(Quoted(@"a \\ b \\\ c")));
+        }
+
         public static string Quoted(string text)
             => $"\"{text}\"";
     }
