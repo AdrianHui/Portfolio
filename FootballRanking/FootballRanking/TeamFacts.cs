@@ -2,7 +2,7 @@
 using Xunit;
 using static FootballRanking.Team;
 
-namespace FootballRanking
+namespace FootballRanking.Facts
 {
     public class TeamFacts
     {

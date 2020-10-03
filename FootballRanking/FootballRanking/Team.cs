@@ -4,17 +4,15 @@ using System.Text;
 
 namespace FootballRanking
 {
-    public class Team
+    class Team
     {
-        readonly string name;
-        readonly int points;
-        readonly int ranking;
+        private string _name;
+        private int _points;
 
-        public Team(string name, int points, int ranking)
+        public Team(string name, int points)
         {
-            this.name = name;
-            this.points = points;
-            this.ranking = ranking;
+            this._name = name;
+            this._points = points;
         }
     }
 }
