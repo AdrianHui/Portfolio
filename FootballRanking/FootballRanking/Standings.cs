@@ -7,12 +7,20 @@ namespace FootballRanking
 {
     public static class Standings
     {
-        public static List<KeyValuePair<string, int>> teams = new List<KeyValuePair<string, int>>();
+        public static List<KeyValuePair<string, int>> teams = new List<KeyValuePair<string, int>> {
+            new KeyValuePair<string, int>("Dinamo", 29), new KeyValuePair<string, int>("Chiajna", 27),
+            new KeyValuePair<string, int>("Viitorul", 40), new KeyValuePair<string, int>("CFR", 36)};
 
         public static void AddTeam(string name, int points)
         {
             KeyValuePair<string, int> team = new KeyValuePair<string, int>(name, points);
             teams.Add(team);
+        }
+
+        public static string GetTeamAtPosition(int position)
+        {
+            SortTeams();
+            return teams[position - 1].Key + " - " + Convert.ToString(teams[position - 1].Value) + " points";
         }
 
         public static void SortTeams()
