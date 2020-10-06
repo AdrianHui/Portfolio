@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace FootballRanking
 {
@@ -43,12 +41,12 @@ namespace FootballRanking
 
         private static int Partition(List<KeyValuePair<string, int>> teams, int start, int end)
         {
-            int pivot = teams.ElementAt(end).Value;
+            int pivot = teams[end].Value;
             int i = start - 1;
 
             for (int j = start; j < end; j++)
             {
-                if (teams.ElementAt(j).Value > pivot)
+                if (teams[j].Value > pivot)
                 {
                     i++;
                     KeyValuePair<string, int> temp = teams[i];
@@ -57,7 +55,7 @@ namespace FootballRanking
                 }
             }
 
-            KeyValuePair<string, int> temp2 = teams.ElementAt(i + 1);
+            KeyValuePair<string, int> temp2 = teams[i + 1];
             teams[i + 1] = teams[end];
             teams[end] = temp2;
 
