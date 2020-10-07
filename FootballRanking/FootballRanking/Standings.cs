@@ -25,8 +25,7 @@ namespace FootballRanking
                         teams[j] = temp;
                     }
                 }
-
             }
         }
-    }
+    } 
 }
