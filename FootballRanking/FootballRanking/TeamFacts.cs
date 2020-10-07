@@ -9,7 +9,7 @@ namespace FootballRanking.Facts
         {
             Team team1 = new Team("CFR", 39);
             Team team2 = new Team("FCSB", 33);
-            Assert.Equal(1, team1.CompareTo(team2));
+            Assert.Equal(1, team1.ComparePoints(team2));
         }
 
         [Fact]
@@ -17,7 +17,7 @@ namespace FootballRanking.Facts
         {
             Team team1 = new Team("CFR", 33);
             Team team2 = new Team("FCSB", 39);
-            Assert.Equal(-1, team1.CompareTo(team2));
+            Assert.Equal(-1, team1.ComparePoints(team2));
         }
 
         [Fact]
@@ -25,7 +25,7 @@ namespace FootballRanking.Facts
         {
             Team team1 = new Team("CFR", 33);
             Team team2 = new Team("FCSB", 33);
-            Assert.Equal(0, team1.CompareTo(team2));
+            Assert.Equal(0, team1.ComparePoints(team2));
         }
     }
 }

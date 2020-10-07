@@ -15,7 +15,7 @@ namespace FootballRanking
             this.points = points;
         }
 
-        public int CompareTo(Team teamToCompareWith)
+        public int ComparePoints(Team teamToCompareWith)
         {
             if (this.points < teamToCompareWith.points)
             {
@@ -23,6 +23,16 @@ namespace FootballRanking
             }
 
             if (this.points > teamToCompareWith.points)
+            {
+                return 1;
+            }
+
+            return 0;
+        }
+
+        public int CompareNames(Team teamToCompareWith)
+        {
+            if (this.name == teamToCompareWith.name)
             {
                 return 1;
             }

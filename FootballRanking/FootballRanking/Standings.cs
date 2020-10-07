@@ -4,25 +4,23 @@ namespace FootballRanking
 {
     public class Standings
     {
-        Team[] teams = new Team[] { new Team("FCSB", 33), new Team("Viitorul", 31), new Team("CFR", 39) };
-
-        public void AddTeam(string name, int points)
+        public void AddTeam(ref Team[] teamsArray, string name, int points)
         {
-            Array.Resize(ref teams, teams.Length + 1);
-            teams[teams.Length - 1] = new Team(name, points);
+            Array.Resize(ref teamsArray, teamsArray.Length + 1);
+            teamsArray[teamsArray.Length - 1] = new Team(name, points);
         }
 
-        public void SortTeams()
+        public void SortTeams(ref Team[] teamsArray)
         {
-            for (int i = 0; i < teams.Length; i++)
+            for (int i = 0; i < teamsArray.Length; i++)
             {
-                for (int j = 1; j < teams.Length; j++)
+                for (int j = i + 1; j < teamsArray.Length; j++)
                 {
-                    if (teams[j].CompareTo(teams[i]) == 1)
+                    if (teamsArray[j].ComparePoints(teamsArray[i]) == 1)
                     {
-                        Team temp = teams[i];
-                        teams[i] = teams[j];
-                        teams[j] = temp;
+                        Team temp = teamsArray[i];
+                        teamsArray[i] = teamsArray[j];
+                        teamsArray[j] = temp;
                     }
                 }
             }
