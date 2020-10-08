@@ -50,5 +50,10 @@ namespace FootballRanking
 
             return name;
         }
+
+        public void IncreasePoints(int points)
+        {
+            this.points = this.points + points;
+        }
     }
 }

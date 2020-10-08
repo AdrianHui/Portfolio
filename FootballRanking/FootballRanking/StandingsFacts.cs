@@ -85,5 +85,53 @@ namespace FootballRanking.Facts
             Team[] teams = new Team[] { cfr, viitorul, dinamo };
             Assert.Equal(-1, standings.GetTeamRanking(teams, fcsb));
         }
+
+        [Fact]
+        public void ShouldUpdateStandingsIfIsATie()
+        {
+            Standings standings = new Standings();
+            Team fcsb = new Team("FCSB", 33);
+            Team dinamo = new Team("Dinamo", 30);
+            Team viitorul = new Team("Viitorul", 31);
+            Team cfr = new Team("CFR", 39);
+            Team[] teams = new Team[] { cfr, fcsb, viitorul, dinamo };
+            standings.Match(ref teams, viitorul, 1, fcsb, 1);
+            Assert.True(teams[0].CompareNames(cfr) == 0 && teams[0].ComparePoints(cfr) == 0 &&
+                        teams[1].CompareNames(fcsb) == 0 && teams[1].ComparePoints(fcsb) == 0 &&
+                        teams[2].CompareNames(viitorul) == 0 && teams[2].ComparePoints(viitorul) == 0 &&
+                        teams[3].CompareNames(dinamo) == 0 && teams[3].ComparePoints(dinamo) == 0);
+        }
+
+        [Fact]
+        public void ShouldUpdateStandingsIfHomeTeamWins()
+        {
+            Standings standings = new Standings();
+            Team fcsb = new Team("FCSB", 33);
+            Team dinamo = new Team("Dinamo", 30);
+            Team viitorul = new Team("Viitorul", 31);
+            Team cfr = new Team("CFR", 39);
+            Team[] teams = new Team[] { cfr, fcsb, viitorul, dinamo };
+            standings.Match(ref teams, viitorul, 2, fcsb, 1);
+            Assert.True(teams[0].CompareNames(cfr) == 0 && teams[0].ComparePoints(cfr) == 0 &&
+                        teams[1].CompareNames(viitorul) == 0 && teams[1].ComparePoints(viitorul) == 0 &&
+                        teams[2].CompareNames(fcsb) == 0 && teams[2].ComparePoints(fcsb) == 0 &&
+                        teams[3].CompareNames(dinamo) == 0 && teams[3].ComparePoints(dinamo) == 0);
+        }
+
+        [Fact]
+        public void ShouldUpdateStandingsIfAwayTeamWins()
+        {
+            Standings standings = new Standings();
+            Team fcsb = new Team("FCSB", 33);
+            Team dinamo = new Team("Dinamo", 30);
+            Team viitorul = new Team("Viitorul", 31);
+            Team cfr = new Team("CFR", 39);
+            Team[] teams = new Team[] { cfr, fcsb, viitorul, dinamo };
+            standings.Match(ref teams, viitorul, 1, dinamo, 3);
+            Assert.True(teams[0].CompareNames(cfr) == 0 && teams[0].ComparePoints(cfr) == 0 &&
+                        teams[1].CompareNames(fcsb) == 0 && teams[1].ComparePoints(fcsb) == 0 &&
+                        teams[2].CompareNames(dinamo) == 0 && teams[2].ComparePoints(dinamo) == 0 &&
+                        teams[3].CompareNames(viitorul) == 0 && teams[3].ComparePoints(viitorul) == 0);
+        }
     }
 }

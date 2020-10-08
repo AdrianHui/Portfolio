@@ -43,5 +43,26 @@ namespace FootballRanking
 
             return -1;
         }
+
+        public void Match(ref Team[] teams, Team homeTeam, int homeTeamGoals, Team awayTeam, int awayTeamGoals)
+        {
+            if (homeTeamGoals == awayTeamGoals)
+            {
+                teams[GetTeamRanking(teams, homeTeam) - 1].IncreasePoints(1);
+                teams[GetTeamRanking(teams, awayTeam) - 1].IncreasePoints(1);
+            }
+
+            if (homeTeamGoals > awayTeamGoals)
+            {
+                teams[GetTeamRanking(teams, homeTeam) - 1].IncreasePoints(3);
+            }
+
+            if (homeTeamGoals < awayTeamGoals)
+            {
+                teams[GetTeamRanking(teams, awayTeam) - 1].IncreasePoints(3);
+            }
+
+            SortTeams(ref teams);
+        }
     } 
 }
