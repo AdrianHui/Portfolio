@@ -4,7 +4,7 @@ using System.Text;
 
 namespace FootballRanking
 {
-    public class Team
+    class Team
     {
         string name;
         int points;

@@ -2,15 +2,22 @@
 
 namespace FootballRanking
 {
-    public class Standings
+    class Standings
     {
-        public void AddTeam(ref Team[] teams, string name, int points)
+        Team[] teams;
+
+        public Standings(Team[] teams)
         {
-            Array.Resize(ref teams, teams.Length + 1);
-            teams[teams.Length - 1] = new Team(name, points);
+            this.teams = teams;
         }
 
-        public void SortTeams(ref Team[] teams)
+        public void AddTeam(string name, int points)
+        {
+            Array.Resize(ref teams, teams.Length + 1);
+            this.teams[teams.Length - 1] = new Team(name, points);
+        }
+
+        public void SortTeams()
         {
             for (int i = 0; i < teams.Length; i++)
             {
@@ -26,12 +33,12 @@ namespace FootballRanking
             }
         }
 
-        public string GetTeamByRankingPosition(Team[] teams, int index)
+        public string GetTeamByRankingPosition(int index)
         {
             return teams[index - 1].GetTeamName();
         }
 
-        public int GetTeamRanking(Team[] teams, Team team)
+        public int GetTeamRanking(Team team)
         {
             for (int i = 0; i < teams.Length; i++)
             {
@@ -44,25 +51,25 @@ namespace FootballRanking
             return -1;
         }
 
-        public void Match(ref Team[] teams, Team homeTeam, int homeTeamGoals, Team awayTeam, int awayTeamGoals)
+        public void Match(Team homeTeam, int homeTeamGoals, Team awayTeam, int awayTeamGoals)
         {
             if (homeTeamGoals == awayTeamGoals)
             {
-                teams[GetTeamRanking(teams, homeTeam) - 1].IncreasePoints(1);
-                teams[GetTeamRanking(teams, awayTeam) - 1].IncreasePoints(1);
+                teams[GetTeamRanking(homeTeam) - 1].IncreasePoints(1);
+                teams[GetTeamRanking(awayTeam) - 1].IncreasePoints(1);
             }
 
             if (homeTeamGoals > awayTeamGoals)
             {
-                teams[GetTeamRanking(teams, homeTeam) - 1].IncreasePoints(3);
+                teams[GetTeamRanking(homeTeam) - 1].IncreasePoints(3);
             }
 
             if (homeTeamGoals < awayTeamGoals)
             {
-                teams[GetTeamRanking(teams, awayTeam) - 1].IncreasePoints(3);
+                teams[GetTeamRanking(awayTeam) - 1].IncreasePoints(3);
             }
 
-            SortTeams(ref teams);
+            SortTeams();
         }
     } 
 }
