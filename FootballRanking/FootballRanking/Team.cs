@@ -32,12 +32,23 @@ namespace FootballRanking
 
         public int CompareNames(Team teamToCompareWith)
         {
-            if (this.name == teamToCompareWith.name)
+            if (this.name != teamToCompareWith.name)
             {
                 return 1;
             }
 
             return 0;
+        }
+
+        public string GetTeamName()
+        {
+            string name = "";
+            for (int i = 0; i < this.name.Length; i++)
+            {
+                name += this.name[i];
+            }
+
+            return name;
         }
     }
 }

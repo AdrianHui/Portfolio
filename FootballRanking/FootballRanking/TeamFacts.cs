@@ -27,5 +27,12 @@ namespace FootballRanking.Facts
             Team team2 = new Team("FCSB", 33);
             Assert.Equal(0, team1.ComparePoints(team2));
         }
+
+        [Fact]
+        public void ShouldReturnTeamName()
+        {
+            Team team = new Team("CFR", 33);
+            Assert.True("CFR" == team.GetTeamName());
+        }
     }
 }
