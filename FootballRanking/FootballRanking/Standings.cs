@@ -58,8 +58,8 @@ namespace FootballRanking
 
         private void SortTeams()
         {
-            bool swapped;
-            do
+            bool swapped = true;
+            while (swapped)
             {
                 swapped = false;
                 for (int j = 0; j < teams.Length - 1; j++)
@@ -73,7 +73,6 @@ namespace FootballRanking
                     }
                 }
             }
-            while (swapped);
         }
     } 
 }
