@@ -19,22 +19,6 @@ namespace FootballRanking
             SortTeams();
         }
 
-        private void SortTeams()
-        {
-            for (int i = 0; i < teams.Length; i++)
-            {
-                for (int j = 0; j < teams.Length - 1; j++)
-                {
-                    if (teams[j].ComparePoints(teams[j + 1]) == -1)
-                    {
-                        Team temp = teams[j];
-                        teams[j] = teams[j + 1];
-                        teams[j + 1] = temp;
-                    }
-                }
-            }
-        }
-
         public Team GetTeamByRankingPosition(int index)
         {
             return teams[index - 1];
@@ -70,6 +54,30 @@ namespace FootballRanking
             }
 
             SortTeams();
+        }
+
+        private void SortTeams()
+        {
+            bool swapped;
+            for (int i = 0; i < teams.Length - 1; i++)
+            {
+                swapped = false;
+                for (int j = 0; j < teams.Length - 1; j++)
+                {
+                    if (teams[j].ComparePoints(teams[j + 1]) == -1)
+                    {
+                        Team temp = teams[j];
+                        teams[j] = teams[j + 1];
+                        teams[j + 1] = temp;
+                        swapped = true;
+                    }
+                }
+
+                if (!swapped)
+                {
+                    break;
+                }
+            }
         }
     } 
 }
