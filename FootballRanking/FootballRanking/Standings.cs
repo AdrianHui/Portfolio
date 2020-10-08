@@ -9,33 +9,35 @@ namespace FootballRanking
         public Standings(Team[] teams)
         {
             this.teams = teams;
+            SortTeams();
         }
 
-        public void AddTeam(string name, int points)
+        public void AddTeam(Team team)
         {
             Array.Resize(ref teams, teams.Length + 1);
-            this.teams[teams.Length - 1] = new Team(name, points);
+            this.teams[teams.Length - 1] = team;
+            SortTeams();
         }
 
-        public void SortTeams()
+        private void SortTeams()
         {
             for (int i = 0; i < teams.Length; i++)
             {
-                for (int j = i + 1; j < teams.Length; j++)
+                for (int j = 0; j < teams.Length - 1; j++)
                 {
-                    if (teams[j].ComparePoints(teams[i]) == 1)
+                    if (teams[j].ComparePoints(teams[j + 1]) == -1)
                     {
-                        Team temp = teams[i];
-                        teams[i] = teams[j];
-                        teams[j] = temp;
+                        Team temp = teams[j];
+                        teams[j] = teams[j + 1];
+                        teams[j + 1] = temp;
                     }
                 }
             }
         }
 
-        public string GetTeamByRankingPosition(int index)
+        public Team GetTeamByRankingPosition(int index)
         {
-            return teams[index - 1].GetTeamName();
+            return teams[index - 1];
         }
 
         public int GetTeamRanking(Team team)
@@ -58,13 +60,11 @@ namespace FootballRanking
                 teams[GetTeamRanking(homeTeam) - 1].IncreasePoints(1);
                 teams[GetTeamRanking(awayTeam) - 1].IncreasePoints(1);
             }
-
-            if (homeTeamGoals > awayTeamGoals)
+            else if (homeTeamGoals > awayTeamGoals)
             {
                 teams[GetTeamRanking(homeTeam) - 1].IncreasePoints(3);
             }
-
-            if (homeTeamGoals < awayTeamGoals)
+            else
             {
                 teams[GetTeamRanking(awayTeam) - 1].IncreasePoints(3);
             }

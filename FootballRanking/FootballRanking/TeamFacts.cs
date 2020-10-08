@@ -29,13 +29,6 @@ namespace FootballRanking.Facts
         }
 
         [Fact]
-        public void ShouldReturnTeamName()
-        {
-            Team team = new Team("CFR", 33);
-            Assert.Equal("CFR", team.GetTeamName());
-        }
-
-        [Fact]
         public void ShouldIncreaseTeamPoints()
         {
             Team team = new Team("CFR", 33);

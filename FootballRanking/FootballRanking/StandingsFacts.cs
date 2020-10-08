@@ -13,36 +13,8 @@ namespace FootballRanking.Facts
             Team teamToAdd = new Team("Dinamo", 30);
             Team[] teams = new Team[] { fcsb, viitorul, cfr };
             Standings standings = new Standings(teams);
-            standings.AddTeam("Dinamo", 30);
+            standings.AddTeam(teamToAdd);
             Assert.True(standings.GetTeamRanking(teamToAdd) != -1);
-        }
-
-        [Fact]
-        public void ShouldSortTeamsByPoints()
-        {
-            Team fcsb = new Team("FCSB", 33);
-            Team dinamo = new Team("Dinamo", 30);
-            Team viitorul = new Team("Viitorul", 31);
-            Team cfr = new Team("CFR", 39);
-            Team[] teams = new Team[] { fcsb, dinamo, viitorul, cfr };
-            Standings standings = new Standings(teams);
-            standings.SortTeams();
-            Assert.True(standings.GetTeamRanking(cfr) == 1 && standings.GetTeamRanking(fcsb) == 2 &&
-                        standings.GetTeamRanking(viitorul) == 3 && standings.GetTeamRanking(dinamo) == 4);
-        }
-
-        [Fact]
-        public void ShouldWorkIfTeamsAreAlreadySorted()
-        {
-            Team fcsb = new Team("FCSB", 33);
-            Team dinamo = new Team("Dinamo", 30);
-            Team viitorul = new Team("Viitorul", 31);
-            Team cfr = new Team("CFR", 39);
-            Team[] teams = new Team[] { cfr, fcsb, viitorul, dinamo };
-            Standings standings = new Standings(teams);
-            standings.SortTeams();
-            Assert.True(standings.GetTeamRanking(cfr) == 1 && standings.GetTeamRanking(fcsb) == 2 &&
-                        standings.GetTeamRanking(viitorul) == 3 && standings.GetTeamRanking(dinamo) == 4);
         }
 
         [Fact]
@@ -52,9 +24,9 @@ namespace FootballRanking.Facts
             Team dinamo = new Team("Dinamo", 30);
             Team viitorul = new Team("Viitorul", 31);
             Team cfr = new Team("CFR", 39);
-            Team[] teams = new Team[] { cfr, fcsb, viitorul, dinamo };
+            Team[] teams = new Team[] { fcsb, cfr, viitorul, dinamo };
             Standings standings = new Standings(teams);
-            Assert.Equal("CFR", standings.GetTeamByRankingPosition(1));
+            Assert.Equal(cfr, standings.GetTeamByRankingPosition(1));
         }
 
         [Fact]
@@ -64,7 +36,7 @@ namespace FootballRanking.Facts
             Team dinamo = new Team("Dinamo", 30);
             Team viitorul = new Team("Viitorul", 31);
             Team cfr = new Team("CFR", 39);
-            Team[] teams = new Team[] { cfr, fcsb, viitorul, dinamo };
+            Team[] teams = new Team[] { dinamo, viitorul, fcsb, cfr };
             Standings standings = new Standings(teams);
             Assert.Equal(2, standings.GetTeamRanking(fcsb));
         }
