@@ -4,7 +4,7 @@ using System.Text;
 
 namespace StringValidation
 {
-    class Range
+    class Range : IPattern
     {
         char start;
         char end;
