@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace FirstCharValidation
+namespace StringValidation
 {
     class Range
     {

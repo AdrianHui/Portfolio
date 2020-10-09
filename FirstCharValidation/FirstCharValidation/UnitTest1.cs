@@ -1,6 +1,6 @@
 using Xunit;
 
-namespace FirstCharValidation.Facts
+namespace StringValidation.Facts
 {
     public class RangeFacts
     {
