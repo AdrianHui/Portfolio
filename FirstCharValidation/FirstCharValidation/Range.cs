@@ -16,17 +16,7 @@ namespace FirstCharValidation
 
         public bool Match(string text)
         {
-            if (string.IsNullOrEmpty(text))
-            {
-                return false;
-            }
-
-            if (text[0] < start || text[0] > end)
-            {
-                return false;
-            }
-
-            return true;
+            return !string.IsNullOrEmpty(text) && text[0] >= start && text[0] <= end;
         }
     }
 }
