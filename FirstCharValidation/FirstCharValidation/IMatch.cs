@@ -4,8 +4,9 @@ using System.Text;
 
 namespace StringValidation
 {
-    interface IPattern
+    interface IMatch
     {
-        IMatch Match(string text);
+        bool Success();
+        string RemainingText();
     }
 }

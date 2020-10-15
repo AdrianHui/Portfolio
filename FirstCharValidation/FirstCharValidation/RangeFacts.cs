@@ -7,81 +7,81 @@ namespace StringValidation.Facts
         [Fact]
         public void InputStringIsNullShouldReturnFalse()
         {
-            var digit = new Range('a', 'b');
-            string stringToCheck = null;
-            Assert.False(digit.Match(stringToCheck));
+            var range = new Range('a', 'b');
+            Match match = new Match(null, range);
+            Assert.False(match.Success());
         }
 
         [Fact]
         public void InputStringIsEmptyShouldReturnFalse()
         {
-            var digit = new Range('a', 'b');
-            string stringToCheck = "";
-            Assert.False(digit.Match(stringToCheck));
+            var range = new Range('a', 'b');
+            Match match = new Match("", range);
+            Assert.False(match.Success());
         }
 
         [Fact]
         public void InputStringFirstCharIsOutsideOfRangeShouldReturnFalse()
         {
-            var digit = new Range('a', 'c');
-            string stringToCheck = "dabc";
-            Assert.False(digit.Match(stringToCheck));
+            var range = new Range('a', 'b');
+            Match match = new Match("dabc", range);
+            Assert.False(match.Success());
         }
 
         [Fact]
         public void InputStringFirstCharIsUpperCaseShouldReturnFalse()
         {
-            var digit = new Range('a', 'c');
-            string stringToCheck = "Abb";
-            Assert.False(digit.Match(stringToCheck));
+            var range = new Range('a', 'b');
+            Match match = new Match("Abb", range);
+            Assert.False(match.Success());
         }
 
         [Fact]
         public void InputStringFirstCharIsSymbolShouldReturnFalse()
         {
-            var digit = new Range('a', 'c');
-            string stringToCheck = "$bb";
-            Assert.False(digit.Match(stringToCheck));
+            var range = new Range('a', 'b');
+            Match match = new Match("$bb", range);
+            Assert.False(match.Success());
         }
 
         [Fact]
         public void InputStringFirstCharIsEscapeCharShouldReturnFalse()
         {
-            var digit = new Range('a', 'z');
-            string stringToCheck = "\\ubb";
-            Assert.False(digit.Match(stringToCheck));
+            var range = new Range('a', 'b');
+            Match match = new Match("\\ubb", range);
+            Assert.False(match.Success());
         }
 
         [Fact]
         public void InputStringFirstCharIsDigitShouldReturnFalse()
         {
-            var digit = new Range('a', 'c');
-            string stringToCheck = "5bb";
-            Assert.False(digit.Match(stringToCheck));
+            var range = new Range('a', 'b');
+            Match match = new Match("5bb", range);
+            Assert.False(match.Success());
         }
 
         [Fact]
         public void InputStringFirstCharIsInsideOfRangeShouldReturnTrue()
         {
-            var digit = new Range('a', 'h');
-            string stringToCheck = "gam";
-            Assert.True(digit.Match(stringToCheck));
+            var range = new Range('a', 'h');
+            Match match = new Match("gam", range);
+            Assert.True(match.Success());
         }
 
         [Fact]
         public void InputStringFirstCharIsEqualToRangeStartCharShouldReturnTrue()
         {
-            var digit = new Range('a', 'h');
-            string stringToCheck = "aaz";
-            Assert.True(digit.Match(stringToCheck));
+            var range = new Range('a', 'h');
+            Match match = new Match("aaz", range);
+            Assert.True(match.Success());
         }
 
         [Fact]
         public void InputStringFirstCharIsEqualToRangeEndCharShouldReturnTrue()
         {
-            var digit = new Range('a', 'h');
-            string stringToCheck = "haz";
-            Assert.True(digit.Match(stringToCheck));
+            var range = new Range('a', 'h');
+            Match match = new Match("haz", range);
+            Assert.True(match.Success());
         }
     }
 }

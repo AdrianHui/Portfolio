@@ -8,77 +8,77 @@ namespace StringValidation.Facts
         [Fact]
         public void NullInputStringShouldReturnFalse()
         {
-            Choice digit = new Choice(new Character('0'), new Range('1', '9'));
-
-            Assert.False(digit.Match(null));
+            Choice choice = new Choice(new Character('0'), new Range('1', '9'));
+            Match match = new Match(null, choice);
+            Assert.False(match.Success());
         }
 
         [Fact]
         public void EmptyInputStringShouldReturnFalse()
         {
-            Choice digit = new Choice(new Character('0'), new Range('1', '9'));
-
-            Assert.False(digit.Match(""));
+            Choice choice = new Choice(new Character('0'), new Range('1', '9'));
+            Match match = new Match("", choice);
+            Assert.False(match.Success());
         }
 
         [Fact]
         public void InputStringFirstCharIsNotEqualToCharacterAndOutsideOfRangeShouldReturnFalse()
         {
-            Choice digit = new Choice(new Character('0'), new Range('1', '9'));
-
-            Assert.False(digit.Match("a99"));
+            Choice choice = new Choice(new Character('0'), new Range('1', '9'));
+            Match match = new Match("a99", choice);
+            Assert.False(match.Success());
         }
 
         [Fact]
         public void InputStringFirstCharIsInRangeShouldReturnTrue()
         {
-            Choice digit = new Choice(new Character('0'), new Range('1', '9'));
-
-            Assert.True(digit.Match("1234"));
+            Choice choice = new Choice(new Character('0'), new Range('1', '9'));
+            Match match = new Match("1234", choice);
+            Assert.True(match.Success());
         }
 
         [Fact]
         public void InputStringFirstCharIsEqualToCharacterShouldReturnTrue()
         {
-            Choice digit = new Choice(new Character('0'), new Range('1', '9'));
-
-            Assert.True(digit.Match("01234"));
+            Choice choice = new Choice(new Character('0'), new Range('1', '9'));
+            Match match = new Match("01234", choice);
+            Assert.True(match.Success());
         }
 
         [Fact]
         public void InputStringFirstCharIsLowercaseHexCharShouldReturnTrue()
         {
-            Choice digit = new Choice(new Character('0'), new Range('1', '9'));
-            var hex = new Choice(digit, new Choice(new Range('a', 'f'), new Range('A', 'F')));
-
-            Assert.True(hex.Match("a1234"));
+            Choice choice = new Choice(new Character('0'), new Range('1', '9'));
+            var hex = new Choice(choice, new Choice(new Range('a', 'f'), new Range('A', 'F')));
+            Match match = new Match("a1234", hex);
+            Assert.True(match.Success());
         }
 
         [Fact]
         public void InputStringFirstCharIsUppercaseHexCharShouldReturnTrue()
         {
-            Choice digit = new Choice(new Character('0'), new Range('1', '9'));
-            var hex = new Choice(digit, new Choice(new Range('a', 'f'), new Range('A', 'F')));
-
-            Assert.True(hex.Match("B1234"));
+            Choice choice = new Choice(new Character('0'), new Range('1', '9'));
+            var hex = new Choice(choice, new Choice(new Range('a', 'f'), new Range('A', 'F')));
+            Match match = new Match("B1234", hex);
+            Assert.True(match.Success());
         }
 
         [Fact]
         public void InputStringFirstCharIsOutsideLowercaseHexCharRangeShouldReturnFalse()
         {
-            Choice digit = new Choice(new Character('0'), new Range('1', '9'));
-            var hex = new Choice(digit, new Choice(new Range('a', 'f'), new Range('A', 'F')));
-
-            Assert.False(hex.Match("h1234"));
+            Choice choice = new Choice(new Character('0'), new Range('1', '9'));
+            var hex = new Choice(choice, new Choice(new Range('a', 'f'), new Range('A', 'F')));
+            Match match = new Match("h1234", hex);
+            Assert.False(match.Success());
         }
 
         [Fact]
         public void InputStringFirstCharIsOutsideUppercaseHexCharRangeShouldReturnFalse()
         {
-            Choice digit = new Choice(new Character('0'), new Range('1', '9'));
-            var hex = new Choice(digit, new Choice(new Range('a', 'f'), new Range('A', 'F')));
-
-            Assert.False(hex.Match("H1234"));
+            Choice choice = new Choice(new Character('0'), new Range('1', '9'));
+            var hex = new Choice(choice, new Choice(new Range('a', 'f'), new Range('A', 'F')));
+            Match match = new Match("H1234", hex);
+            Assert.False(match.Success());
         }
     }
 }

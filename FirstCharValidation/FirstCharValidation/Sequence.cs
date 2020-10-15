@@ -4,34 +4,36 @@ using System.Text;
 
 namespace StringValidation
 {
-    class Choice : IPattern
+    class Sequence : IPattern
     {
         IPattern[] patterns;
-        public Choice(params IPattern[] patterns)
+        public Sequence(params IPattern[] patterns)
         {
             this.patterns = patterns;
         }
 
         public IMatch Match(string text)
         {
-            IMatch choice = new Match(text, patterns);
-            choice.Success();
-            return choice;
-            
+            IMatch sequence = new Match(text, patterns);
+            sequence.Success();
+            sequence.RemainingText();
+            return sequence;
         }
 
-        public bool CheckChoice(string text)
+        public bool CheckSequence(string text)
         {
             foreach (var pattern in patterns)
             {
                 Match match = new Match(text, pattern);
-                if (match.Success())
+                if (!match.Success())
                 {
-                    return true;
+                    return false;
                 }
+
+                text = match.RemainingText();
             }
 
-            return false;
+            return true;
         }
     }
 }

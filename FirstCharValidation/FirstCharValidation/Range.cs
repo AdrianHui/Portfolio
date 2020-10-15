@@ -14,9 +14,16 @@ namespace StringValidation
             this.end = end;
         }
 
-        public bool Match(string text)
+        public IMatch Match(string text)
         {
-            return !string.IsNullOrEmpty(text) && text[0] >= start && text[0] <= end;
+            IMatch range = new Match(text, new Range(start, end));
+            range.Success();
+            return range;
+        }
+
+        public bool CheckRange(string text)
+        {
+            return text[0] >= start && text[0] <= end;
         }
     }
 }

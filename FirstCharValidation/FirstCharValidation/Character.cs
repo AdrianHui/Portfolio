@@ -13,9 +13,16 @@ namespace StringValidation
             this.pattern = pattern;
         }
 
-        public bool Match(string text)
+        public IMatch Match(string text)
         {
-            return !string.IsNullOrEmpty(text) && text[0] == pattern;
+            IMatch character = new Match(text, new Character(pattern));
+            character.Success();
+            return character;
+        }
+
+        public bool CheckPattern(string text)
+        {
+            return text[0] == pattern;
         }
     }
 }
