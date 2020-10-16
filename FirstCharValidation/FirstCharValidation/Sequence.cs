@@ -20,7 +20,7 @@ namespace StringValidation
             return sequence;
         }
 
-        public bool CheckSequence(string text)
+        public bool CheckSequence(ref string text)
         {
             foreach (var pattern in patterns)
             {

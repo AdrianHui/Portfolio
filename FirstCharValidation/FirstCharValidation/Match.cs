@@ -28,12 +28,12 @@ namespace StringValidation
                 return false;
             }
 
-            bool result = true;
+            bool result = false;
             foreach (var pattern in patterns)
             {
                 if (pattern is Character)
                 {
-                    result = (pattern as Character).CheckPattern(text);
+                    result = (pattern as Character).CheckCharacter(text);
                 }
                 else if(pattern is Range)
                 {
@@ -45,7 +45,7 @@ namespace StringValidation
                 }
                 else
                 {
-                    result = (pattern as Sequence).CheckSequence(text);
+                    result = (pattern as Sequence).CheckSequence(ref text);
                 }
 
                 if (!result)
@@ -55,6 +55,11 @@ namespace StringValidation
             }
 
             return result;
+        }
+
+        public bool CheckParams(bool expectedBool, string remainingText)
+        {
+            return this.Success() == expectedBool && this.RemainingText() == remainingText;
         }
     }
 }

@@ -20,7 +20,7 @@ namespace StringValidation
             return character;
         }
 
-        public bool CheckPattern(string text)
+        public bool CheckCharacter(string text)
         {
             return text[0] == pattern;
         }
