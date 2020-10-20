@@ -16,7 +16,6 @@ namespace StringValidation
         public IMatch Match(string text)
         {
             IMatch character = new Match(text, new Character(pattern));
-            character.Success();
             return character;
         }
 

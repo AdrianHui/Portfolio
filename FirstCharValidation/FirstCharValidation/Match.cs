@@ -27,39 +27,28 @@ namespace StringValidation
             {
                 return false;
             }
-
             bool result = false;
             foreach (var pattern in patterns)
             {
-                if (pattern is Character)
+                if (pattern is Character && (pattern as Character).CheckCharacter(text))
                 {
-                    result = (pattern as Character).CheckCharacter(text);
+                    result = true;
                 }
-                else if(pattern is Range)
+                else if(pattern is Range && (pattern as Range).CheckRange(text))
                 {
-                    result = (pattern as Range).CheckRange(text);
+                    result = true;
                 }
-                else if (pattern is Choice)
+                else if (pattern is Choice && (pattern as Choice).CheckChoice(text))
                 {
-                    result = (pattern as Choice).CheckChoice(text);
+                    result = true;
                 }
-                else
+                else if (pattern is Sequence && !(pattern as Sequence).CheckSequence(ref text))
                 {
-                    result = (pattern as Sequence).CheckSequence(ref text);
-                }
-
-                if (!result)
-                {
-                    return result;
+                    return false;
                 }
             }
 
             return result;
-        }
-
-        public bool CheckParams(bool expectedBool, string remainingText)
-        {
-            return this.Success() == expectedBool && this.RemainingText() == remainingText;
         }
     }
 }

@@ -5,30 +5,30 @@ namespace StringValidation.Facts
     public class SequenceFacts
     {
         [Fact]
-        public void x()
+        public void StringToCheckMatchesAllSequencePatternsShouldReturnTrue()
         {
             Sequence sequence1 = new Sequence(new Character('a'), new Character('b'));
-            Match match = new Match("abcd", sequence1);
-            sequence1.Match("abcd");
-            Assert.True(match.CheckParams(true, "cd"));
+            string stringToCheck = "abcd";
+            Assert.True(sequence1.Match(stringToCheck).Success());
         }
 
         [Fact]
-        public void z()
+        public void StringToCheckMatchesSequenceHavingSequenceAsPatternShouldReturnTrue()
         {
             Sequence sequence1 = new Sequence(new Character('a'), new Character('b'));
             Sequence sequence2 = new Sequence(sequence1, new Character('c'));
-            sequence2.Match("abcd");
-            Assert.True();
+            string stringToCheck = "abcd";
+            Assert.True(sequence2.Match(stringToCheck).Success());
         }
 
         [Fact]
-        public void y()
+        public void StringToCheckMatchesSequenceHavingMultipleSequencesAsPatternShouldReturnTrue()
         {
             Sequence sequence1 = new Sequence(new Character('a'), new Character('b'));
-
-            Assert.False(sequence1.Match("def").Success());
+            Sequence sequence2 = new Sequence(new Character('d'), new Character('e'));
+            Sequence sequence3 = new Sequence(sequence1, new Character('c'), sequence2);
+            string stringToCheck = "abcdef";
+            Assert.True(sequence3.Match(stringToCheck).Success());
         }
-
     }
 }

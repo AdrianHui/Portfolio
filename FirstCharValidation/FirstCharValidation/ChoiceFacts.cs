@@ -9,40 +9,40 @@ namespace StringValidation.Facts
         public void NullInputStringShouldReturnFalse()
         {
             Choice choice = new Choice(new Character('0'), new Range('1', '9'));
-            Match match = new Match(null, choice);
-            Assert.False(match.Success());
+            string stringToCheck = null;
+            Assert.False(choice.Match(stringToCheck).Success());
         }
 
         [Fact]
         public void EmptyInputStringShouldReturnFalse()
         {
             Choice choice = new Choice(new Character('0'), new Range('1', '9'));
-            Match match = new Match("", choice);
-            Assert.False(match.Success());
+            string stringToCheck = "";
+            Assert.False(choice.Match(stringToCheck).Success());
         }
 
         [Fact]
         public void InputStringFirstCharIsNotEqualToCharacterAndOutsideOfRangeShouldReturnFalse()
         {
             Choice choice = new Choice(new Character('0'), new Range('1', '9'));
-            Match match = new Match("a99", choice);
-            Assert.False(match.Success());
+            string stringToCheck = "a99";
+            Assert.False(choice.Match(stringToCheck).Success());
         }
 
         [Fact]
         public void InputStringFirstCharIsInRangeShouldReturnTrue()
         {
             Choice choice = new Choice(new Character('0'), new Range('1', '9'));
-            Match match = new Match("1234", choice);
-            Assert.True(match.Success());
+            string stringToCheck = "1234";
+            Assert.True(choice.Match(stringToCheck).Success());
         }
 
         [Fact]
         public void InputStringFirstCharIsEqualToCharacterShouldReturnTrue()
         {
             Choice choice = new Choice(new Character('0'), new Range('1', '9'));
-            Match match = new Match("01234", choice);
-            Assert.True(match.Success());
+            string stringToCheck = "01234";
+            Assert.True(choice.Match(stringToCheck).Success());
         }
 
         [Fact]
@@ -50,8 +50,8 @@ namespace StringValidation.Facts
         {
             Choice choice = new Choice(new Character('0'), new Range('1', '9'));
             var hex = new Choice(choice, new Choice(new Range('a', 'f'), new Range('A', 'F')));
-            Match match = new Match("a1234", hex);
-            Assert.True(match.Success());
+            string stringToCheck = "a1234";
+            Assert.True(hex.Match(stringToCheck).Success());
         }
 
         [Fact]
@@ -59,8 +59,8 @@ namespace StringValidation.Facts
         {
             Choice choice = new Choice(new Character('0'), new Range('1', '9'));
             var hex = new Choice(choice, new Choice(new Range('a', 'f'), new Range('A', 'F')));
-            Match match = new Match("B1234", hex);
-            Assert.True(match.Success());
+            string stringToCheck = "B1234";
+            Assert.True(hex.Match(stringToCheck).Success());
         }
 
         [Fact]
@@ -68,8 +68,8 @@ namespace StringValidation.Facts
         {
             Choice choice = new Choice(new Character('0'), new Range('1', '9'));
             var hex = new Choice(choice, new Choice(new Range('a', 'f'), new Range('A', 'F')));
-            Match match = new Match("h1234", hex);
-            Assert.False(match.Success());
+            string stringToCheck = "h1234";
+            Assert.False(hex.Match(stringToCheck).Success());
         }
 
         [Fact]
@@ -77,8 +77,8 @@ namespace StringValidation.Facts
         {
             Choice choice = new Choice(new Character('0'), new Range('1', '9'));
             var hex = new Choice(choice, new Choice(new Range('a', 'f'), new Range('A', 'F')));
-            Match match = new Match("H1234", hex);
-            Assert.False(match.Success());
+            string stringToCheck = "H1234";
+            Assert.False(hex.Match(stringToCheck).Success());
         }
     }
 }

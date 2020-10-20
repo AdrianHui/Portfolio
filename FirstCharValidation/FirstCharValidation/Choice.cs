@@ -15,7 +15,6 @@ namespace StringValidation
         public IMatch Match(string text)
         {
             IMatch choice = new Match(text, patterns);
-            choice.Success();
             return choice;
             
         }

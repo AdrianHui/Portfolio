@@ -17,7 +17,6 @@ namespace StringValidation
         public IMatch Match(string text)
         {
             IMatch range = new Match(text, new Range(start, end));
-            range.Success();
             return range;
         }
 

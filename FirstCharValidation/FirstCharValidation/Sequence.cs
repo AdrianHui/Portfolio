@@ -7,6 +7,7 @@ namespace StringValidation
     class Sequence : IPattern
     {
         IPattern[] patterns;
+        IMatch sequence;
         public Sequence(params IPattern[] patterns)
         {
             this.patterns = patterns;
@@ -14,9 +15,7 @@ namespace StringValidation
 
         public IMatch Match(string text)
         {
-            IMatch sequence = new Match(text, patterns);
-            sequence.Success();
-            sequence.RemainingText();
+            this.sequence = new Match(text, patterns);
             return sequence;
         }
 
@@ -24,13 +23,13 @@ namespace StringValidation
         {
             foreach (var pattern in patterns)
             {
-                Match match = new Match(text, pattern);
-                if (!match.Success())
+                this.sequence = new Match(text, pattern);
+                if (!sequence.Success())
                 {
                     return false;
                 }
 
-                text = match.RemainingText();
+                text = sequence.RemainingText();
             }
 
             return true;
