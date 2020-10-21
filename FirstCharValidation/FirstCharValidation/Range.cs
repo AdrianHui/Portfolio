@@ -16,13 +16,9 @@ namespace StringValidation
 
         public IMatch Match(string text)
         {
-            IMatch range = new Match(text, new Range(start, end));
-            return range;
-        }
-
-        public bool CheckRange(string text)
-        {
-            return text[0] >= start && text[0] <= end;
+            return !string.IsNullOrEmpty(text) && text[0] >= start && text[0] <= end
+                ? new SuccessMatch(text.Substring(1))
+                : (IMatch)new FailedMatch(text);
         }
     }
 }

@@ -15,13 +15,9 @@ namespace StringValidation
 
         public IMatch Match(string text)
         {
-            IMatch character = new Match(text, new Character(pattern));
-            return character;
-        }
-
-        public bool CheckCharacter(string text)
-        {
-            return text[0] == pattern;
+            return !string.IsNullOrEmpty(text) && text[0] == pattern
+                    ? new SuccessMatch(text.Substring(1))
+                    : (IMatch) new FailedMatch(text);
         }
     }
 }
