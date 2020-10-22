@@ -25,20 +25,17 @@ namespace StringValidation
                 return new SuccessMatch(text);
             }
 
-            bool result = true;
             foreach (var character in text)
             {
-                IMatch match = new Character(character).Match(prefix);
-                if (!match.Success())
+                if (character != prefix[0])
                 {
-                    result = false;
-                    break;
+                    return new FailedMatch(text);
                 }
 
                 prefix = prefix.Substring(1);
             }
 
-            return result ? new SuccessMatch(prefix) : (IMatch) new FailedMatch(text);
+            return new SuccessMatch(prefix);
         }
     }
 }
