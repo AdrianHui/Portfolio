@@ -8,32 +8,35 @@ namespace StringValidation.Facts
         public void NullInputStringShouldReturnFalse()
         {
             Character pattern = new Character('x');
-            string stringToCheck = null;
-            Assert.False(pattern.Match(stringToCheck).Success());
+            Assert.False(pattern.Match(null).Success());
         }
 
         [Fact]
         public void EmptyInputStringShouldReturnFalse()
         {
             Character pattern = new Character('x');
-            string stringToCheck = "";
-            Assert.False(pattern.Match(stringToCheck).Success());
+            Assert.False(pattern.Match("").Success());
         }
 
         [Fact]
         public void InputStringNotStartingWithPatternShouldReturnFalse()
         {
             Character pattern = new Character('x');
-            string stringToCheck = "abcd";
-            Assert.False(pattern.Match(stringToCheck).Success());
+            Assert.False(pattern.Match("abcd").Success());
         }
 
         [Fact]
         public void InputStringStartingWithPatternShouldReturnTrue()
         {
             Character pattern = new Character('x');
-            string stringToCheck = "xunit";
-            Assert.True(pattern.Match(stringToCheck).Success());
+            Assert.True(pattern.Match("xunit").Success());
+        }
+
+        [Fact]
+        public void InputStringStartingWithUppercasePatternShouldReturnFalse()
+        {
+            Character pattern = new Character('x');
+            Assert.False(pattern.Match("Xunit").Success());
         }
     }
 }

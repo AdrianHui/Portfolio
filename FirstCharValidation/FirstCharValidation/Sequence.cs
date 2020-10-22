@@ -18,13 +18,14 @@ namespace StringValidation
             string newText = text;
             foreach (var pattern in patterns)
             {
-                if (!pattern.Match(newText).Success())
+                IMatch match = pattern.Match(newText);
+                if (!match.Success())
                 {
                     result = false;
                     break;
                 }
 
-                newText = pattern.Match(newText).RemainingText();
+                newText = match.RemainingText();
             }
 
             return !string.IsNullOrEmpty(text) && result
