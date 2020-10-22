@@ -4,7 +4,7 @@ using System.Text;
 
 namespace StringValidation
 {
-    class Any
+    class Any : IPattern
     {
         string accepted;
 

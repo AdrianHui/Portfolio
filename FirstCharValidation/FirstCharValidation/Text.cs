@@ -4,7 +4,7 @@ using System.Text;
 
 namespace StringValidation
 {
-    class Text
+    class Text : IPattern
     {
         string prefix;
         
