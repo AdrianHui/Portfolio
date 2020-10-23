@@ -15,22 +15,13 @@ namespace StringValidation
 
         public IMatch Match(string text)
         {
-            if (string.IsNullOrEmpty(text))
-            {
-                return new SuccessMatch(text);
-            }
-
             IMatch match = new SuccessMatch(text);
-            foreach (var charactrer in text)
+            while (match.Success())
             {
                 match = pattern.Match(match.RemainingText());
-                if (!match.Success())
-                {
-                    return new SuccessMatch(match.RemainingText());
-                }
             }
 
-            return new SuccessMatch(text);
+            return match.Success() ? new SuccessMatch(text) : new SuccessMatch(match.RemainingText());
         }
     }
 }
