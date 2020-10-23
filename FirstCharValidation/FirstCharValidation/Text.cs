@@ -26,7 +26,7 @@ namespace StringValidation
             }
 
             int i;
-            for (i = 0; i < text.Length; i++)
+            for (i = 0; i < prefix.Length; i++)
             {
                 if (text[i] != prefix[i])
                 {
@@ -34,7 +34,7 @@ namespace StringValidation
                 }
             }
 
-            return new SuccessMatch(prefix.Substring(i));
+            return new SuccessMatch(text.Substring(i));
         }
     }
 }

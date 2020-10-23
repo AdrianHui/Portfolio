@@ -41,9 +41,9 @@ namespace StringValidation.Facts
         [Fact]
         public void InputStringPartialyMatchesPrefixShouldRetrunTrueAndRemainingTextShouldReturnRemainingPrefix()
         {
-            Text text = new Text("abCdEf");
-            IMatch match = text.Match("abCd");
-            Assert.True(match.Success() && match.RemainingText() == "Ef");
+            Text text = new Text("abCd");
+            IMatch match = text.Match("abCdEF");
+            Assert.True(match.Success() && match.RemainingText() == "EF");
         }
 
         [Fact]
