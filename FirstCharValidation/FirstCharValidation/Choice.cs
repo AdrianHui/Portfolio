@@ -14,19 +14,17 @@ namespace StringValidation
 
         public IMatch Match(string text)
         {
-            bool result = false;
+            IMatch match = new SuccessMatch(text);
             foreach (var pattern in patterns)
             {
-                if (pattern.Match(text).Success())
+                match = pattern.Match(match.RemainingText());
+                if (match.Success())
                 {
-                    result = true;
-                    break;
+                    return match;
                 }
             }
 
-            return !string.IsNullOrEmpty(text) && result
-                ? new SuccessMatch(text.Substring(1))
-                : (IMatch)new FailedMatch(text);
+            return new FailedMatch(text);
 
         }
     }

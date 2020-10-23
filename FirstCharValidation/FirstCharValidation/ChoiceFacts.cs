@@ -71,5 +71,46 @@ namespace StringValidation.Facts
             var hex = new Choice(choice, new Choice(new Range('a', 'f'), new Range('A', 'F')));
             Assert.False(hex.Match("H1234").Success());
         }
+
+        [Fact]
+        public void InputStringFirstCharIsInSequenceShouldReturnTrueAndRemainingText()
+        {
+            var choice = new Choice(new Sequence(new Character('a'), new Range('1', '3')));
+            Assert.True(choice.Match("a321bcd").Success());
+            Assert.True(choice.Match("a321bcd").RemainingText() == "21bcd");
+        }
+
+        [Fact]
+        public void InputStringFirstCharIsNotInSequenceShouldReturnFalseAndInputString()
+        {
+            var choice = new Choice(new Sequence(new Character('a'), new Range('1', '3')));
+            Assert.False(choice.Match("bcd").Success());
+            Assert.True(choice.Match("bcd").RemainingText() == "bcd");
+        }
+
+        [Fact]
+        public void InputStringPartialyMatchesPrefixShouldReturnTrueAndRemainingText()
+        {
+            var choice = new Choice(new Text("bcd"));
+            Assert.True(choice.Match("bcdef").Success());
+            Assert.True(choice.Match("bcdef").RemainingText() == "ef");
+        }
+
+        [Fact]
+        public void InputStringDoesntMatchPrefixShouldReturnFalseAndInputString()
+        {
+            var choice = new Choice(new Text("abc"));
+            Assert.False(choice.Match("def").Success());
+            Assert.True(choice.Match("def").RemainingText() == "def");
+        }
+
+        [Fact]
+        public void InputStringMatchesTheSequenceShouldReturnTrueAndRemainingText()
+        {
+            var choice = new Choice(new Text("abc"),
+                new Sequence(new Character('d'), new Range('e', 'h')));
+            Assert.True(choice.Match("def").Success());
+            Assert.True(choice.Match("def").RemainingText() == "f");
+        }
     }
 }
