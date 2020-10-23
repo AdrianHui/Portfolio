@@ -6,7 +6,7 @@ namespace StringValidation
 {
     class Text : IPattern
     {
-        string prefix;
+        readonly string prefix;
         
         public Text(string prefix)
         {
@@ -25,17 +25,16 @@ namespace StringValidation
                 return new SuccessMatch(text);
             }
 
-            foreach (var character in text)
+            int i;
+            for (i = 0; i < text.Length; i++)
             {
-                if (character != prefix[0])
+                if (text[i] != prefix[i])
                 {
                     return new FailedMatch(text);
                 }
-
-                prefix = prefix.Substring(1);
             }
 
-            return new SuccessMatch(prefix);
+            return new SuccessMatch(prefix.Substring(i));
         }
     }
 }
