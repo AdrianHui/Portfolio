@@ -15,26 +15,17 @@ namespace StringValidation
 
         public IMatch Match(string text)
         {
-            if (string.IsNullOrEmpty(text))
-            {
-                return new FailedMatch(text);
-            }
-
             if (prefix == "")
             {
                 return new SuccessMatch(text);
             }
 
-            int i;
-            for (i = 0; i < prefix.Length; i++)
+            if (!string.IsNullOrEmpty(text) && text.StartsWith(prefix))
             {
-                if (text[i] != prefix[i])
-                {
-                    return new FailedMatch(text);
-                }
+                return new SuccessMatch(text.Substring(prefix.Length));
             }
 
-            return new SuccessMatch(text.Substring(i));
+            return new FailedMatch(text);
         }
     }
 }
