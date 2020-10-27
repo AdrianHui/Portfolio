@@ -10,7 +10,7 @@ namespace StringValidation
 
         public OneOrMore(IPattern pattern)
         {
-            this.pattern = pattern;
+            this.pattern = new Sequence(pattern, new Many(pattern));
         }
 
         public IMatch Match(string text)
