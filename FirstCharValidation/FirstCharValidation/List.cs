@@ -10,7 +10,7 @@ namespace StringValidation
 
         public List(IPattern pattern, IPattern separator)
         {
-            this.pattern = new Many(new Sequence(pattern, separator));
+            this.pattern = new Many(new Choice(pattern, new Sequence(separator, pattern)));
         }
 
         public IMatch Match(string text)

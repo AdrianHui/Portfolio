@@ -29,11 +29,55 @@ namespace StringValidation.Facts
         }
 
         [Fact]
-        public void InputStringPartialyMatchesPatternsInListShouldReturnTrueAndEmptyString()
+        public void InputStringPartialyMatchesPatternsInListShouldReturnTrueAndRemainingText()
         {
             var list = new List(new Range('0', '9'), new Character(','));
             Assert.True(list.Match("1,2,3,").Success());
             Assert.True(list.Match("1,2,3,").RemainingText() == ",");
+        }
+
+        [Fact]
+        public void InputStringWithoutSeparatorPartialyMatchesPatternsInListShouldReturnTrueAndRemainingText()
+        {
+            var list = new List(new Range('0', '9'), new Character(','));
+            Assert.True(list.Match("1a").Success());
+            Assert.True(list.Match("1a").RemainingText() == "a");
+        }
+
+        [Fact]
+        public void InputStringWithDiferentSeparatorPatternsMatchesThePatternsShouldReturnTrueAndEmptyString()
+        {
+            var digits = new OneOrMore(new Range('0', '9'));
+            var whitespace = new Many(new Any(" \r\n\t"));
+            var separator = new Sequence(whitespace, new Character(';'), whitespace);
+            var list = new List(digits, separator);
+
+            Assert.True(list.Match("1; 22  ;\n 333 \t; 22").Success());
+            Assert.True(list.Match("1; 22  ;\n 333 \t; 22").RemainingText() == "");
+        }
+
+        [Fact]
+        public void InputStringWithDiferentSeparatorPatternsPartialyMatchesThePatternsShouldReturnTrueAndRemainingText()
+        {
+            var digits = new OneOrMore(new Range('0', '9'));
+            var whitespace = new Many(new Any(" \r\n\t"));
+            var separator = new Sequence(whitespace, new Character(';'), whitespace);
+            var list = new List(digits, separator);
+
+            Assert.True(list.Match("1 \n").Success());
+            Assert.True(list.Match("1 \n").RemainingText() == " \n");
+        }
+
+        [Fact]
+        public void InputStringWithDiferentSeparatorPatternsNotMatchingThePatternsShouldReturnTrueAndInputString()
+        {
+            var digits = new OneOrMore(new Range('0', '9'));
+            var whitespace = new Many(new Any(" \r\n\t"));
+            var separator = new Sequence(whitespace, new Character(';'), whitespace);
+            var list = new List(digits, separator);
+
+            Assert.True(list.Match("abc").Success());
+            Assert.True(list.Match("abc").RemainingText() == "abc");
         }
     }
 }
