@@ -4,7 +4,7 @@ using System.Text;
 
 namespace StringValidation
 {
-    class List
+    class List : IPattern
     {
         IPattern pattern;
 
