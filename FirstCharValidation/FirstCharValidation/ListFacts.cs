@@ -37,6 +37,14 @@ namespace StringValidation.Facts
         }
 
         [Fact]
+        public void InputStringNotHavingSeparatorShouldReturnTrueAndRemainingText()
+        {
+            var list = new List(new Range('0', '9'), new Character(','));
+            Assert.True(list.Match("123").Success());
+            Assert.True(list.Match("123").RemainingText() == "23");
+        }
+
+        [Fact]
         public void InputStringWithoutSeparatorPartialyMatchesPatternsInListShouldReturnTrueAndRemainingText()
         {
             var list = new List(new Range('0', '9'), new Character(','));

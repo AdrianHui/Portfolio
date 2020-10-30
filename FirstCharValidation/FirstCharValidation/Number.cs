@@ -4,13 +4,13 @@ using System.Text;
 
 namespace StringValidation
 {
-    class List : IPattern
+    class Number : IPattern
     {
-        IPattern pattern;
+        private readonly IPattern pattern;
 
-        public List(IPattern pattern, IPattern separator)
+        public Number()
         {
-            this.pattern = new Sequence(new Optional(pattern), new Many(new Sequence(separator, pattern)));
+            pattern = new OneOrMore(new Range('0', '9'));
         }
 
         public IMatch Match(string text)
