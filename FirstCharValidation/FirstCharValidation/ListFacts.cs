@@ -37,6 +37,22 @@ namespace StringValidation.Facts
         }
 
         [Fact]
+        public void InputStringStartsWithSeparatorShouldReturnTrueAndInputString()
+        {
+            var list = new List(new Range('0', '9'), new Character(','));
+            Assert.True(list.Match(",1,2,3").Success());
+            Assert.True(list.Match(",1,2,3").RemainingText() == ",1,2,3");
+        }
+
+        [Fact]
+        public void InputStringOnlyContainsSeparatorShouldReturnTrueAndInputString()
+        {
+            var list = new List(new Range('0', '9'), new Character(','));
+            Assert.True(list.Match(",,").Success());
+            Assert.True(list.Match(",,").RemainingText() == ",,");
+        }
+
+        [Fact]
         public void InputStringNotHavingSeparatorShouldReturnTrueAndRemainingText()
         {
             var list = new List(new Range('0', '9'), new Character(','));
@@ -50,6 +66,14 @@ namespace StringValidation.Facts
             var list = new List(new Range('0', '9'), new Character(','));
             Assert.True(list.Match("1a").Success());
             Assert.True(list.Match("1a").RemainingText() == "a");
+        }
+
+        [Fact]
+        public void InputStringNotMatchingPatternsInListShouldReturnTrueAndInputString()
+        {
+            var list = new List(new Range('0', '9'), new Character(','));
+            Assert.True(list.Match("ab").Success());
+            Assert.True(list.Match("ab").RemainingText() == "ab");
         }
 
         [Fact]
