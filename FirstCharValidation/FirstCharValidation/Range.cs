@@ -8,15 +8,18 @@ namespace StringValidation
     {
         char start;
         char end;
-        public Range(char start, char end)
+        string excludedChars;
+        public Range(char start, char end, string excludedChars = "")
         {
             this.start = start;
             this.end = end;
+            this.excludedChars = excludedChars;
         }
 
         public IMatch Match(string text)
         {
-            return !string.IsNullOrEmpty(text) && text[0] >= start && text[0] <= end
+            return !string.IsNullOrEmpty(text) && !excludedChars.Contains(text[0])
+                && text[0] >= start && text[0] <= end
                 ? new SuccessMatch(text.Substring(1))
                 : (IMatch)new FailedMatch(text);
         }
