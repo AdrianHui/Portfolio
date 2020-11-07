@@ -10,8 +10,7 @@ namespace StringValidation
 
         public String()
         {
-            var digit = new Range('0', '9');
-            var hex = new Choice(digit, new Range('A', 'F'), new Range('a', 'f'));
+            var hex = new Choice(new Range('0', '9'), new Range('A', 'F'), new Range('a', 'f'));
             var unicode = new Sequence(new Character('\\'), new Character('u'), hex, hex, hex, hex);
             var escape = new Choice(unicode, new Sequence(new Character('\\'), new Any("bfnrt/\"\\")));
             var character = new Range(' ', char.MaxValue, "\"\\");
