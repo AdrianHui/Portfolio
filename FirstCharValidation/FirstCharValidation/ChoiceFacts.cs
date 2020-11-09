@@ -112,5 +112,23 @@ namespace StringValidation.Facts
             Assert.True(choice.Match("def").Success());
             Assert.True(choice.Match("def").RemainingText() == "f");
         }
+
+        [Fact]
+        public void ShouldAddPatternToExistingChoice()
+        {
+            var choice = new Choice(new Range('0', '9'), new Range('A', 'F'));
+            choice.Add(new Range('a', 'f'));
+            Assert.True(choice.Match("ab").Success());
+            Assert.True(choice.Match("ab").RemainingText() == "b");
+        }
+
+        [Fact]
+        public void ShouldAddSequenceOfPatternsToExistingChoice()
+        {
+            var choice = new Choice(new Range('0', '9'), new Range('A', 'F'));
+            choice.Add(new Sequence(new Range('a', 'f'), new Range('a', 'f')));
+            Assert.True(choice.Match("ab").Success());
+            Assert.True(choice.Match("ab").RemainingText() == "");
+        }
     }
 }

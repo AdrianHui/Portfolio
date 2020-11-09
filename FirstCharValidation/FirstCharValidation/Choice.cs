@@ -27,5 +27,12 @@ namespace StringValidation
             return new FailedMatch(text);
 
         }
+
+        public void Add(IPattern pattern)
+        {
+            var arrayLength = patterns.Length;
+            Array.Resize(ref patterns, arrayLength + 1);
+            patterns[arrayLength] = pattern;
+        }
     }
 }
