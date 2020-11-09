@@ -11,11 +11,12 @@ namespace StringValidation
         public String()
         {
             var hex = new Choice(new Range('0', '9'), new Range('A', 'F'), new Range('a', 'f'));
-            var unicode = new Sequence(new Character('\\'), new Character('u'), hex, hex, hex, hex);
-            var escape = new Choice(unicode, new Sequence(new Character('\\'), new Any("bfnrt/\"\\")));
+            var escape = new Choice(new Sequence(new Character('u'), hex, hex, hex, hex),
+                                    new Any("bfnrt/\"\\"));
             var character = new Range(' ', char.MaxValue, "\"\\");
-            var characters = new OneOrMore(new Sequence(new Optional(escape), character));
-            pattern = new Sequence(new Character('"'), characters, new Character('"'));
+            var characters = new OneOrMore(new Choice(character,
+                                                      new Sequence(new Character('\\'), escape)));
+            pattern = new Sequence(new Character('"'), new Optional(characters), new Character('"'));
         }
 
         public IMatch Match(string text)

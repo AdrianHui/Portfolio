@@ -45,11 +45,11 @@ namespace StringValidation.Facts
         }
 
         [Fact]
-        public void IsNotQuotedEmptyString()
+        public void CanBeQuotedEmptyString()
         {
             var pattern = new String();
-            Assert.False(pattern.Match(Quoted("")).Success());
-            Assert.True(pattern.Match(Quoted("")).RemainingText() == "\"\"");
+            Assert.True(pattern.Match(Quoted(string.Empty)).Success());
+            Assert.True(pattern.Match(Quoted(string.Empty)).RemainingText() == "");
         }
 
         [Fact]
