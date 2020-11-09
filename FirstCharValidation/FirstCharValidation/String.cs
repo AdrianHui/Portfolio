@@ -15,8 +15,7 @@ namespace StringValidation
             var escape = new Choice(unicode, new Sequence(new Character('\\'), new Any("bfnrt/\"\\")));
             var character = new Range(' ', char.MaxValue, "\"\\");
             var characters = new OneOrMore(new Sequence(new Optional(escape), character));
-            var jsonString = new Sequence(new Character('"'), characters, new Character('"'));
-            pattern = jsonString;
+            pattern = new Sequence(new Character('"'), characters, new Character('"'));
         }
 
         public IMatch Match(string text)
