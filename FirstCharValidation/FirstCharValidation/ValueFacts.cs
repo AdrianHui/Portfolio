@@ -133,6 +133,14 @@ namespace StringValidation.Facts
         }
 
         [Fact]
+        public void ArrayCanNotContainMembers()
+        {
+            var value = new Value();
+            Assert.False(value.Match("[\"ab\":\"12\", \"ef\"]").Success());
+            Assert.True(value.Match("[\"ab\":\"12\", \"ef\"]").RemainingText() == "[\"ab\":\"12\", \"ef\"]");
+        }
+
+        [Fact]
         public void CanBeAnEmptyObject()
         {
             var value = new Value();
@@ -202,6 +210,14 @@ namespace StringValidation.Facts
             var value = new Value();
             Assert.True(value.Match("{ \"abc\" : {\"123\" : \"null\"}, \"def\" : \"false\" }").Success());
             Assert.True(value.Match("{ \"abc\" : {\"123\" : \"null\"}, \"def\" : \"false\" }").RemainingText() == "");
+        }
+
+        [Fact]
+        public void ObjectCanNotContainElements()
+        {
+            var value = new Value();
+            Assert.False(value.Match("{ \"abc\", \"false\" }").Success());
+            Assert.True(value.Match("{ \"abc\", \"false\" }").RemainingText() == "{ \"abc\", \"false\" }");
         }
     }
 }

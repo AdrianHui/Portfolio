@@ -15,7 +15,10 @@ namespace StringValidation
                                    new Text("true"),
                                    new Text("false"),
                                    new Text("null"));
-            var whiteSpace = new Optional(new Choice(new Text("\\n"), new Text("\\t"), new Text("\\r"), new Character(' ')));
+            var whiteSpace = new Optional(new Choice(new Text("\\n"),
+                                                     new Text("\\t"),
+                                                     new Text("\\r"),
+                                                     new Character(' ')));
             var element = new Sequence(whiteSpace, value, whiteSpace);
             var elements = new List(element, new Character(','));
             var member = new Sequence(whiteSpace, new String(), whiteSpace, new Character(':'), element);
