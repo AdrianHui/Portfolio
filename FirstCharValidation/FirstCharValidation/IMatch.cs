@@ -4,7 +4,7 @@ using System.Text;
 
 namespace StringValidation
 {
-    interface IMatch
+    public interface IMatch
     {
         bool Success();
         string RemainingText();
