@@ -72,24 +72,24 @@ namespace StringValidation.Facts
         public void ArrayCanContainOnlyALineFeed()
         {
             var value = new Value();
-            Assert.True(value.Match("[\\n]").Success());
-            Assert.True(value.Match("[\\n]").RemainingText() == "");
+            Assert.True(value.Match("[\n]").Success());
+            Assert.True(value.Match("[\n]").RemainingText() == "");
         }
 
         [Fact]
         public void ArrayCanContainOnlyAnHorizontalTab()
         {
             var value = new Value();
-            Assert.True(value.Match("[\\t]").Success());
-            Assert.True(value.Match("[\\t]").RemainingText() == "");
+            Assert.True(value.Match("[\t]").Success());
+            Assert.True(value.Match("[\t]").RemainingText() == "");
         }
 
         [Fact]
         public void ArrayCanContainOnlyAnCarriageReturn()
         {
             var value = new Value();
-            Assert.True(value.Match("[\\r]").Success());
-            Assert.True(value.Match("[\\r]").RemainingText() == "");
+            Assert.True(value.Match("[\r]").Success());
+            Assert.True(value.Match("[\r]").RemainingText() == "");
         }
 
         [Fact]
@@ -160,24 +160,24 @@ namespace StringValidation.Facts
         public void ObjectCanContainOnlyALineFeed()
         {
             var value = new Value();
-            Assert.True(value.Match("{\\n}").Success());
-            Assert.True(value.Match("{\\n}").RemainingText() == "");
+            Assert.True(value.Match("{\n}").Success());
+            Assert.True(value.Match("{\n}").RemainingText() == "");
         }
 
         [Fact]
         public void ObjectCanContainOnlyAnHorizontalTab()
         {
             var value = new Value();
-            Assert.True(value.Match("{\\t}").Success());
-            Assert.True(value.Match("{\\t}").RemainingText() == "");
+            Assert.True(value.Match("{\t}").Success());
+            Assert.True(value.Match("{\t}").RemainingText() == "");
         }
 
         [Fact]
         public void ObjectCanContainOnlyACarriageReturn()
         {
             var value = new Value();
-            Assert.True(value.Match("{\\r}").Success());
-            Assert.True(value.Match("{\\r}").RemainingText() == "");
+            Assert.True(value.Match("{\r}").Success());
+            Assert.True(value.Match("{\r}").RemainingText() == "");
         }
 
         [Fact]

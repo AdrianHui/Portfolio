@@ -4,7 +4,7 @@ using System.Text;
 
 namespace StringValidation
 {
-    class Value : IPattern
+    public class Value : IPattern
     {
         private readonly IPattern pattern;
 
@@ -15,8 +15,7 @@ namespace StringValidation
                                    new Text("true"),
                                    new Text("false"),
                                    new Text("null"));
-            var whiteSpace = new Optional(new Choice(new Sequence(new Character('\\'), new Any("ntr")),
-                                                     new Character(' ')));
+            var whiteSpace = new Optional(new OneOrMore(new Any(" \n\t\r")));
             var element = new Sequence(whiteSpace, value, whiteSpace);
             var elements = new List(element, new Character(','));
             var member = new Sequence(whiteSpace, new String(), whiteSpace, new Character(':'), element);
