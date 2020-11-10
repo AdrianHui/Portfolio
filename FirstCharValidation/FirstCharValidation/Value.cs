@@ -15,19 +15,17 @@ namespace StringValidation
                                    new Text("true"),
                                    new Text("false"),
                                    new Text("null"));
-            var whiteSpace = new Optional(new Choice(new Text("\\n"),
-                                                     new Text("\\t"),
-                                                     new Text("\\r"),
+            var whiteSpace = new Optional(new Choice(new Sequence(new Character('\\'), new Any("ntr")),
                                                      new Character(' ')));
             var element = new Sequence(whiteSpace, value, whiteSpace);
             var elements = new List(element, new Character(','));
             var member = new Sequence(whiteSpace, new String(), whiteSpace, new Character(':'), element);
             var members = new List(member, new Character(','));
-            var array = new Sequence(new Character('['), whiteSpace, elements, new Character(']'));
-            var jsonObject = new Sequence(new Character('{'), whiteSpace, members, new Character('}'));
+            var array = new Sequence(new Character('['), whiteSpace, elements, whiteSpace, new Character(']'));
+            var jsonObject = new Sequence(new Character('{'), whiteSpace, members, whiteSpace, new Character('}'));
             value.Add(array);
             value.Add(jsonObject);
-            pattern = value;
+            pattern = element;
         }
 
         public IMatch Match(string text)
