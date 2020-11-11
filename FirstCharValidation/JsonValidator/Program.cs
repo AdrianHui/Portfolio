@@ -22,11 +22,11 @@ namespace JsonValidator
                 string text = System.IO.File.ReadAllText(args[i]);
                 if (pattern.Match(text).Success() && pattern.Match(text).RemainingText() == "")
                 {
-                    Console.WriteLine(args[i].Substring(args[i].LastIndexOf('\\') + 1) + " is a valid JSON text.");
+                    Console.WriteLine(args[i] + " is a valid JSON text.");
                 }
                 else
                 {
-                    Console.WriteLine(args[i].Substring(args[i].LastIndexOf('\\') + 1) +  " is not a valid JSON text.");
+                    Console.WriteLine(args[i] + " is not a valid JSON text.");
                 }
             }
         }
