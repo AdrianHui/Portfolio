@@ -9,8 +9,7 @@ namespace JsonValidator
         static void Main(string[] args)
         {
             Value pattern = new Value();
-            bool oneMore = true;
-            while (oneMore)
+            do
             {
                 AskForPath(ref args);
 
@@ -22,8 +21,7 @@ namespace JsonValidator
 
                 string text = System.IO.File.ReadAllText(args[args.Length - 1]);
                 ValidateText(pattern, text);
-                oneMore = Repeat();
-            }
+            } while (Repeat());
         }
 
         private static void AskForPath(ref string[] args)
@@ -34,8 +32,7 @@ namespace JsonValidator
                 Console.WriteLine(@"Ex.: C:\Users\Public\Desktop\document.txt");
                 Array.Resize(ref args, args.Length + 1);
                 args[args.Length - 1] = Console.ReadLine();
-            }
-            while (args[args.Length - 1] == "");
+            } while (args[args.Length - 1] == "");
         }
 
         private static void ValidateText(Value pattern, string text)
@@ -54,7 +51,7 @@ namespace JsonValidator
         {
             Console.WriteLine("\nWould you like to check another document? Answer \"yes\" / \"no\".");
             string answer = Console.ReadLine().ToLower();
-            while(answer != "yes" && answer != "no")
+            while (answer != "yes" && answer != "no")
             {
                 Console.WriteLine("\nWould you like to check another document? Answer \"yes\" / \"no\".");
                 answer = Console.ReadLine().ToLower();
@@ -64,6 +61,3 @@ namespace JsonValidator
         }
     }
 }
-
-// string text = System.IO.File.ReadAllText(args[0]);
-// @"C:\Users\Adrian\Desktop\json1.txt"
