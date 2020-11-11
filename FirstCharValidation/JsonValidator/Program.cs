@@ -9,55 +9,34 @@ namespace JsonValidator
         static void Main(string[] args)
         {
             Value pattern = new Value();
-            do
-            {
-                AskForPath(ref args);
+            ArgumentsCheck(args);
 
-                if (!File.Exists(args[args.Length - 1]))
+            for (int i = 0; i < args.Length; i++)
+            {
+                if (!File.Exists(args[i]))
                 {
-                    Console.WriteLine("Document not found.");
-                    AskForPath(ref args);
+                    Console.WriteLine(args[i] + "\nThe path you entered is not valid.");
+                    break;
                 }
 
-                string text = System.IO.File.ReadAllText(args[args.Length - 1]);
-                ValidateText(pattern, text);
-            } while (Repeat());
-        }
-
-        private static void AskForPath(ref string[] args)
-        {
-            do
-            {
-                Console.WriteLine("Please enter the path for the document you want to check.");
-                Console.WriteLine(@"Ex.: C:\Users\Public\Desktop\document.txt");
-                Array.Resize(ref args, args.Length + 1);
-                args[args.Length - 1] = Console.ReadLine();
-            } while (args[args.Length - 1] == "");
-        }
-
-        private static void ValidateText(Value pattern, string text)
-        {
-            if (pattern.Match(text).Success() && pattern.Match(text).RemainingText() == "")
-            {
-                Console.WriteLine("This is a valid JSON text.");
-            }
-            else
-            {
-                Console.WriteLine("This is not a valid JSON text.");
+                string text = System.IO.File.ReadAllText(args[i]);
+                if (pattern.Match(text).Success() && pattern.Match(text).RemainingText() == "")
+                {
+                    Console.WriteLine(args[i].Substring(args[i].LastIndexOf('\\') + 1) + " is a valid JSON text.");
+                }
+                else
+                {
+                    Console.WriteLine(args[i].Substring(args[i].LastIndexOf('\\') + 1) +  " is not a valid JSON text.");
+                }
             }
         }
 
-        private static bool Repeat()
+        private static void ArgumentsCheck(string[] args)
         {
-            Console.WriteLine("\nWould you like to check another document? Answer \"yes\" / \"no\".");
-            string answer = Console.ReadLine().ToLower();
-            while (answer != "yes" && answer != "no")
+            if (args.Length == 0)
             {
-                Console.WriteLine("\nWould you like to check another document? Answer \"yes\" / \"no\".");
-                answer = Console.ReadLine().ToLower();
+                Console.WriteLine("Please enter at least one path in command line.");
             }
-
-            return answer == "yes" ? true : false;
         }
     }
 }

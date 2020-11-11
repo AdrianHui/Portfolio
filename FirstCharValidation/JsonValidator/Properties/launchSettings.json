@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "JsonValidator": {
+      "commandName": "Project",
+      "commandLineArgs": "C:\\Users\\Adrian\\Desktop\\json1.txt C:\\Users\\Adrian\\Desktop\\json2.txt "
+    }
+  }
+}
