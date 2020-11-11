@@ -8,19 +8,15 @@ namespace JsonValidator
     {
         static void Main(string[] args)
         {
-            DocumentIsJson(ref args);
-        }
-
-        public static void DocumentIsJson(ref string[] args)
-        {
             Value pattern = new Value();
             bool oneMore = true;
-            while(oneMore)
+            while (oneMore)
             {
                 AskForPath(ref args);
-                if(!File.Exists(args[args.Length - 1]))
+
+                if (!File.Exists(args[args.Length - 1]))
                 {
-                    Console.WriteLine("Document could not be found.");
+                    Console.WriteLine("Document not found.");
                     AskForPath(ref args);
                 }
 
@@ -30,18 +26,19 @@ namespace JsonValidator
             }
         }
 
-        public static void AskForPath(ref string[] args)
+        private static void AskForPath(ref string[] args)
         {
             do
             {
                 Console.WriteLine("Please enter the path for the document you want to check.");
+                Console.WriteLine(@"Ex.: C:\Users\Public\Desktop\document.txt");
                 Array.Resize(ref args, args.Length + 1);
                 args[args.Length - 1] = Console.ReadLine();
             }
             while (args[args.Length - 1] == "");
         }
 
-        public static void ValidateText(Value pattern, string text)
+        private static void ValidateText(Value pattern, string text)
         {
             if (pattern.Match(text).Success() && pattern.Match(text).RemainingText() == "")
             {
@@ -53,13 +50,13 @@ namespace JsonValidator
             }
         }
 
-        public static bool Repeat()
+        private static bool Repeat()
         {
-            Console.WriteLine("Would you like to check another document? Answer \"yes\" / \"no\".");
+            Console.WriteLine("\nWould you like to check another document? Answer \"yes\" / \"no\".");
             string answer = Console.ReadLine().ToLower();
             while(answer != "yes" && answer != "no")
             {
-                Console.WriteLine("Would you like to check another document? Answer \"yes\" / \"no\".");
+                Console.WriteLine("\nWould you like to check another document? Answer \"yes\" / \"no\".");
                 answer = Console.ReadLine().ToLower();
             }
 
