@@ -84,16 +84,10 @@ namespace IntegerArray
 
         public void Remove(int element)
         {
-            if (IndexOf(element) == Data.Length - 1)
-            {
-                Data[IndexOf(element)] = 0;
-                CountElements--;
-                return;
-            }
-
             for (int i = IndexOf(element); i < CountElements; i++)
             {
-                Data[i] = Data[i + 1];
+                Data[i] = IndexOf(element) == Data.Length - 1
+                        ? 0 : Data[i + 1];
             }
 
             CountElements--;
@@ -101,16 +95,10 @@ namespace IntegerArray
 
         public void RemoveAt(int index)
         {
-            if (index == Data.Length - 1)
-            {
-                Data[index] = 0;
-                CountElements--;
-                return;
-            }
-
             for (int i = index; i < CountElements; i++)
             {
-                Data[i] = Data[i + 1];
+                Data[i] = index == Data.Length - 1
+                        ? 0 : Data[i + 1];
             }
 
             CountElements--;
