@@ -4,29 +4,29 @@ namespace IntegerArray
 {
     class IntArray
     {
-        public int CountValues;
+        public int CountElements;
         public int[] Data;
 
         public IntArray()
         {
             this.Data = new int[4];
-            this.CountValues = 0;
+            this.CountElements = 0;
         }
 
         public void Add(int element)
         {
-            if (CountValues >= Data.Length)
+            if (CountElements >= Data.Length)
             {
                 Array.Resize(ref Data, Data.Length * 2);
             }
 
-            Data[CountValues] = element;
-            CountValues++;
+            Data[CountElements] = element;
+            CountElements++;
         }
 
         public int Count()
         {
-            return CountValues;
+            return CountElements;
         }
 
         public int Element(int index)
@@ -41,7 +41,7 @@ namespace IntegerArray
 
         public bool Contains(int element)
         {
-            for (int i = 0; i < CountValues; i++)
+            for (int i = 0; i < CountElements; i++)
             {
                 if (Data[i] == element)
                 {
@@ -54,7 +54,7 @@ namespace IntegerArray
 
         public int IndexOf(int element)
         {
-            for (int i = 0; i < CountValues; i++)
+            for (int i = 0; i < CountElements; i++)
             {
                 if (Data[i] == element)
                 {
@@ -67,19 +67,19 @@ namespace IntegerArray
 
         public void Insert(int index, int element)
         {
-            for (int i = CountValues + 1; i > index; i--)
+            for (int i = CountElements + 1; i > index; i--)
             {
                 Data[i] = Data[i - 1];
             }
 
             Data[index] = element;
-            CountValues++;
+            CountElements++;
         }
 
         public void Clear()
         {
             Data = new int[4];
-            CountValues = 0;
+            CountElements = 0;
         }
 
         public void Remove(int element)
@@ -87,16 +87,16 @@ namespace IntegerArray
             if (IndexOf(element) == Data.Length - 1)
             {
                 Data[IndexOf(element)] = 0;
-                CountValues--;
+                CountElements--;
                 return;
             }
 
-            for (int i = IndexOf(element); i < CountValues; i++)
+            for (int i = IndexOf(element); i < CountElements; i++)
             {
                 Data[i] = Data[i + 1];
             }
 
-            CountValues--;
+            CountElements--;
         }
 
         public void RemoveAt(int index)
@@ -104,16 +104,16 @@ namespace IntegerArray
             if (index == Data.Length - 1)
             {
                 Data[index] = 0;
-                CountValues--;
+                CountElements--;
                 return;
             }
 
-            for (int i = index; i < CountValues; i++)
+            for (int i = index; i < CountElements; i++)
             {
                 Data[i] = Data[i + 1];
             }
 
-            CountValues--;
+            CountElements--;
         }
     }
 }
