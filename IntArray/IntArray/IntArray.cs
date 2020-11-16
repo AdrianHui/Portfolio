@@ -14,9 +14,13 @@ namespace IntegerArray
 
 		public void Add(int element)
 		{
+			if (count >= data.Length)
+            {
+				Array.Resize(ref data, data.Length * 2);
+			}
+
+			data[count] = element;
 			count++;
-			Array.Resize(ref data, count);
-			data[count - 1] = element;
 		}
 
 		public int Count()
@@ -31,7 +35,7 @@ namespace IntegerArray
 
 		public void SetElement(int index, int element)
 		{
-			var temp = new int[count];
+			var temp = new int[data.Length];
 			for (int i = 0; i < count; i++)
             {
 				if (i == index)
@@ -75,9 +79,8 @@ namespace IntegerArray
 
 		public void Insert(int index, int element)
 		{
-			count++;
-			var temp = new int[count];
-			for (int i = 0; i < count; i++)
+			var temp = new int[data.Length];
+			for (int i = 0; i < count + 1; i++)
 			{
 				if (index > i)
                 {
@@ -93,20 +96,20 @@ namespace IntegerArray
                 }
 			}
 
+			count++;
 			data = temp;
 		}
 
 		public void Clear()
 		{
-			data = new int[0];
+			data = new int[4];
 			count = 0;
 		}
 
 		public void Remove(int element)
 		{
-			count--;
-			var temp = new int[count];
-			for (int i = 0; i < count + 1; i++)
+			var temp = new int[data.Length];
+			for (int i = 0; i < count; i++)
 			{
 				if (IndexOf(element) > i)
 				{
@@ -119,14 +122,14 @@ namespace IntegerArray
 				}
 			}
 
+			count--;
 			data = temp;
 		}
 
 		public void RemoveAt(int index)
 		{
-			count--;
-			var temp = new int[count];
-			for (int i = 0; i < count + 1; i++)
+			var temp = new int[data.Length];
+			for (int i = 0; i < count; i++)
 			{
 				if (i < index)
                 {
@@ -139,6 +142,7 @@ namespace IntegerArray
 				}
 			}
 
+			count--;
 			data = temp;
 		}
 	}
