@@ -4,146 +4,116 @@ namespace IntegerArray
 {
     class IntArray
     {
-		public int count;
-		public int[] data;
-		public IntArray()
-		{
-			this.data = new int[4];
-			this.count = 0;
-		}
+        public int CountValues;
+        public int[] Data;
 
-		public void Add(int element)
-		{
-			if (count >= data.Length)
-			{
-				Array.Resize(ref data, data.Length * 2);
-			}
+        public IntArray()
+        {
+            this.Data = new int[4];
+            this.CountValues = 0;
+        }
 
-			data[count] = element;
-			count++;
-		}
-
-		public int Count()
-		{
-			return count;
-		}
-
-		public int Element(int index)
-		{
-			return data[index];
-		}
-
-		public void SetElement(int index, int element)
-		{
-			var temp = new int[data.Length];
-			for (int i = 0; i < count; i++)
+        public void Add(int element)
+        {
+            if (CountValues >= Data.Length)
             {
-				if (i == index)
-				{
-					temp[i] = element;
-				}
-                else
-				{
-					temp[i] = data[i];
-				}
+                Array.Resize(ref Data, Data.Length * 2);
             }
 
-			data = temp;
-		}
+            Data[CountValues] = element;
+            CountValues++;
+        }
 
-		public bool Contains(int element)
-		{
-			for (int i = 0; i < count; i++)
+        public int Count()
+        {
+            return CountValues;
+        }
+
+        public int Element(int index)
+        {
+            return Data[index];
+        }
+
+        public void SetElement(int index, int element)
+        {
+            Data[index] = element;
+        }
+
+        public bool Contains(int element)
+        {
+            for (int i = 0; i < CountValues; i++)
             {
-				if (data[i] == element)
-				{
-					return true;
-				}
+                if (Data[i] == element)
+                {
+                    return true;
+                }
             }
 
-			return false;
-		}
+            return false;
+        }
 
-		public int IndexOf(int element)
-		{
-			for (int i = 0; i < count; i++)
+        public int IndexOf(int element)
+        {
+            for (int i = 0; i < CountValues; i++)
             {
-				if (data[i] == element)
-				{
-					return i;
-				}
-			}
+                if (Data[i] == element)
+                {
+                    return i;
+                }
+            }
 
-			return -1;
-		}
+            return -1;
+        }
 
-		public void Insert(int index, int element)
-		{
-			var temp = new int[data.Length];
-			for (int i = 0; i < count + 1; i++)
-			{
-				if (index > i)
-				{
-					temp[i] = data[i];
-				}
-				else if (index == i)
-				{
-					temp[i] = element;
-				}
-                else
-				{
-					temp[i] = data[i - 1];
-				}
-			}
+        public void Insert(int index, int element)
+        {
+            for (int i = CountValues + 1; i > index; i--)
+            {
+                Data[i] = Data[i - 1];
+            }
 
-			count++;
-			data = temp;
-		}
+            Data[index] = element;
+            CountValues++;
+        }
 
-		public void Clear()
-		{
-			data = new int[4];
-			count = 0;
-		}
+        public void Clear()
+        {
+            Data = new int[4];
+            CountValues = 0;
+        }
 
-		public void Remove(int element)
-		{
-			var temp = new int[data.Length];
-			for (int i = 0; i < count; i++)
-			{
-				if (IndexOf(element) > i)
-				{
-					temp[i] = data[i];
-				}
+        public void Remove(int element)
+        {
+            if (IndexOf(element) == Data.Length - 1)
+            {
+                Data[IndexOf(element)] = 0;
+                CountValues--;
+                return;
+            }
 
-				if (IndexOf(element) < i)
-				{
-					temp[i - 1] = data[i];
-				}
-			}
+            for (int i = IndexOf(element); i < CountValues; i++)
+            {
+                Data[i] = Data[i + 1];
+            }
 
-			count--;
-			data = temp;
-		}
+            CountValues--;
+        }
 
-		public void RemoveAt(int index)
-		{
-			var temp = new int[data.Length];
-			for (int i = 0; i < count; i++)
-			{
-				if (i < index)
-				{
-					temp[i] = data[i];
-				}
+        public void RemoveAt(int index)
+        {
+            if (index == Data.Length - 1)
+            {
+                Data[index] = 0;
+                CountValues--;
+                return;
+            }
 
-				if (i > index)
-				{
-					temp[i - 1] = data[i];
-				}
-			}
+            for (int i = index; i < CountValues; i++)
+            {
+                Data[i] = Data[i + 1];
+            }
 
-			count--;
-			data = temp;
-		}
-	}
+            CountValues--;
+        }
+    }
 }
