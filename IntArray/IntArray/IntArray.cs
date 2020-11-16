@@ -15,7 +15,7 @@ namespace IntegerArray
 		public void Add(int element)
 		{
 			if (count >= data.Length)
-            {
+			{
 				Array.Resize(ref data, data.Length * 2);
 			}
 
@@ -39,11 +39,11 @@ namespace IntegerArray
 			for (int i = 0; i < count; i++)
             {
 				if (i == index)
-                {
+				{
 					temp[i] = element;
-                }
+				}
                 else
-                {
+				{
 					temp[i] = data[i];
 				}
             }
@@ -56,9 +56,9 @@ namespace IntegerArray
 			for (int i = 0; i < count; i++)
             {
 				if (data[i] == element)
-                {
+				{
 					return true;
-                }
+				}
             }
 
 			return false;
@@ -83,17 +83,17 @@ namespace IntegerArray
 			for (int i = 0; i < count + 1; i++)
 			{
 				if (index > i)
-                {
+				{
 					temp[i] = data[i];
-                }
+				}
 				else if (index == i)
-                {
+				{
 					temp[i] = element;
-                }
+				}
                 else
-                {
+				{
 					temp[i] = data[i - 1];
-                }
+				}
 			}
 
 			count++;
@@ -132,7 +132,7 @@ namespace IntegerArray
 			for (int i = 0; i < count; i++)
 			{
 				if (i < index)
-                {
+				{
 					temp[i] = data[i];
 				}
 
