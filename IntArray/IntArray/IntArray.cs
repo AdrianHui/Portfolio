@@ -5,32 +5,31 @@ namespace IntegerArray
     class IntArray
     {
         public int[] Data;
-        private int count;
 
         public IntArray()
         {
-            this.Data = new int[4];
-            this.count = 0;
+            Data = new int[4];
+            Count = 0;
         }
 
-        public int Count { get => count; private set => count = value; }
+        public int Count { get; private set; }
 
         public int this[int index] { get => Data[index]; set => Data[index] = value; }
 
         public void Add(int element)
         {
-            if (count >= Data.Length)
+            if (Count >= Data.Length)
             {
                 Array.Resize(ref Data, Data.Length * 2);
             }
 
-            Data[count] = element;
+            Data[Count] = element;
             Count++;
         }
 
         public bool Contains(int element)
         {
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < Count; i++)
             {
                 if (Data[i] == element)
                 {
@@ -43,7 +42,7 @@ namespace IntegerArray
 
         public int IndexOf(int element)
         {
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < Count; i++)
             {
                 if (Data[i] == element)
                 {
@@ -56,7 +55,7 @@ namespace IntegerArray
 
         public void Insert(int index, int element)
         {
-            for (int i = count + 1; i > index; i--)
+            for (int i = Count + 1; i > index; i--)
             {
                 Data[i] = Data[i - 1];
             }
@@ -73,7 +72,7 @@ namespace IntegerArray
 
         public void Remove(int element)
         {
-            for (int i = IndexOf(element); i < count; i++)
+            for (int i = IndexOf(element); i < Count; i++)
             {
                 Data[i] = IndexOf(element) == Data.Length - 1
                         ? 0 : Data[i + 1];
@@ -84,7 +83,7 @@ namespace IntegerArray
 
         public void RemoveAt(int index)
         {
-            for (int i = index; i < count; i++)
+            for (int i = index; i < Count; i++)
             {
                 Data[i] = index == Data.Length - 1
                         ? 0 : Data[i + 1];
