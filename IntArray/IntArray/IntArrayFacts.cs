@@ -8,19 +8,21 @@ namespace IntegerArray.Facts
         public void AddMethodShouldAddGivenElementAfterLastArrayElement()
         {
             var arr = new IntArray();
-            arr.Data = new[] { 1 };
-            arr.CountElements = 1;
+            arr.Add(1);
             arr.Add(5);
             arr.Add(2);
-            Assert.True(arr.Data[1] == 5 && arr.Data[2] == 2 && arr.Data[3] == 0);
+            Assert.True(arr.Data[0] == 1 && arr.Data[1] == 5
+                     && arr.Data[2] == 2 && arr.Data[3] == 0);
         }
 
         [Fact]
         public void AddMethodShouldDoubleArraySizeIfNoEmptySpotAvailable()
         {
             var arr = new IntArray();
-            arr.Data = new[] { 1, 5, 2, 10 };
-            arr.CountElements = 4;
+            arr.Add(1);
+            arr.Add(5);
+            arr.Add(2);
+            arr.Add(10);
             arr.Add(9);
             Assert.True(CompareArrays(arr.Data, new[] { 1, 5, 2, 10, 9, 0, 0, 0 }));
         }
@@ -31,34 +33,34 @@ namespace IntegerArray.Facts
             var arr = new IntArray();
             arr.Add(5);
             arr.Add(2);
-            Assert.True(arr.Count() == 2);
+            Assert.True(arr.Count == 2);
         }
 
         [Fact]
-        public void ElementMethodShouldReturnElementAtGivenIndex()
+        public void ShouldReturnElementAtGivenIndex()
         {
             var arr = new IntArray();
-            arr.Data = new[] { 1, 6, 0, 0 };
-            arr.CountElements = 2;
-            Assert.True(arr.Element(1) == 6);
+            arr.Add(1);
+            arr.Add(6);
+            Assert.True(arr[1] == 6);
         }
 
         [Fact]
-        public void SetElementMethodShouldChangeElementValueAtGivenIndex()
+        public void ShouldAllowChangeElementValueAtGivenIndex()
         {
             var arr = new IntArray();
-            arr.Data = new[] { 1, 6, 0, 0 };
-            arr.CountElements = 2;
-            arr.SetElement(0, 3);
-            Assert.True(arr.Data[0] == 3);
+            arr.Add(1);
+            arr.Add(6);
+            arr[0] = 3;
+            Assert.True(arr[0] == 3 && arr[1] == 6);
         }
 
         [Fact]
         public void ContainsMethodShouldReturnTrueIfGivenElementIsFoundInArray()
         {
             var arr = new IntArray();
-            arr.Data = new[] { 1, 6, 0, 0 };
-            arr.CountElements = 2;
+            arr.Add(1);
+            arr.Add(6);
             Assert.True(arr.Contains(1));
         }
 
@@ -66,8 +68,8 @@ namespace IntegerArray.Facts
         public void ContainsMethodShouldReturnFalseIfGivenElementIsNotFoundInArray()
         {
             var arr = new IntArray();
-            arr.Data = new[] { 1, 6, 0, 0 };
-            arr.CountElements = 2;
+            arr.Add(1);
+            arr.Add(6);
             Assert.False(arr.Contains(3));
         }
 
@@ -75,8 +77,8 @@ namespace IntegerArray.Facts
         public void IndexOfMethodShouldReturnIndexPositionOfGivenElementIfElementIsFound()
         {
             var arr = new IntArray();
-            arr.Data = new[] { 1, 6, 0, 0 };
-            arr.CountElements = 2;
+            arr.Add(1);
+            arr.Add(6);
             Assert.True(arr.IndexOf(6) == 1);
         }
 
@@ -84,8 +86,8 @@ namespace IntegerArray.Facts
         public void IndexOfMethodShouldReturnNegativeOneIfElementIsNotFound()
         {
             var arr = new IntArray();
-            arr.Data = new[] { 1, 6, 0, 0 };
-            arr.CountElements = 2;
+            arr.Add(1);
+            arr.Add(6);
             Assert.True(arr.IndexOf(3) == -1);
         }
 
@@ -93,8 +95,8 @@ namespace IntegerArray.Facts
         public void IndexOfMethodShouldReturnNegativeOneIfZeroIsNotAValidElement()
         {
             var arr = new IntArray();
-            arr.Data = new[] { 1, 6, 0, 0 };
-            arr.CountElements = 2;
+            arr.Add(1);
+            arr.Add(6);
             Assert.True(arr.IndexOf(0) == -1);
         }
 
@@ -102,8 +104,9 @@ namespace IntegerArray.Facts
         public void IndexOfMethodIfZeroIsValidElementShouldReturnTheIndex()
         {
             var arr = new IntArray();
-            arr.Data = new[] { 1, 0, 6, 0 };
-            arr.CountElements = 3;
+            arr.Add(1);
+            arr.Add(0);
+            arr.Add(6);
             Assert.True(arr.IndexOf(0) == 1);
         }
 
@@ -111,8 +114,8 @@ namespace IntegerArray.Facts
         public void InsertMethodShouldInsertGivenElementAtGivenPosition()
         {
             var arr = new IntArray();
-            arr.Data = new[] { 1, 6, 0, 0 };
-            arr.CountElements = 2;
+            arr.Add(1);
+            arr.Add(6);
             arr.Insert(1, 3);
             Assert.True(arr.Data[0] == 1 && arr.Data[1] == 3 && arr.Data[2] == 6
                         && arr.Data[3] == 0);
@@ -122,18 +125,22 @@ namespace IntegerArray.Facts
         public void ClearMethodShouldDeleteAllElements()
         {
             var arr = new IntArray();
-            arr.Data = new[] { 1, 6, 3, 0 };
-            arr.CountElements = 3;
+            arr.Add(1);
+            arr.Add(6);
+            arr.Add(3);
             arr.Clear();
-            Assert.True(arr.CountElements == 0 && arr.Data.Length == 4);
+            Assert.True(arr.Count == 0 && arr.Data.Length == 4);
         }
 
         [Fact]
         public void RemoveMethodShouldRemoveFirstOccurenceOfGivenElement()
         {
             var arr = new IntArray();
-            arr.Data = new[] { 5, 2, 3, 2, 10, 0, 0, 0 };
-            arr.CountElements = 5;
+            arr.Add(5);
+            arr.Add(2);
+            arr.Add(3);
+            arr.Add(2);
+            arr.Add(10);
             arr.Remove(2);
             Assert.True(CompareArrays(arr.Data, new[] { 5, 3, 2, 10, 0, 0, 0, 0 }));
         }
@@ -142,8 +149,10 @@ namespace IntegerArray.Facts
         public void RemoveMethodShouldRemoveFirstOccurenceOfGivenElementIfItsTheLastElementOfTheArray()
         {
             var arr = new IntArray();
-            arr.Data = new[] { 5, 1, 3, 2 };
-            arr.CountElements = 4;
+            arr.Add(5);
+            arr.Add(1);
+            arr.Add(3);
+            arr.Add(2);
             arr.Remove(2);
             Assert.True(CompareArrays(arr.Data, new[] { 5, 1, 3, 0 }));
         }
@@ -152,8 +161,11 @@ namespace IntegerArray.Facts
         public void RemoveAtMethodShouldRemoveElementAtGivenIndex()
         {
             var arr = new IntArray();
-            arr.Data = new[] { 5, 2, 3, 2, 10, 0, 0, 0 };
-            arr.CountElements = 5;
+            arr.Add(5);
+            arr.Add(2);
+            arr.Add(3);
+            arr.Add(2);
+            arr.Add(10);
             arr.RemoveAt(2);
             Assert.True(CompareArrays(arr.Data, new[] { 5, 2, 2, 10, 0, 0, 0, 0 }));
         }
@@ -162,10 +174,12 @@ namespace IntegerArray.Facts
         public void RemoveAtMethodShouldRemoveElementAtGivenIndexIfItsTheLastElementInArray()
         {
             var arr = new IntArray();
-            arr.Data = new[] { 5, 2, 3, 2, 10, 0, 1, 9 };
-            arr.CountElements = 8;
-            arr.RemoveAt(7);
-            Assert.True(CompareArrays(arr.Data, new[] { 5, 2, 3, 2, 10, 0, 1, 0 }));
+            arr.Add(5);
+            arr.Add(2);
+            arr.Add(3);
+            arr.Add(2);
+            arr.RemoveAt(3);
+            Assert.True(CompareArrays(arr.Data, new[] { 5, 2, 3, 0 }));
         }
 
         public bool CompareArrays(int[] arr, int[] expectedArray)
