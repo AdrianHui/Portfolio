@@ -11,8 +11,8 @@ namespace IntegerArray.Facts
             arr.Add(1);
             arr.Add(5);
             arr.Add(2);
-            Assert.True(arr.Data[0] == 1 && arr.Data[1] == 5
-                     && arr.Data[2] == 2 && arr.Data[3] == 0);
+            Assert.True(arr[0] == 1 && arr[1] == 5
+                     && arr[2] == 2 && arr[3] == 0);
         }
 
         [Fact]
@@ -24,7 +24,7 @@ namespace IntegerArray.Facts
             arr.Add(2);
             arr.Add(10);
             arr.Add(9);
-            Assert.True(CompareArrays(arr.Data, new[] { 1, 5, 2, 10, 9, 0, 0, 0 }));
+            Assert.True(arr[4] == 9 && arr[7] == 0);
         }
 
         [Fact]
@@ -117,8 +117,8 @@ namespace IntegerArray.Facts
             arr.Add(1);
             arr.Add(6);
             arr.Insert(1, 3);
-            Assert.True(arr.Data[0] == 1 && arr.Data[1] == 3 && arr.Data[2] == 6
-                        && arr.Data[3] == 0);
+            Assert.True(arr[0] == 1 && arr[1] == 3 && arr[2] == 6
+                        && arr[3] == 0);
         }
 
         [Fact]
@@ -129,7 +129,7 @@ namespace IntegerArray.Facts
             arr.Add(6);
             arr.Add(3);
             arr.Clear();
-            Assert.True(arr.Count == 0 && arr.Data.Length == 4);
+            Assert.True(arr.Count == 0 && arr[3] == 0);
         }
 
         [Fact]
@@ -142,7 +142,7 @@ namespace IntegerArray.Facts
             arr.Add(2);
             arr.Add(10);
             arr.Remove(2);
-            Assert.True(CompareArrays(arr.Data, new[] { 5, 3, 2, 10, 0, 0, 0, 0 }));
+            Assert.True(arr[1] == 3 && arr[3] == 10 && arr[7] == 0);
         }
 
         [Fact]
@@ -154,7 +154,7 @@ namespace IntegerArray.Facts
             arr.Add(3);
             arr.Add(2);
             arr.Remove(2);
-            Assert.True(CompareArrays(arr.Data, new[] { 5, 1, 3, 0 }));
+            Assert.True(arr[3] == 0);
         }
 
         [Fact]
@@ -167,7 +167,7 @@ namespace IntegerArray.Facts
             arr.Add(2);
             arr.Add(10);
             arr.RemoveAt(2);
-            Assert.True(CompareArrays(arr.Data, new[] { 5, 2, 2, 10, 0, 0, 0, 0 }));
+            Assert.True(arr[2] == 2 && arr[3] == 10 && arr[7] == 0);
         }
 
         [Fact]
@@ -179,25 +179,7 @@ namespace IntegerArray.Facts
             arr.Add(3);
             arr.Add(2);
             arr.RemoveAt(3);
-            Assert.True(CompareArrays(arr.Data, new[] { 5, 2, 3, 0 }));
-        }
-
-        public bool CompareArrays(int[] arr, int[] expectedArray)
-        {
-            if (arr == null || expectedArray == null || arr.Length != expectedArray.Length)
-            {
-                return false;
-            }
-
-            for (int i = 0; i < arr.Length; i++)
-            {
-                if (arr[i] != expectedArray[i])
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            Assert.True(arr[3] == 0);
         }
     }
 }
