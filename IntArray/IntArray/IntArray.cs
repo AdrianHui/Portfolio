@@ -9,7 +9,6 @@ namespace IntegerArray
         public IntArray()
         {
             data = new int[4];
-            Count = 0;
         }
 
         public int Count { get; private set; }
@@ -18,11 +17,7 @@ namespace IntegerArray
 
         public void Add(int element)
         {
-            if (Count >= data.Length)
-            {
-                Array.Resize(ref data, data.Length * 2);
-            }
-
+            ExpandCheck();
             data[Count] = element;
             Count++;
         }
@@ -34,23 +29,18 @@ namespace IntegerArray
 
         public int IndexOf(int element)
         {
-            return Array.IndexOf(data, element) < Count ? Array.IndexOf(data, element) : -1;
+            return SearchIndex(element);
         }
 
         public void Insert(int index, int element)
         {
-            for (int i = Count + 1; i > index; i--)
-            {
-                data[i] = data[i - 1];
-            }
-
+            ShiftRight(index);
             data[index] = element;
             Count++;
         }
 
         public void Clear()
         {
-            data = new int[4];
             Count = 0;
         }
 
@@ -61,12 +51,48 @@ namespace IntegerArray
 
         public void RemoveAt(int index)
         {
-            for (int i = index; i < Count; i++)
+            ShiftLeft(index);
+            Count--;
+        }
+
+        private void ExpandCheck()
+        {
+            if (Count != data.Length)
             {
-                data[i] = index == data.Length - 1 ? 0 : data[i + 1];
+                return;
             }
 
-            Count--;
+            Array.Resize(ref data, data.Length * 2);
+        }
+
+        private void ShiftRight(int stopIndex)
+        {
+            for (int i = Count + 1; i > stopIndex; i--)
+            {
+                ExpandCheck();
+                data[i] = data[i - 1];
+            }
+        }
+
+        private void ShiftLeft(int startIndex)
+        {
+            for (int i = startIndex; i < Count; i++)
+            {
+                data[i] = startIndex == data.Length - 1 ? 0 : data[i + 1];
+            }
+        }
+
+        private int SearchIndex(int element)
+        {
+            for (int i = 0; i < Count; i++)
+            {
+                if (data[i] == element)
+                {
+                    return i;
+                }
+            }
+
+            return -1;
         }
     }
 }
