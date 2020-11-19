@@ -15,7 +15,7 @@ namespace IntegerArray
 
         public int this[int index] { get => data[index]; set => data[index] = value; }
 
-        public void Add(int element)
+        public virtual void Add(int element)
         {
             ExpandCheck();
             data[Count] = element;
@@ -32,7 +32,7 @@ namespace IntegerArray
             return SearchIndex(element);
         }
 
-        public void Insert(int index, int element)
+        public virtual void Insert(int index, int element)
         {
             ShiftRight(index);
             data[index] = element;
@@ -67,7 +67,7 @@ namespace IntegerArray
 
         private void ShiftRight(int stopIndex)
         {
-            for (int i = Count + 1; i > stopIndex; i--)
+            for (int i = Count; i > stopIndex; i--)
             {
                 ExpandCheck();
                 data[i] = data[i - 1];
@@ -78,7 +78,8 @@ namespace IntegerArray
         {
             for (int i = startIndex; i < Count; i++)
             {
-                data[i] = startIndex == data.Length - 1 ? 0 : data[i + 1];
+                data[i] = i == Count - 1 || i == data.Length - 1
+                        ? 0 : data[i + 1];
             }
         }
 
