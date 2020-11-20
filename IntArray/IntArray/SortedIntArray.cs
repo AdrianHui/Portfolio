@@ -10,8 +10,7 @@ namespace IntegerArray
 
         public override void Add(int element)
         {
-            base.Add(element);
-            Sort(data);
+            Insert(element);
         }
 
         public override void Insert(int element, int index = 0)
