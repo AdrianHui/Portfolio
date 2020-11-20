@@ -27,13 +27,13 @@ namespace IntegerArray.Facts
         }
 
         [Fact]
-        public void InsertMethodShouldAddElementToArrayAtGivenIndexButChangeItsPositionIfNotInSortedOrder()
+        public void InsertMethodShouldInsertElementInArrayAtCorectPosition()
         {
             var sorted = new SortedIntArray();
             sorted.Add(5);
             sorted.Add(9);
             sorted.Add(3);
-            sorted.Insert(0, 7);
+            sorted.Insert(7);
             Assert.True(sorted[0] == 3 && sorted[1] == 5 && sorted[2] == 7 && sorted[3] == 9);
         }
 

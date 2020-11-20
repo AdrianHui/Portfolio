@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace IntegerArray
 {
@@ -13,46 +11,30 @@ namespace IntegerArray
         public override void Add(int element)
         {
             base.Add(element);
-            QuickSort(data, 0, Count - 1);
+            Sort(data);
         }
 
-        public override void Insert(int index, int element)
+        public override void Insert(int element, int index = 0)
         {
-            base.Insert(index, element);
-            QuickSort(data, 0, Count - 1);
+            base.Insert(element, index);
+            Sort(data);
         }
 
-        private void QuickSort(int[] arr, int low, int high)
+        private void Sort(int[] array)
         {
-            if (low >= high)
+            for (int i = 1; i < Count; i++)
             {
-                return;
-            }
-
-            int pivot = Partition(arr, low, high);
-            QuickSort(arr, low, pivot - 1);
-            QuickSort(arr, pivot + 1, high);
-        }
-
-        private int Partition(int[] arr, int low, int high)
-        {
-            int pivot = arr[high];
-            int i = low;
-            for (int j = low; j < high; j++)
-            {
-                if (arr[j] < pivot)
+                for (int j = i; j > 0; j--)
                 {
-                    Switch(i, j);
-                    i++;
+                    if (array[j - 1] > array[j])
+                    {
+                        SwapAtIndex(j, j - 1);
+                    }
                 }
             }
-
-            Switch(i, high);
-
-            return i;
         }
 
-        private void Switch(int firstElementIndex, int secondElementIndex)
+        private void SwapAtIndex(int firstElementIndex, int secondElementIndex)
         {
             var temp = data[firstElementIndex];
             data[firstElementIndex] = data[secondElementIndex];
