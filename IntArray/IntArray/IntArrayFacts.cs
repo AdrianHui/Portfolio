@@ -117,8 +117,19 @@ namespace IntegerArray.Facts
             arr.Add(1);
             arr.Add(6);
             arr.Add(25);
-            arr.Insert(1, 3);
+            arr.Insert(3, 1);
             Assert.True(arr[0] == 1 && arr[1] == 3 && arr[2] == 6 && arr[3] == 25);
+        }
+
+        [Fact]
+        public void InsertMethodShouldInsertGivenElementAtFirstPositionIfNoIndexProvided()
+        {
+            var arr = new IntArray();
+            arr.Add(1);
+            arr.Add(6);
+            arr.Add(25);
+            arr.Insert(3);
+            Assert.True(arr[0] == 3 && arr[1] == 1 && arr[2] == 6 && arr[3] == 25);
         }
 
         [Fact]
@@ -129,7 +140,7 @@ namespace IntegerArray.Facts
             arr.Add(6);
             arr.Add(9);
             arr.Add(11);
-            arr.Insert(1, 3);
+            arr.Insert(3, 1);
             Assert.True(arr[0] == 1 && arr[1] == 3 && arr[2] == 6 && arr[4] == 11);
         }
 

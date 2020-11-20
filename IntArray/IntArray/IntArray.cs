@@ -32,7 +32,7 @@ namespace IntegerArray
             return SearchIndex(element);
         }
 
-        public virtual void Insert(int index, int element)
+        public virtual void Insert(int element, int index = 0)
         {
             ShiftRight(index);
             data[index] = element;
