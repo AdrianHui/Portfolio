@@ -16,19 +16,24 @@ namespace IntegerArray
         public override void Insert(int element, int index = 0)
         {
             base.Insert(element, index);
-            Sort(data);
+            Sort();
         }
 
-        private void Sort(int[] array)
+        private void Sort()
         {
             for (int i = 1; i < Count; i++)
             {
-                for (int j = i; j > 0; j--)
+                ShiftLeft(i);
+            }
+        }
+
+        private void ShiftLeft(int startingIndex)
+        {
+            for (int j = startingIndex; j > 0; j--)
+            {
+                if (data[j - 1] > data[j])
                 {
-                    if (array[j - 1] > array[j])
-                    {
-                        SwapAtIndex(j, j - 1);
-                    }
+                    SwapAtIndex(j, j - 1);
                 }
             }
         }
