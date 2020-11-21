@@ -8,15 +8,34 @@ namespace IntegerArray
         {
         }
 
-        public override void Add(int element)
+        public override int this[int index]
         {
-            Insert(element);
+            get => data[index];
+            set
+            {
+                if (!IsCorrectPosition(value, index))
+                {
+                    return;
+                }
+
+                data[index] = value;
+            }
         }
 
-        public override void Insert(int element, int index = 0)
+        public override void Add(int element)
         {
-            base.Insert(element, index);
+            base.Add(element);
             Sort();
+        }
+
+        public override void Insert(int index, int element)
+        {
+            if (!IsCorrectPosition(element, index))
+            {
+                return;
+            }
+
+            base.Insert(index, element);
         }
 
         private void Sort()
@@ -29,13 +48,15 @@ namespace IntegerArray
 
         private void ShiftLeft(int startingIndex)
         {
-            for (int j = startingIndex; j > 0; j--)
+            int valueToInsert = data[startingIndex];
+            int j = startingIndex - 1;
+            while (j >= 0 && data[j] > valueToInsert)
             {
-                if (data[j - 1] > data[j])
-                {
-                    SwapAtIndex(j, j - 1);
-                }
+                SwapAtIndex(j + 1, j);
+                j--;
             }
+
+            data[j + 1] = valueToInsert;
         }
 
         private void SwapAtIndex(int firstElementIndex, int secondElementIndex)
@@ -43,6 +64,13 @@ namespace IntegerArray
             var temp = data[firstElementIndex];
             data[firstElementIndex] = data[secondElementIndex];
             data[secondElementIndex] = temp;
+        }
+
+        private bool IsCorrectPosition(int element, int indexToBeSetOn)
+        {
+            return indexToBeSetOn == 0
+                ? data[indexToBeSetOn + 1] < element
+                : element >= data[indexToBeSetOn - 1] && element <= data[indexToBeSetOn + 1];
         }
     }
 }

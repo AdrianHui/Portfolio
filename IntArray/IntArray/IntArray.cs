@@ -13,7 +13,7 @@ namespace IntegerArray
 
         public int Count { get; private set; }
 
-        public int this[int index] { get => data[index]; set => data[index] = value; }
+        public virtual int this[int index] { get => data[index]; set => data[index] = value; }
 
         public virtual void Add(int element)
         {
@@ -32,7 +32,7 @@ namespace IntegerArray
             return SearchIndex(element);
         }
 
-        public virtual void Insert(int element, int index = 0)
+        public virtual void Insert(int index, int element)
         {
             ShiftRight(index);
             data[index] = element;

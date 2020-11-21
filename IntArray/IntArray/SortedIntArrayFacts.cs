@@ -27,14 +27,25 @@ namespace IntegerArray.Facts
         }
 
         [Fact]
-        public void InsertMethodShouldInsertElementInArrayAtCorectPosition()
+        public void InsertMethodShouldInsertElementAtGivenPositionIfIsInAscendingOrder()
         {
             var sorted = new SortedIntArray();
+            sorted.Add(3);
             sorted.Add(5);
             sorted.Add(9);
+            sorted.Insert(1, 4);
+            Assert.True(sorted[0] == 3 && sorted[1] == 4 && sorted[2] == 5 && sorted[3] == 9);
+        }
+
+        [Fact]
+        public void InsertMethodShouldNotInsertElementAtGivenPositionIfIsNotInAscendingOrder()
+        {
+            var sorted = new SortedIntArray();
             sorted.Add(3);
-            sorted.Insert(7);
-            Assert.True(sorted[0] == 3 && sorted[1] == 5 && sorted[2] == 7 && sorted[3] == 9);
+            sorted.Add(5);
+            sorted.Add(9);
+            sorted.Insert(1, 11);
+            Assert.True(sorted[0] == 3 && sorted[1] == 5 && sorted[2] == 9 && sorted[3] == 0);
         }
 
         [Fact]
@@ -98,6 +109,28 @@ namespace IntegerArray.Facts
             sorted.Add(5);
             sorted.Remove(5);
             Assert.True(sorted[0] == 3 && sorted[1] == 5 && sorted[2] == 9);
+        }
+
+        [Fact]
+        public void ShouldSetElementAtGivenPositionIfIsInAscendingrder()
+        {
+            var sorted = new SortedIntArray();
+            sorted.Add(3);
+            sorted.Add(5);
+            sorted.Add(9);
+            sorted[1] = 7;
+            Assert.True(sorted[0] == 3 && sorted[1] == 7 && sorted[2] == 9);
+        }
+
+        [Fact]
+        public void ShouldNotSetElementAtGivenPositionIfIsNotInAscendingOrder()
+        {
+            var sorted = new SortedIntArray();
+            sorted.Add(3);
+            sorted.Add(5);
+            sorted.Add(9);
+            sorted[1] = 10;
+            Assert.True(sorted[0] == 3 && sorted[1] == 5 && sorted[2] == 9 && sorted[3] == 0);
         }
     }
 }
