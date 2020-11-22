@@ -134,7 +134,7 @@ namespace IntegerArray.Facts
         }
 
         [Fact]
-        public void ClearMethodShouldDeleteAllElements()
+        public void ClearMethodShouldResetElementCount()
         {
             var arr = new IntArray();
             arr.Add(1);
