@@ -53,11 +53,16 @@ namespace IntegerArray.Facts
         public void AddMethodShouldAllowAddingOtherObjectInstances()
         {
             var objArray = new ObjectArray();
+            object boxedInt = 123;
+            object boxedBool = true;
             var intArray = new IntArray();
             var sortedIntArray = new SortedIntArray();
+            objArray.Add(boxedInt);
+            objArray.Add(boxedBool);
             objArray.Add(intArray);
             objArray.Add(sortedIntArray);
-            Assert.True(objArray[0] == intArray && objArray[1] == sortedIntArray);
+            Assert.True(objArray[0] == boxedInt && objArray[1] == boxedBool
+                     && objArray[2] == intArray && objArray[3] == sortedIntArray);
         }
 
         [Fact]
