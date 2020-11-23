@@ -13,7 +13,7 @@ namespace IntegerArray
             get => data[index];
             set
             {
-                if (!IsCorrectPosition(value, index))
+                if (!CanBeSet(value, index))
                 {
                     return;
                 }
@@ -30,7 +30,7 @@ namespace IntegerArray
 
         public override void Insert(int index, int element)
         {
-            if (!IsCorrectPosition(element, index))
+            if (data[index] < element)
             {
                 return;
             }
@@ -56,7 +56,7 @@ namespace IntegerArray
             data[secondElementIndex] = temp;
         }
 
-        private bool IsCorrectPosition(int element, int indexToBeSetOn)
+        private bool CanBeSet(int element, int indexToBeSetOn)
         {
             return indexToBeSetOn == 0
                 ? element <= data[indexToBeSetOn + 1]

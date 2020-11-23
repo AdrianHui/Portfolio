@@ -38,6 +38,28 @@ namespace IntegerArray.Facts
         }
 
         [Fact]
+        public void InsertMethodShouldInsertElementAtGivenPositionIfIsEqualToCurrentElement()
+        {
+            var sorted = new SortedIntArray();
+            sorted.Add(3);
+            sorted.Add(5);
+            sorted.Add(9);
+            sorted.Insert(1, 5);
+            Assert.True(sorted[0] == 3 && sorted[1] == 5 && sorted[2] == 5 && sorted[3] == 9);
+        }
+
+        [Fact]
+        public void InsertMethodShouldInsertElementAtGivenPositionIfElementBeforeIsEqual()
+        {
+            var sorted = new SortedIntArray();
+            sorted.Add(3);
+            sorted.Add(5);
+            sorted.Add(9);
+            sorted.Insert(1, 3);
+            Assert.True(sorted[0] == 3 && sorted[1] == 3 && sorted[2] == 5 && sorted[3] == 9);
+        }
+
+        [Fact]
         public void InsertMethodShouldNotInsertElementAtGivenPositionIfIsNotInAscendingOrder()
         {
             var sorted = new SortedIntArray();
@@ -120,6 +142,39 @@ namespace IntegerArray.Facts
             sorted.Add(9);
             sorted[1] = 7;
             Assert.True(sorted[0] == 3 && sorted[1] == 7 && sorted[2] == 9);
+        }
+
+        [Fact]
+        public void ShouldSetElementAtIndexZeroIfNextElementIsGreater()
+        {
+            var sorted = new SortedIntArray();
+            sorted.Add(3);
+            sorted.Add(5);
+            sorted.Add(9);
+            sorted[0] = 4;
+            Assert.True(sorted[0] == 4 && sorted[1] == 5 && sorted[2] == 9);
+        }
+
+        [Fact]
+        public void ShouldSetElementAtGivenIndexIfNextElementIsEqual()
+        {
+            var sorted = new SortedIntArray();
+            sorted.Add(3);
+            sorted.Add(5);
+            sorted.Add(9);
+            sorted[0] = 5;
+            Assert.True(sorted[0] == 5 && sorted[1] == 5 && sorted[2] == 9);
+        }
+
+        [Fact]
+        public void ShouldSetElementAtGivenIndexIfElementBeforeIsEqual()
+        {
+            var sorted = new SortedIntArray();
+            sorted.Add(3);
+            sorted.Add(5);
+            sorted.Add(9);
+            sorted[1] = 3;
+            Assert.True(sorted[0] == 3 && sorted[1] == 3 && sorted[2] == 9);
         }
 
         [Fact]
