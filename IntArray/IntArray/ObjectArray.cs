@@ -18,11 +18,6 @@ namespace IntegerArray
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return (IEnumerator)GetEnumerator();
-        }
-
-        public ObjectEnum GetEnumerator()
-        {
             return new ObjectEnum(data);
         }
 
