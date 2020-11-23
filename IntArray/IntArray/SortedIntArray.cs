@@ -40,23 +40,13 @@ namespace IntegerArray
 
         private void Sort()
         {
-            for (int i = 1; i < Count; i++)
+            for (int i = Count - 1; i > 0; i--)
             {
-                ShiftLeft(i);
+                if (data[i - 1] > data[i])
+                {
+                    SwapAtIndex(i - 1, i);
+                }
             }
-        }
-
-        private void ShiftLeft(int startingIndex)
-        {
-            int valueToInsert = data[startingIndex];
-            int j = startingIndex - 1;
-            while (j >= 0 && data[j] > valueToInsert)
-            {
-                SwapAtIndex(j + 1, j);
-                j--;
-            }
-
-            data[j + 1] = valueToInsert;
         }
 
         private void SwapAtIndex(int firstElementIndex, int secondElementIndex)
@@ -69,7 +59,7 @@ namespace IntegerArray
         private bool IsCorrectPosition(int element, int indexToBeSetOn)
         {
             return indexToBeSetOn == 0
-                ? data[indexToBeSetOn + 1] < element
+                ? element <= data[indexToBeSetOn + 1]
                 : element >= data[indexToBeSetOn - 1] && element <= data[indexToBeSetOn + 1];
         }
     }
