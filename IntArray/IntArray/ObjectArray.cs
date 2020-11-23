@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections;
 
 namespace IntegerArray
 {
-    class ObjectArray
+    class ObjectArray : IEnumerable
     {
         private object[] data;
 
@@ -14,6 +15,16 @@ namespace IntegerArray
         public int Count { get; private set; }
 
         public virtual object this[int index] { get => data[index]; set => data[index] = value; }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return (IEnumerator)GetEnumerator();
+        }
+
+        public ObjectEnum GetEnumerator()
+        {
+            return new ObjectEnum(data);
+        }
 
         public virtual void Add(object element)
         {
@@ -29,7 +40,7 @@ namespace IntegerArray
 
         public int IndexOf(object element)
         {
-            return SearchIndex(element);
+            return GetIndex(element);
         }
 
         public virtual void Insert(int index, object element)
@@ -83,7 +94,7 @@ namespace IntegerArray
             }
         }
 
-        private int SearchIndex(object element)
+        private int GetIndex(object element)
         {
             for (int i = 0; i < Count; i++)
             {

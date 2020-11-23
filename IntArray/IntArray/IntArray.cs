@@ -29,7 +29,7 @@ namespace IntegerArray
 
         public int IndexOf(int element)
         {
-            return SearchIndex(element);
+            return GetIndex(element);
         }
 
         public virtual void Insert(int index, int element)
@@ -83,7 +83,7 @@ namespace IntegerArray
             }
         }
 
-        private int SearchIndex(int element)
+        private int GetIndex(int element)
         {
             for (int i = 0; i < Count; i++)
             {

@@ -7,28 +7,25 @@ namespace IntegerArray.Facts
         [Fact]
         public void CountShouldReturnNumberOfElements()
         {
-            var objArray = new ObjectArray();
             object boxedInt = 123;
-            objArray.Add(boxedInt);
+            var objArray = new ObjectArray() { boxedInt };
             Assert.True(objArray.Count == 1);
         }
 
         [Fact]
         public void ShouldReturnElementAtGivenIndexPosition()
         {
-            var objArray = new ObjectArray();
             object boxedInt = 123;
-            objArray.Add(boxedInt);
+            var objArray = new ObjectArray() { boxedInt };
             Assert.True(objArray[0] == boxedInt);
         }
 
         [Fact]
         public void ShouldSetElementAtGivenIndexPosition()
         {
-            var objArray = new ObjectArray();
             object boxedInt = 123;
             object boxedBool = true;
-            objArray.Add(boxedInt);
+            var objArray = new ObjectArray() { boxedInt };
             objArray[0] = boxedBool;
             Assert.True(objArray[0] == boxedBool);
         }
@@ -52,13 +49,11 @@ namespace IntegerArray.Facts
         [Fact]
         public void AddMethodShouldAllowAddingOtherObjectInstances()
         {
-            var objArray = new ObjectArray();
             object boxedInt = 123;
             object boxedBool = true;
             var intArray = new IntArray();
             var sortedIntArray = new SortedIntArray();
-            objArray.Add(boxedInt);
-            objArray.Add(boxedBool);
+            var objArray = new ObjectArray() { boxedInt, boxedBool };
             objArray.Add(intArray);
             objArray.Add(sortedIntArray);
             Assert.True(objArray[0] == boxedInt && objArray[1] == boxedBool
@@ -68,54 +63,46 @@ namespace IntegerArray.Facts
         [Fact]
         public void ContainsMethodShouldReturnTrueIfElementIsInArray()
         {
-            var objArray = new ObjectArray();
             object boxedInt = 123;
             object boxedBool = true;
-            objArray.Add(boxedInt);
-            objArray.Add(boxedBool);
+            var objArray = new ObjectArray() { boxedInt, boxedBool };
             Assert.True(objArray.Contains(boxedBool));
         }
 
         [Fact]
         public void ContainsMethodShouldReturnFalseIfElementIsNotInArray()
         {
-            var objArray = new ObjectArray();
             object boxedInt = 123;
             object boxedBool = true;
-            objArray.Add(boxedInt);
+            var objArray = new ObjectArray() { boxedInt };
             Assert.False(objArray.Contains(boxedBool));
         }
 
         [Fact]
         public void IndexOfMethodShouldReturnElementIndexIfIsInArray()
         {
-            var objArray = new ObjectArray();
             object boxedInt = 123;
             object boxedBool = true;
-            objArray.Add(boxedInt);
-            objArray.Add(boxedBool);
+            var objArray = new ObjectArray() { boxedInt, boxedBool };
             Assert.True(objArray.IndexOf(boxedBool) == 1);
         }
 
         [Fact]
         public void IndexOfMethodShouldReturnNegativeOneIfElementIsNotInArray()
         {
-            var objArray = new ObjectArray();
             object boxedInt = 123;
             object boxedBool = true;
-            objArray.Add(boxedInt);
+            var objArray = new ObjectArray() { boxedInt };
             Assert.True(objArray.IndexOf(boxedBool) == -1);
         }
 
         [Fact]
         public void InsertMethodShouldInsertGivenElementAtGivenPosition()
         {
-            var objArray = new ObjectArray();
             object boxedInt = 123;
             object boxedBool = true;
             object intArray = new IntArray();
-            objArray.Add(boxedInt);
-            objArray.Add(boxedBool);
+            var objArray = new ObjectArray() { boxedInt, boxedBool };
             objArray.Insert(1, intArray);
             Assert.True(objArray[0] == boxedInt && objArray[1] == intArray && objArray[2] == boxedBool);
         }
@@ -123,16 +110,12 @@ namespace IntegerArray.Facts
         [Fact]
         public void InsertMethodShouldInsertGivenElementAtGivenPositionEvenIfAllPositionsAreFull()
         {
-            var objArray = new ObjectArray();
             object boxedInt = 123;
             object boxedBool = true;
             object boxedString = "abc";
             object boxedChar = 'a';
             object intArray = new IntArray();
-            objArray.Add(boxedInt);
-            objArray.Add(boxedBool);
-            objArray.Add(boxedString);
-            objArray.Add(boxedChar);
+            var objArray = new ObjectArray() { boxedInt, boxedBool, boxedString, boxedChar, intArray };
             objArray.Insert(1, intArray);
             Assert.True(objArray[0] == boxedInt && objArray[1] == intArray
                      && objArray[2] == boxedBool && objArray[4] == boxedChar);
@@ -141,11 +124,9 @@ namespace IntegerArray.Facts
         [Fact]
         public void ClearMethodShouldResetElementCount()
         {
-            var objArray = new ObjectArray();
             object boxedInt = 123;
             object boxedBool = true;
-            objArray.Add(boxedInt);
-            objArray.Add(boxedBool);
+            var objArray = new ObjectArray() { boxedInt, boxedBool };
             objArray.Clear();
             Assert.True(objArray.Count == 0);
         }
@@ -153,14 +134,10 @@ namespace IntegerArray.Facts
         [Fact]
         public void RemoveMethodShouldRemoveFirstOccurenceOfGivenElement()
         {
-            var objArray = new ObjectArray();
             object boxedInt = 123;
             object boxedBool = true;
             object intArray = new IntArray();
-            objArray.Add(boxedInt);
-            objArray.Add(intArray);
-            objArray.Add(boxedBool);
-            objArray.Add(intArray);
+            var objArray = new ObjectArray() { boxedInt, intArray, boxedBool, intArray };
             objArray.Remove(intArray);
             Assert.True(objArray[0] == boxedInt && objArray[1] == boxedBool
                      && objArray[2] == intArray);
@@ -169,14 +146,12 @@ namespace IntegerArray.Facts
         [Fact]
         public void RemoveAtMethodShouldRemoveElementAtGivenIndex()
         {
-            var objArray = new ObjectArray();
             object boxedInt = 123;
             object boxedBool = true;
             object intArray = new IntArray();
-            objArray.Add(boxedInt);
-            objArray.Add(intArray);
-            objArray.Add(boxedBool);
+            var objArray = new ObjectArray() { boxedInt, intArray, boxedBool };
             objArray.RemoveAt(1);
+
             Assert.True(objArray[0] == boxedInt && objArray[1] == boxedBool
                      && objArray[2] == null);
         }
