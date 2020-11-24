@@ -30,7 +30,7 @@ namespace IntegerArray
 
         public override void Insert(int index, int element)
         {
-            if (data[index] < element)
+            if (element > data[index])
             {
                 return;
             }
