@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace IntegerArray
+﻿namespace IntegerArray
 {
     class SortedIntArray : IntArray
     {
@@ -30,7 +28,7 @@ namespace IntegerArray
 
         public override void Insert(int index, int element)
         {
-            if (element < data[index - 1] || element > data[index])
+            if (!CanBeInserted(element, index))
             {
                 return;
             }
@@ -56,11 +54,23 @@ namespace IntegerArray
             data[secondElementIndex] = temp;
         }
 
-        private bool CanBeSet(int element, int indexToBeSetOn)
+        private bool CanBeSet(int element, int index)
         {
-            return indexToBeSetOn == 0
-                ? element <= data[indexToBeSetOn + 1]
-                : element >= data[indexToBeSetOn - 1] && element <= data[indexToBeSetOn + 1];
+            return IsInAscendingOrder(element, index, index - 1, index + 1);
+        }
+
+        private bool CanBeInserted(int element, int index)
+        {
+            return index == Count
+                ? element >= data[index - 1]
+                : IsInAscendingOrder(element, index, index - 1, index);
+        }
+
+        private bool IsInAscendingOrder(int element, int currentIndex, int precedingElementIndex, int followingElementIndex)
+        {
+            return currentIndex == 0
+                ? element <= data[followingElementIndex]
+                : element >= data[precedingElementIndex] && element <= data[followingElementIndex];
         }
     }
 }

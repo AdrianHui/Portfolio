@@ -60,6 +60,52 @@ namespace IntegerArray.Facts
         }
 
         [Fact]
+        public void InsertMethodShouldInsertElementAtFirstPositionIfIsLessThenNextElement()
+        {
+            var sorted = new SortedIntArray();
+            sorted.Add(3);
+            sorted.Add(5);
+            sorted.Add(9);
+            sorted.Insert(0, 2);
+            Assert.True(sorted[0] == 2 && sorted[1] == 3 && sorted[2] == 5 && sorted[3] == 9);
+        }
+
+        [Fact]
+        public void InsertMethodShouldNotInsertElementAtFirstPositionIfIsGreaterThenNextElement()
+        {
+            var sorted = new SortedIntArray();
+            sorted.Add(3);
+            sorted.Add(5);
+            sorted.Add(9);
+            sorted.Insert(0, 4);
+            Assert.True(sorted[0] == 3 && sorted[1] == 5 && sorted[2] == 9 && sorted[3] == 0);
+        }
+
+        [Fact]
+        public void InsertMethodShouldInsertElementToGivenIndexIfIndexIsEqualToCount()
+        {
+            var sorted = new SortedIntArray();
+            sorted.Add(3);
+            sorted.Add(5);
+            sorted.Add(9);
+            sorted.Add(27);
+            sorted.Insert(4, 29);
+            Assert.True(sorted[0] == 3 && sorted[1] == 5 && sorted[3] == 27 && sorted[4] == 29);
+        }
+
+        [Fact]
+        public void InsertMethodShouldNotInsertElementToGivenIndexIfIndexIsEqualToCountAndValueIsLessThanPrecedingElement()
+        {
+            var sorted = new SortedIntArray();
+            sorted.Add(3);
+            sorted.Add(5);
+            sorted.Add(9);
+            sorted.Add(27);
+            sorted.Insert(4, 23);
+            Assert.True(sorted[0] == 3 && sorted[1] == 5 && sorted[2] == 9 && sorted[3] == 27);
+        }
+
+        [Fact]
         public void InsertMethodShouldNotInsertElementAtGivenPositionIfIsNotInAscendingOrder()
         {
             var sorted = new SortedIntArray();
