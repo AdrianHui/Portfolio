@@ -67,9 +67,9 @@ namespace IntegerArray
 
         private void ShiftRight(int stopIndex)
         {
+            ExpandCheck();
             for (int i = Count; i > stopIndex; i--)
             {
-                ExpandCheck();
                 data[i] = data[i - 1];
             }
         }
