@@ -18,7 +18,10 @@ namespace IntegerArray
 
         public IEnumerator GetEnumerator()
         {
-            return new ObjectEnum(this);
+            for (int i = 0; i < Count; i++)
+            {
+                yield return data[i];
+            }
         }
 
         public virtual void Add(object element)
