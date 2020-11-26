@@ -16,12 +16,9 @@ namespace IntegerArray
 
         public virtual object this[int index] { get => data[index]; set => data[index] = value; }
 
-        IEnumerator IEnumerable.GetEnumerator()
+        public IEnumerator GetEnumerator()
         {
-            for (int i = 0; i < data.Length; i++)
-            {
-                yield return data[i];
-            }
+            return new ObjectEnum(this);
         }
 
         public virtual void Add(object element)
@@ -96,7 +93,7 @@ namespace IntegerArray
         {
             for (int i = 0; i < Count; i++)
             {
-                if (data[i] == element)
+                if (data[i].Equals(element))
                 {
                     return i;
                 }
