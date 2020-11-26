@@ -17,8 +17,7 @@ namespace IntegerArray
 
         public bool MoveNext()
         {
-            position++;
-            return position < objects.Count;
+            return position != objects.Count - 1 && position++ < objects.Count;
         }
 
         public void Reset()
