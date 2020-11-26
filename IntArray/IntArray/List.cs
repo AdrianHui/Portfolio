@@ -6,7 +6,7 @@ namespace IntegerArray
 {
     class List<T> : IEnumerable<T>
     {
-        private T[] data;
+        protected T[] data;
 
         public List()
         {
@@ -82,9 +82,9 @@ namespace IntegerArray
 
         private void ShiftRight(int stopIndex)
         {
+            ExpandCheck();
             for (int i = Count; i > stopIndex; i--)
             {
-                ExpandCheck();
                 data[i] = data[i - 1];
             }
         }
