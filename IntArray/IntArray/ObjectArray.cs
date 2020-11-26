@@ -84,8 +84,7 @@ namespace IntegerArray
         {
             for (int i = startIndex; i < Count; i++)
             {
-                data[i] = i == Count - 1 || i == data.Length - 1
-                        ? null : data[i + 1];
+                data[i] = i == Count - 1 ? default : data[i + 1];
             }
         }
 
