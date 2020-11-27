@@ -107,13 +107,20 @@ namespace IntegerArray.Facts
         }
 
         [Fact]
-        public void RemoveMethodShouldRemoveFirstOccurenceOfGivenElement()
+        public void RemoveMethodShouldRemoveFirstOccurenceOfGivenElementAndReturnTrue()
         {
             object intArray = new IntArray();
             var objArray = new List<object>() { 123, intArray, true, intArray };
-            objArray.Remove(intArray);
-            Assert.True(objArray[0].Equals(123) && objArray[1].Equals(true)
-                     && objArray[2].Equals(intArray) && objArray.Count == 3);
+            Assert.True(objArray.Remove(intArray) && objArray[0].Equals(123)
+                     && objArray[1].Equals(true) && objArray.Count == 3);
+        }
+
+        [Fact]
+        public void RemoveMethodShouldReturnFalseIfElementWasNotFoundInArray()
+        {
+            object intArray = new IntArray();
+            var objArray = new List<object>() { 123, intArray, true, intArray };
+            Assert.False(objArray.Remove(5));
         }
 
         [Fact]
@@ -125,6 +132,41 @@ namespace IntegerArray.Facts
 
             Assert.True(objArray[0].Equals(123) && objArray[1].Equals(true)
                      && objArray.Count == 2);
+        }
+
+        [Fact]
+        public void CopyToMethodShouldCopyCollectionElementsToGivenArrayStartingAtGivenIndex()
+        {
+            object intArray = new IntArray();
+            var objArray = new List<object>() { 123, intArray, true };
+            object[] newArray = new object[4];
+            newArray[0] = 'a';
+            objArray.CopyTo(newArray, 1);
+
+            Assert.True(newArray[0].Equals('a') && newArray[1].Equals(123)
+                     && newArray[2].Equals(intArray) && newArray[3].Equals(true));
+        }
+
+        [Fact]
+        public void CopyToMethodShouldNotCopyIfGivenArrayHasFewerEmptySpotsAfterGivenIndexThanCollectionElements()
+        {
+            object intArray = new IntArray();
+            var objArray = new List<object>() { 123, intArray, true };
+            object[] newArray = new object[4];
+            newArray[0] = 'a';
+            newArray[1] = "abc";
+            objArray.CopyTo(newArray, 2);
+
+            Assert.True(newArray[0].Equals('a') && newArray[1].Equals("abc")
+                     && newArray[2] == null && newArray[3] == null);
+        }
+
+        [Fact]
+        public void IsReadOnlyPropertyShouldReturnFalse()
+        {
+            object intArray = new IntArray();
+            var objArray = new List<object>() { 123, intArray, true };
+            Assert.False(objArray.IsReadOnly);
         }
     }
 }

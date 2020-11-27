@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace IntegerArray
 {
-    class List<T> : IEnumerable<T>
+    class List<T> : IList<T>
     {
         protected T[] data;
 
@@ -14,6 +14,8 @@ namespace IntegerArray
         }
 
         public int Count { get; private set; }
+
+        public bool IsReadOnly { get; }
 
         public virtual T this[int index] { get => data[index]; set => data[index] = value; }
 
@@ -59,15 +61,35 @@ namespace IntegerArray
             Count = 0;
         }
 
-        public void Remove(T element)
+        public bool Remove(T element)
         {
-            RemoveAt(IndexOf(element));
+            int currentIndex = IndexOf(element);
+            if (currentIndex == -1)
+            {
+                return false;
+            }
+
+            RemoveAt(currentIndex);
+            return true;
         }
 
         public void RemoveAt(int index)
         {
             ShiftLeft(index);
             Count--;
+        }
+
+        public void CopyTo(T[] array, int arrayIndex)
+        {
+            if (Count > array.Length - arrayIndex)
+            {
+                return;
+            }
+
+            for (int i = 0; i < Count; i++)
+            {
+                array[arrayIndex + i] = data[i];
+            }
         }
 
         private void ExpandCheck()
