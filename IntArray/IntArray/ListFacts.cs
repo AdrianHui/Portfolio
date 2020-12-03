@@ -21,6 +21,13 @@ namespace IntegerArray.Facts
         }
 
         [Fact]
+        public void ShouldThrowAnExceptionIfGivenIndexIsOutsideTheBoundsOfTheCollection()
+        {
+            var objArray = new List<object>() { 123 };
+            Assert.Throws<ArgumentOutOfRangeException>(() => objArray[1]);
+        }
+
+        [Fact]
         public void ShouldSetElementAtGivenIndexPosition()
         {
             var objArray = new List<object>() { 123 };
