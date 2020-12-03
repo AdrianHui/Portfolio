@@ -22,7 +22,7 @@ namespace IntegerArray
             get => data[index];
             set
             {
-                throw new NotSupportedException("This list is read only.");
+                throw new NotSupportedException("This collection is read only.");
             }
         }
 
@@ -41,7 +41,7 @@ namespace IntegerArray
 
         public virtual void Add(T element)
         {
-            throw new NotSupportedException("This list is read only.");
+            throw new NotSupportedException("This collection is read only.");
         }
 
         public bool Contains(T element)
@@ -56,22 +56,22 @@ namespace IntegerArray
 
         public virtual void Insert(int index, T element)
         {
-            throw new NotSupportedException("This list is read only.");
+            throw new NotSupportedException("This collection is read only.");
         }
 
         public void Clear()
         {
-            throw new NotSupportedException("This list is read only.");
+            throw new NotSupportedException("This collection is read only.");
         }
 
         public bool Remove(T element)
         {
-            throw new NotSupportedException("This list is read only.");
+            throw new NotSupportedException("This collection is read only.");
         }
 
         public void RemoveAt(int index)
         {
-            throw new NotSupportedException("This list is read only.");
+            throw new NotSupportedException("This collection is read only.");
         }
 
         public void CopyTo(T[] array, int arrayIndex)
