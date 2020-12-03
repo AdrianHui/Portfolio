@@ -36,6 +36,13 @@ namespace IntegerArray.Facts
         }
 
         [Fact]
+        public void ShouldThrowAnExceptionWhenTryingToSetAnElementToAnIndexOutsideTheBoundsOfTheCollection()
+        {
+            var objArray = new List<object>() { 123 };
+            Assert.Throws<ArgumentOutOfRangeException>(() => objArray[1] = true);
+        }
+
+        [Fact]
         public void AddMethodShouldAllowAddingBasicTypes()
         {
             var objArray = new List<object>();

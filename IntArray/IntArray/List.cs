@@ -21,14 +21,15 @@ namespace IntegerArray
         {
             get
             {
-                if (index < 0 || index >= Count)
-                {
-                    throw new ArgumentOutOfRangeException("index", "Index was outside the bounds of the colletion.");
-                }
-
+                ValidIndexCheck(index, 0, Count - 1);
                 return data[index];
             }
-            set => data[index] = value;
+
+            set
+            {
+                ValidIndexCheck(index, 0, Count - 1);
+                data[index] = value;
+            }
         }
 
         public IEnumerator<T> GetEnumerator()
@@ -63,11 +64,7 @@ namespace IntegerArray
 
         public virtual void Insert(int index, T element)
         {
-            if (index < 0 || index > Count)
-            {
-                throw new ArgumentOutOfRangeException("index", "Index was outside the bounds of the colletion.");
-            }
-
+            ValidIndexCheck(index, 0, Count);
             ShiftRight(index);
             data[index] = element;
             Count++;
@@ -92,11 +89,7 @@ namespace IntegerArray
 
         public void RemoveAt(int index)
         {
-            if (index < 0 || index >= Count)
-            {
-                throw new ArgumentOutOfRangeException("index", "Index was outside the bounds of the colletion.");
-            }
-
+            ValidIndexCheck(index, 0, Count - 1);
             ShiftLeft(index);
             Count--;
         }
@@ -107,11 +100,9 @@ namespace IntegerArray
             {
                 throw new ArgumentNullException("array", "Cannot be null.");
             }
-            else if (arrayIndex < 0 || arrayIndex >= array.Length)
-            {
-                throw new ArgumentOutOfRangeException("arrayIndex", "Index was outside the bounds of the array.");
-            }
-            else if (Count > array.Length - arrayIndex)
+
+            ValidIndexCheck(arrayIndex, 0, array.Length - 1);
+            if (Count > array.Length - arrayIndex)
             {
                 throw new ArgumentException("There is not enough space in destination array.");
             }
@@ -160,6 +151,16 @@ namespace IntegerArray
             }
 
             return -1;
+        }
+
+        private void ValidIndexCheck(int index, int startIndex, int endIndex)
+        {
+            if (index >= startIndex && index <= endIndex)
+            {
+                return;
+            }
+
+            throw new ArgumentOutOfRangeException("index", "Index was outside the bounds of the colletion.");
         }
     }
 }
