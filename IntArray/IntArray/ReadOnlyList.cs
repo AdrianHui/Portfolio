@@ -8,7 +8,7 @@ namespace IntegerArray
     {
         private readonly IList<T> data;
 
-        public ReadOnlyList(List<T> list)
+        public ReadOnlyList(IList<T> list)
         {
             data = list;
         }
@@ -28,10 +28,7 @@ namespace IntegerArray
 
         public IEnumerator<T> GetEnumerator()
         {
-            for (int i = 0; i < Count; i++)
-            {
-                yield return data[i];
-            }
+            return data.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -46,7 +43,7 @@ namespace IntegerArray
 
         public bool Contains(T element)
         {
-            return data.IndexOf(element) >= 0;
+            return data.Contains(element);
         }
 
         public int IndexOf(T element)
