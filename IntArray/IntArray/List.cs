@@ -51,9 +51,16 @@ namespace IntegerArray
 
         public virtual void Insert(int index, T element)
         {
-            ShiftRight(index);
-            data[index] = element;
-            Count++;
+            try
+            {
+                ShiftRight(index);
+                data[index] = element;
+                Count++;
+            }
+            catch (IndexOutOfRangeException) when (index < 0)
+            {
+                throw new ArgumentOutOfRangeException("index", "Index was outside the bounds of the colletion.");
+            }
         }
 
         public void Clear()
@@ -75,20 +82,38 @@ namespace IntegerArray
 
         public void RemoveAt(int index)
         {
-            ShiftLeft(index);
+            try
+            {
+                ShiftLeft(index);
+            }
+            catch (IndexOutOfRangeException)
+            {
+                throw new ArgumentOutOfRangeException("index", "Index was outside the bounds of the colletion.");
+            }
+
             Count--;
         }
 
         public void CopyTo(T[] array, int arrayIndex)
         {
-            if (Count > array.Length - arrayIndex)
+            try
             {
-                return;
+                for (int i = 0; i < Count; i++)
+                {
+                    array[arrayIndex + i] = data[i];
+                }
             }
-
-            for (int i = 0; i < Count; i++)
+            catch (NullReferenceException)
             {
-                array[arrayIndex + i] = data[i];
+                throw new ArgumentNullException("array", "Cannot be null.");
+            }
+            catch (IndexOutOfRangeException) when (arrayIndex < 0 || arrayIndex >= array.Length)
+            {
+                throw new ArgumentOutOfRangeException("arrayIndex", "Index was outside the bounds of the array.");
+            }
+            catch (IndexOutOfRangeException) when (Count > array.Length - arrayIndex)
+            {
+                throw new ArgumentException("There is not enough space in destination array.");
             }
         }
 
@@ -104,6 +129,11 @@ namespace IntegerArray
 
         private void ShiftRight(int stopIndex)
         {
+            if (stopIndex > Count)
+            {
+                throw new ArgumentOutOfRangeException("stopIndex", "Index was outside the bounds of the colletion.");
+            }
+
             ExpandCheck();
             for (int i = Count; i > stopIndex; i--)
             {
@@ -113,6 +143,11 @@ namespace IntegerArray
 
         private void ShiftLeft(int startIndex)
         {
+            if (startIndex >= Count)
+            {
+                throw new ArgumentOutOfRangeException("startIndex", "Index was outside the bounds of the colletion.");
+            }
+
             for (int i = startIndex; i < Count; i++)
             {
                 data[i] = i == Count - 1 ? default : data[i + 1];

@@ -1,4 +1,6 @@
 ﻿using Xunit;
+using System;
+using System.Collections.Generic;
 
 namespace IntegerArray.Facts
 {
@@ -51,6 +53,16 @@ namespace IntegerArray.Facts
         }
 
         [Fact]
+        public void AddMethodShouldThrowExceptionIfCollectionIsReadOnly()
+        {
+            var objArray = new List<object>() { 123, true };
+            var intArray = new IntArray();
+            List<object> readOnlyObjArray = objArray;
+            bool read = readOnlyObjArray.IsReadOnly;
+            objArray.Add(intArray);
+        }
+
+        [Fact]
         public void ContainsMethodShouldReturnTrueIfElementIsInArray()
         {
             var objArray = new List<object>() { 123, true };
@@ -99,6 +111,22 @@ namespace IntegerArray.Facts
         }
 
         [Fact]
+        public void InsertMethodShouldThrowExceptionIfIndexIsLessThanZero()
+        {
+            object intArray = new IntArray();
+            var objArray = new List<object>() { 123, true, "abc", 'a' };
+            Assert.Throws<ArgumentOutOfRangeException>(() => objArray.Insert(-1, intArray));
+        }
+
+        [Fact]
+        public void InsertMethodShouldThrowExceptionIfIndexIsGreaterThanNumberOfElements()
+        {
+            object intArray = new IntArray();
+            var objArray = new List<object>() { 123, true, "abc", 'a' };
+            Assert.Throws<ArgumentOutOfRangeException>(() => objArray.Insert(5, intArray));
+        }
+
+        [Fact]
         public void ClearMethodShouldResetElementCount()
         {
             var objArray = new List<object>() { 123, true };
@@ -135,6 +163,22 @@ namespace IntegerArray.Facts
         }
 
         [Fact]
+        public void RemoveAtMethodShouldThrowExceptionIfIndexIsLessThanZero()
+        {
+            object intArray = new IntArray();
+            var objArray = new List<object>() { 123, intArray, true };
+            Assert.Throws<ArgumentOutOfRangeException>(() => objArray.RemoveAt(-1));
+        }
+
+        [Fact]
+        public void RemoveAtMethodShouldThrowExceptionIfIndexIsGreaterThenNumberOfElementsInCollection()
+        {
+            object intArray = new IntArray();
+            var objArray = new List<object>() { 123, intArray, true };
+            Assert.Throws<ArgumentOutOfRangeException>(() => objArray.RemoveAt(3));
+        }
+
+        [Fact]
         public void CopyToMethodShouldCopyCollectionElementsToGivenArrayStartingAtGivenIndex()
         {
             object intArray = new IntArray();
@@ -148,17 +192,39 @@ namespace IntegerArray.Facts
         }
 
         [Fact]
-        public void CopyToMethodShouldNotCopyIfGivenArrayHasFewerEmptySpotsAfterGivenIndexThanCollectionElements()
+        public void CopyToMethodShouldThrowExceptionIfNumberOfCollectionElementsIsGreaterThanAbailableSpaceInDestinationArray()
         {
             object intArray = new IntArray();
             var objArray = new List<object>() { 123, intArray, true };
             object[] newArray = new object[4];
-            newArray[0] = 'a';
-            newArray[1] = "abc";
-            objArray.CopyTo(newArray, 2);
+            Assert.Throws<ArgumentException>(() => objArray.CopyTo(newArray, 2));
+        }
 
-            Assert.True(newArray[0].Equals('a') && newArray[1].Equals("abc")
-                     && newArray[2] == null && newArray[3] == null);
+        [Fact]
+        public void CopyToMethodShouldThrowExceptionIfDestinationArrayIsNull()
+        {
+            object intArray = new IntArray();
+            var objArray = new List<object>() { 123, intArray, true };
+            object[] newArray = null;
+            Assert.Throws<ArgumentNullException>(() => objArray.CopyTo(newArray, 2));
+        }
+
+        [Fact]
+        public void CopyToMethodShouldThrowExceptionIfIndexIsLessThanZero()
+        {
+            object intArray = new IntArray();
+            var objArray = new List<object>() { 123, intArray, true };
+            object[] newArray = new object[4];
+            Assert.Throws<ArgumentOutOfRangeException>(() => objArray.CopyTo(newArray, -1));
+        }
+
+        [Fact]
+        public void CopyToMethodShouldThrowExceptionIfIndexIsGreaterThanNumberOfAvailablePositions()
+        {
+            object intArray = new IntArray();
+            var objArray = new List<object>() { 123, intArray, true };
+            object[] newArray = new object[4];
+            Assert.Throws<ArgumentOutOfRangeException>(() => objArray.CopyTo(newArray, 4));
         }
 
         [Fact]
