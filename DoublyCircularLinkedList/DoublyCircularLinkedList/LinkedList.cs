@@ -26,11 +26,15 @@ namespace DoublyCircularLinkedList
 
         public void AddFirst(T item)
         {
+            AddFirst(new Node<T>(item));
+        }
+
+        public void AddFirst(Node<T> newNode)
+        {
             if (First == null)
             {
-                Current = new Node<T>(item);
-                First = Current;
-                Last = Current;
+                First = newNode;
+                Last = newNode;
                 First.Next = Last;
                 First.Previous = Last;
                 Last.Next = First;
@@ -38,12 +42,11 @@ namespace DoublyCircularLinkedList
             }
             else
             {
-                Current = new Node<T>(item);
-                Current.Next = First;
-                Current.Previous = Last;
-                First.Previous = Current;
-                Last.Next = Current;
-                First = Current;
+                newNode.Next = First;
+                newNode.Previous = Last;
+                First.Previous = newNode;
+                Last.Next = newNode;
+                First = newNode;
             }
 
             Count++;
@@ -51,48 +54,76 @@ namespace DoublyCircularLinkedList
 
         public void AddLast(T item)
         {
+            AddLast(new Node<T>(item));
+        }
+
+        public void AddLast(Node<T> newNode)
+        {
             if (First == null)
             {
-                AddFirst(item);
+                AddFirst(newNode);
             }
             else
             {
-                Current = new Node<T>(item);
-                Current.Next = First;
-                Current.Previous = Last;
-                First.Previous = Current;
-                Last.Next = Current;
-                Last = Current;
+                newNode.Next = First;
+                newNode.Previous = Last;
+                First.Previous = newNode;
+                Last.Next = newNode;
+                Last = newNode;
                 Count++;
             }
         }
 
         public void AddAfter(Node<T> node, T item)
         {
-            Current = new Node<T>(item);
-            Current.Next = node.Next;
-            Current.Next.Previous = Current;
-            node.Next = Current;
-            Current.Previous = node;
+            AddAfter(node, new Node<T>(item));
+        }
+
+        public void AddAfter(Node<T> node, Node<T> newNode)
+        {
+            if (node == null)
+            {
+                throw new ArgumentNullException("node", "The node is null.");
+            }
+            else if (Find(node.Data) == null)
+            {
+                throw new InvalidOperationException("The node you provided could not be found.");
+            }
+
+            newNode.Next = node.Next;
+            newNode.Next.Previous = newNode;
+            node.Next = newNode;
+            newNode.Previous = node;
             Count++;
         }
 
         public void AddBefore(Node<T> node, T item)
         {
-            AddAfter(node.Previous, item);
+            AddBefore(node, new Node<T>(item));
+        }
+
+        public void AddBefore(Node<T> node, Node<T> newNode)
+        {
+            AddAfter(node.Previous, newNode);
         }
 
         public void Clear()
         {
             Count = 0;
+            First.Next = null;
+            First.Previous = null;
+            First = null;
+            Last.Next = null;
+            Last.Previous = null;
+            Last = null;
         }
 
         public bool Contains(T item)
         {
-            Current = First;
-            while (!Current.Data.Equals(item) && !Current.Equals(Last))
+            Current = Search(item, First);
+            if (Current == null)
             {
-                Current = Current.Next;
+                return false;
             }
 
             return Current.Data.Equals(item);
@@ -100,7 +131,76 @@ namespace DoublyCircularLinkedList
 
         public void CopyTo(T[] array, int arrayIndex)
         {
-            throw new NotImplementedException();
+            Current = First;
+            while (!Current.Equals(Last))
+            {
+                array[arrayIndex] = Current.Data;
+                Current = Current.Next;
+                arrayIndex++;
+            }
+
+            array[arrayIndex] = Current.Data;
+        }
+
+        public bool Remove(T item)
+        {
+            Current = Search(item, First);
+            if (Current == First)
+            {
+                First = First.Next;
+            }
+            else if (!Current.Data.Equals(item))
+            {
+                return false;
+            }
+
+            Current.Previous.Next = Current.Next;
+            Current.Next.Previous = Current.Previous;
+            Count--;
+            return true;
+        }
+
+        public bool Remove(Node<T> node)
+        {
+            return Remove(node.Data);
+        }
+
+        public bool RemoveFirst()
+        {
+            if (First == null)
+            {
+                return false;
+            }
+
+            Last.Next = First.Next;
+            First = First.Next;
+            First.Previous = Last;
+            Count--;
+            return true;
+        }
+
+        public bool RemoveLast()
+        {
+            if (Last == null)
+            {
+                return false;
+            }
+
+            Last.Previous.Next = First;
+            Last = Last.Previous;
+            First.Previous = Last;
+            Count--;
+            return true;
+        }
+
+        public Node<T> Find(T item)
+        {
+            return Search(item, First);
+        }
+
+        public Node<T> FindLast(T item)
+        {
+            return Search(item, Last);
         }
 
         public IEnumerator<T> GetEnumerator()
@@ -120,23 +220,16 @@ namespace DoublyCircularLinkedList
             return GetEnumerator();
         }
 
-        public bool Remove(T item)
+        private Node<T> Search(T item, Node<T> searchStartPoint)
         {
-            Current = First;
-            while (!Current.Data.Equals(item) && !Current.Equals(Last))
+            Current = searchStartPoint;
+            Node<T> end = searchStartPoint == First ? Last : First;
+            while (!Current.Data.Equals(item) && !Current.Equals(end))
             {
-                Current = Current.Next;
+                Current = searchStartPoint == First ? Current.Next : Current.Previous;
             }
 
-            if (!Current.Data.Equals(item))
-            {
-                return false;
-            }
-
-            Current.Previous.Next = Current.Next;
-            Current.Next.Previous = Current.Previous;
-            Count--;
-            return true;
+            return Current.Data.Equals(item) ? Current : null;
         }
     }
 }
