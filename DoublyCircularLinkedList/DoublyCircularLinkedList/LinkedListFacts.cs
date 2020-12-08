@@ -512,7 +512,7 @@ namespace DoublyCircularLinkedList.Facts
             list.Add(4);
             list.Add(3);
             Assert.True(list.RemoveFirst() && list.First.Data == 3
-                && list.First.Previous.Data == 3 && list.First.Next.Data == 4);
+                && list.First.Previous == list.Sentinel && list.First.Next.Data == 4);
         }
 
         [Fact]
@@ -530,8 +530,8 @@ namespace DoublyCircularLinkedList.Facts
             list.Add(3);
             list.Add(4);
             list.Add(3);
-            Assert.True(list.RemoveLast() && list.First.Previous.Data == 4
-                && list.Last.Data == 4 && list.Last.Next.Data == 1);
+            Assert.True(list.RemoveLast() && list.First.Previous == list.Sentinel
+                && list.Last.Data == 4 && list.Last.Next == list.Sentinel);
         }
 
         [Fact]
@@ -577,11 +577,18 @@ namespace DoublyCircularLinkedList.Facts
         public void ListShouldBeDoublyLinkedList()
         {
             var list = new LinkedList<int>();
-            list.Add(1);
-            list.Add(2);
-            list.Add(3);
-            Assert.True(list.First.Previous == list.Last && list.Last.Next == list.First
-                && list.First.Next == list.Last.Previous);
+            Node<int> first = new Node<int>(1);
+            Node<int> second = new Node<int>(2);
+            Node<int> third = new Node<int>(3);
+            Node<int> fourth = new Node<int>(4);
+            Node<int> fifth = new Node<int>(5);
+            list.AddFirst(first);
+            list.AddLast(fifth);
+            list.AddAfter(first, second);
+            list.AddBefore(fifth, fourth);
+            list.AddAfter(second, third);
+            Assert.True(list.First.Previous == list.Sentinel && list.Last.Next == list.Sentinel
+                && list.Sentinel.Next == list.First && list.Sentinel.Previous == list.Last);
         }
     }
 }
