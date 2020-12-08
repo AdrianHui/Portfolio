@@ -31,6 +31,8 @@ namespace DoublyCircularLinkedList
 
         public void AddFirst(Node<T> newNode)
         {
+            CheckIfIsAValidNode(newNode);
+            CheckIfBelongsToAnotherList(newNode);
             if (First == null)
             {
                 First = newNode;
@@ -42,10 +44,7 @@ namespace DoublyCircularLinkedList
             }
             else
             {
-                newNode.Next = First;
-                newNode.Previous = Last;
-                First.Previous = newNode;
-                Last.Next = newNode;
+                TieNodes(newNode, Last, First);
                 First = newNode;
             }
 
@@ -59,16 +58,15 @@ namespace DoublyCircularLinkedList
 
         public void AddLast(Node<T> newNode)
         {
+            CheckIfIsAValidNode(newNode);
+            CheckIfBelongsToAnotherList(newNode);
             if (First == null)
             {
                 AddFirst(newNode);
             }
             else
             {
-                newNode.Next = First;
-                newNode.Previous = Last;
-                First.Previous = newNode;
-                Last.Next = newNode;
+                TieNodes(newNode, Last, First);
                 Last = newNode;
                 Count++;
             }
@@ -81,13 +79,14 @@ namespace DoublyCircularLinkedList
 
         public void AddAfter(Node<T> node, Node<T> newNode)
         {
-            if (node == null)
+            CheckIfIsAValidNode(node);
+            CheckIfIsAValidNode(newNode);
+            CheckIfBelongsToAnotherList(newNode);
+            CheckIfElementIsInList(node);
+            if (node == Last)
             {
-                throw new ArgumentNullException("node", "The node is null.");
-            }
-            else if (Find(node.Data) == null)
-            {
-                throw new InvalidOperationException("The node you provided could not be found.");
+                AddLast(newNode);
+                return;
             }
 
             newNode.Next = node.Next;
@@ -104,6 +103,16 @@ namespace DoublyCircularLinkedList
 
         public void AddBefore(Node<T> node, Node<T> newNode)
         {
+            CheckIfIsAValidNode(node);
+            CheckIfIsAValidNode(newNode);
+            CheckIfBelongsToAnotherList(newNode);
+            CheckIfElementIsInList(node);
+            if (node == First)
+            {
+                AddFirst(newNode);
+                return;
+            }
+
             AddAfter(node.Previous, newNode);
         }
 
@@ -131,6 +140,19 @@ namespace DoublyCircularLinkedList
 
         public void CopyTo(T[] array, int arrayIndex)
         {
+            if (array == null)
+            {
+                throw new ArgumentNullException("array", "Cannot be null.");
+            }
+            else if (arrayIndex < 0)
+            {
+                throw new ArgumentOutOfRangeException("arrayIndex", "Index was outside the bounds of the array.");
+            }
+            else if (Count > array.Length - arrayIndex)
+            {
+                throw new ArgumentException("There is not enough space in destination array.");
+            }
+
             Current = First;
             while (!Current.Equals(Last))
             {
@@ -144,12 +166,19 @@ namespace DoublyCircularLinkedList
 
         public bool Remove(T item)
         {
-            Current = Search(item, First);
+            return Remove(new Node<T>(item));
+        }
+
+        public bool Remove(Node<T> node)
+        {
+            CheckIfIsAValidNode(node);
+            CheckIfElementIsInList(node);
+            Current = Search(node.Data, First);
             if (Current == First)
             {
                 First = First.Next;
             }
-            else if (!Current.Data.Equals(item))
+            else if (!Current.Data.Equals(node.Data))
             {
                 return false;
             }
@@ -160,16 +189,11 @@ namespace DoublyCircularLinkedList
             return true;
         }
 
-        public bool Remove(Node<T> node)
-        {
-            return Remove(node.Data);
-        }
-
         public bool RemoveFirst()
         {
             if (First == null)
             {
-                return false;
+                throw new InvalidOperationException("The list is empty.");
             }
 
             Last.Next = First.Next;
@@ -183,7 +207,7 @@ namespace DoublyCircularLinkedList
         {
             if (Last == null)
             {
-                return false;
+                throw new InvalidOperationException("The list is empty.");
             }
 
             Last.Previous.Next = First;
@@ -230,6 +254,45 @@ namespace DoublyCircularLinkedList
             }
 
             return Current.Data.Equals(item) ? Current : null;
+        }
+
+        private void TieNodes(Node<T> newNode, Node<T> prevNode, Node<T> nextNode)
+        {
+            newNode.Next = nextNode;
+            newNode.Previous = prevNode;
+            nextNode.Previous = newNode;
+            prevNode.Next = newNode;
+        }
+
+        private void CheckIfIsAValidNode(Node<T> node)
+        {
+            if (node is object || node is string || node != null)
+            {
+                return;
+            }
+
+            throw new ArgumentNullException("node", "The node is null.");
+        }
+
+        private void CheckIfBelongsToAnotherList(Node<T> node)
+        {
+            if (node.Next == null && node.Previous == null)
+            {
+                return;
+            }
+
+            throw new InvalidOperationException(
+                    "The node you provided belongs to another LinkedList.");
+        }
+
+        private void CheckIfElementIsInList(Node<T> node)
+        {
+            if (Find(node.Data) != null)
+            {
+                return;
+            }
+
+            throw new InvalidOperationException("The node you provided could not be found.");
         }
     }
 }
