@@ -71,14 +71,10 @@ namespace DoublyCircularLinkedList
                 Count++;
                 return;
             }
-            else if (node == Sentinel && First == null && Last == null)
-            {
-                First = newNode;
-                Last = newNode;
-            }
             else if (node == Sentinel)
             {
                 First = newNode;
+                Last ??= newNode;
             }
 
             newNode.Next = node.Next;
