@@ -8,10 +8,7 @@ namespace DoublyCircularLinkedList.Facts
         [Fact]
         public void CountShouldReturnNumberOfElementsInList()
         {
-            var list = new LinkedList<int>();
-            list.Add(2);
-            list.Add(4);
-            list.Add(6);
+            var list = new LinkedList<int>() { 2, 4, 6 };
             Assert.True(list.Count == 3);
         }
 
@@ -34,12 +31,11 @@ namespace DoublyCircularLinkedList.Facts
         public void AddFirstMethodShouldAddElementsAsValuesAtTheBeginingOfTheList()
         {
             var list = new LinkedList<int>();
-            list.AddFirst(4);
             list.AddFirst(3);
             list.AddFirst(2);
             list.AddFirst(1);
             Assert.True(list.First.Data == 1 && list.First.Next.Data == 2
-                && list.Last.Previous.Data == 3 && list.Last.Data == 4);
+                && list.Last.Previous.Data == 2 && list.Last.Data == 3);
         }
 
         [Fact]
@@ -49,13 +45,11 @@ namespace DoublyCircularLinkedList.Facts
             Node<int> first = new Node<int>(1);
             Node<int> second = new Node<int>(2);
             Node<int> third = new Node<int>(3);
-            Node<int> fourth = new Node<int>(4);
-            list.AddFirst(fourth);
             list.AddFirst(third);
             list.AddFirst(second);
             list.AddFirst(first);
             Assert.True(list.First == first && list.First.Next == second
-                && list.Last.Previous == third && list.Last == fourth);
+                && list.Last.Previous == second && list.Last == third);
         }
 
         [Fact]
@@ -71,9 +65,8 @@ namespace DoublyCircularLinkedList.Facts
         {
             var list = new LinkedList<int>();
             Node<int> first = new Node<int>(1);
-            Node<int> second = new Node<int>(2);
-            first.Next = second;
-            first.Previous = second;
+            var anotherList = new LinkedList<int>();
+            anotherList.AddFirst(first);
             Assert.Throws<InvalidOperationException>(() => list.AddFirst(first));
         }
 
@@ -123,19 +116,15 @@ namespace DoublyCircularLinkedList.Facts
         {
             var list = new LinkedList<int>();
             Node<int> first = new Node<int>(1);
-            Node<int> second = new Node<int>(2);
-            first.Next = second;
-            first.Previous = second;
+            var anotherList = new LinkedList<int>();
+            anotherList.AddFirst(first);
             Assert.Throws<InvalidOperationException>(() => list.AddLast(first));
         }
 
         [Fact]
         public void AddAfterMethodShouldAddElementsAsValueAfterGivenNode()
         {
-            var list = new LinkedList<int>();
-            list.AddFirst(4);
-            list.AddFirst(2);
-            list.AddFirst(1);
+            var list = new LinkedList<int>() { 1, 2, 4 };
             list.AddAfter(list.First.Next, 3);
             Assert.True(list.First.Next.Data == 2 && list.Last.Previous.Data == 3
                 && list.Last.Data == 4);
@@ -144,10 +133,7 @@ namespace DoublyCircularLinkedList.Facts
         [Fact]
         public void AddAfterMethodShouldAddElementsAsNodesAfterGivenNode()
         {
-            var list = new LinkedList<int>();
-            list.AddFirst(4);
-            list.AddFirst(2);
-            list.AddFirst(1);
+            var list = new LinkedList<int>() { 1, 2, 4 };
             list.AddAfter(list.First.Next, new Node<int>(3));
             Assert.True(list.First.Next.Data == 2 && list.Last.Previous.Data == 3
                 && list.Last.Data == 4);
@@ -156,61 +142,35 @@ namespace DoublyCircularLinkedList.Facts
         [Fact]
         public void AddAfterMethodShouldThrowAnExceptionIfNodeIsNull()
         {
-            var list = new LinkedList<int>();
-            Node<int> first = new Node<int>(1);
-            Node<int> second = new Node<int>(2);
-            Node<int> third = new Node<int>(3);
-            Node<int> fourth = new Node<int>(4);
-            list.AddFirst(fourth);
-            list.AddFirst(second);
-            list.AddFirst(first);
+            var list = new LinkedList<int>() { 1, 2, 4 };
             Node<int> node = null;
-            Assert.Throws<ArgumentNullException>(() => list.AddAfter(node, third));
+            Assert.Throws<ArgumentNullException>(() => list.AddAfter(node, new Node<int>(3)));
         }
 
         [Fact]
         public void AddAfterMethodShouldThrowAnExceptionIfNewNodeIsNull()
         {
-            var list = new LinkedList<int>();
-            Node<int> first = new Node<int>(1);
-            Node<int> second = new Node<int>(2);
-            Node<int> fourth = new Node<int>(4);
-            list.AddFirst(fourth);
-            list.AddFirst(second);
-            list.AddFirst(first);
+            var list = new LinkedList<int>() { 1, 2, 4 };
             Node<int> newNode = null;
-            Assert.Throws<ArgumentNullException>(() => list.AddAfter(second, newNode));
+            Assert.Throws<ArgumentNullException>(() => list.AddAfter(list.First.Next, newNode));
         }
 
         [Fact]
         public void AddAfterMethodShouldThrowAnExceptionIfNodeCannotBeFoundInCurrentList()
         {
-            var list = new LinkedList<int>();
-            Node<int> first = new Node<int>(1);
-            Node<int> second = new Node<int>(2);
-            Node<int> fourth = new Node<int>(4);
+            var list = new LinkedList<int>() { 1, 2, 4 };
             Node<int> fifth = new Node<int>(5);
-            list.AddFirst(fourth);
-            list.AddFirst(second);
-            list.AddFirst(first);
             Assert.Throws<InvalidOperationException>(() => list.AddAfter(fifth, new Node<int>(3)));
         }
 
         [Fact]
         public void AddAfterMethodShouldThrowAnExceptionIfNewNodeBelongsToAnotherList()
         {
-            var list = new LinkedList<int>();
-            Node<int> first = new Node<int>(1);
-            Node<int> second = new Node<int>(2);
-            Node<int> fourth = new Node<int>(4);
-            Node<int> newNode = new Node<int>(3);
-            Node<int> node = new Node<int>(4);
-            newNode.Next = node;
-            newNode.Previous = node;
-            list.AddFirst(fourth);
-            list.AddFirst(second);
-            list.AddFirst(first);
-            Assert.Throws<InvalidOperationException>(() => list.AddAfter(second, newNode));
+            var list = new LinkedList<int>() { 1, 2, 4 };
+            var anotherList = new LinkedList<int>();
+            var newNode = new Node<int>(3);
+            anotherList.AddLast(newNode);
+            Assert.Throws<InvalidOperationException>(() => list.AddAfter(list.First.Next, newNode));
         }
 
         [Fact]
@@ -242,10 +202,7 @@ namespace DoublyCircularLinkedList.Facts
         [Fact]
         public void AddBeforeMethodShouldAddElementAsValueBeforeGivenNode()
         {
-            var list = new LinkedList<int>();
-            list.AddFirst(4);
-            list.AddFirst(2);
-            list.AddFirst(1);
+            var list = new LinkedList<int>() { 1, 2, 4 };
             list.AddBefore(list.Last, 3);
             Assert.True(list.First.Next.Next.Data == 3);
         }
@@ -253,76 +210,44 @@ namespace DoublyCircularLinkedList.Facts
         [Fact]
         public void AddBeforeMethodShouldAddElementAsNodeBeforeGivenNode()
         {
-            var list = new LinkedList<int>();
-            Node<int> first = new Node<int>(1);
-            Node<int> second = new Node<int>(2);
-            Node<int> third = new Node<int>(3);
-            Node<int> fourth = new Node<int>(4);
-            list.AddFirst(fourth);
-            list.AddFirst(second);
-            list.AddFirst(first);
-            list.AddBefore(list.Last, third);
-            Assert.True(list.First.Next.Next == third);
+            var list = new LinkedList<int>() { 1, 2, 4 };
+            list.AddBefore(list.Last, new Node<int>(3));
+            Assert.True(list.First.Next.Next.Data == 3);
         }
 
         [Fact]
         public void AddBeforeMethodShouldThrowAnExceptionIfNodeIsNull()
         {
-            var list = new LinkedList<int>();
-            Node<int> first = new Node<int>(1);
-            Node<int> second = new Node<int>(2);
-            Node<int> third = new Node<int>(3);
-            Node<int> fourth = new Node<int>(4);
-            list.AddFirst(fourth);
-            list.AddFirst(second);
-            list.AddFirst(first);
+            var list = new LinkedList<int>() { 1, 2, 4 };
             Node<int> node = null;
-            Assert.Throws<ArgumentNullException>(() => list.AddBefore(node, third));
+            Assert.Throws<ArgumentNullException>(() => list.AddBefore(node, new Node<int>(3)));
         }
 
         [Fact]
         public void AddBeforeMethodShouldThrowAnExceptionIfNewNodeIsNull()
         {
-            var list = new LinkedList<int>();
-            Node<int> first = new Node<int>(1);
-            Node<int> second = new Node<int>(2);
-            Node<int> fourth = new Node<int>(4);
-            list.AddFirst(fourth);
-            list.AddFirst(second);
-            list.AddFirst(first);
+            var list = new LinkedList<int>() { 1, 2, 4 };
             Node<int> newNode = null;
-            Assert.Throws<ArgumentNullException>(() => list.AddBefore(second, newNode));
+            Assert.Throws<ArgumentNullException>(() => list.AddBefore(list.Last, newNode));
         }
 
         [Fact]
         public void AddBeforeMethodShouldThrowAnExceptionIfNodeCannotBeFoundInCurrentList()
         {
-            var list = new LinkedList<int>();
-            Node<int> first = new Node<int>(1);
-            Node<int> second = new Node<int>(2);
-            Node<int> fourth = new Node<int>(4);
-            Node<int> fifth = new Node<int>(5);
-            list.AddFirst(fourth);
-            list.AddFirst(second);
-            list.AddFirst(first);
-            Assert.Throws<InvalidOperationException>(() => list.AddBefore(fifth, new Node<int>(3)));
+            var list = new LinkedList<int>() { 1, 2 };
+            var node = new Node<int>(4);
+            Assert.Throws<InvalidOperationException>(() => list.AddBefore(node, new Node<int>(3)));
         }
 
         [Fact]
         public void AddBeforeMethodShouldThrowAnExceptionIfNewNodeBelongsToAnotherList()
         {
-            var list = new LinkedList<int>();
-            Node<int> first = new Node<int>(1);
-            Node<int> second = new Node<int>(2);
-            Node<int> fourth = new Node<int>(4);
+            var list = new LinkedList<int>() { 1, 2, 4 };
             Node<int> newNode = new Node<int>(3);
             Node<int> node = new Node<int>(4);
             newNode.Next = node;
             newNode.Previous = node;
-            list.AddFirst(fourth);
-            list.AddFirst(second);
-            list.AddFirst(first);
-            Assert.Throws<InvalidOperationException>(() => list.AddBefore(fourth, newNode));
+            Assert.Throws<InvalidOperationException>(() => list.AddBefore(list.Last, newNode));
         }
 
         [Fact]
@@ -365,63 +290,48 @@ namespace DoublyCircularLinkedList.Facts
         [Fact]
         public void ClearShouldEmptyTheListAndResetCount()
         {
-            var list = new LinkedList<int>();
-            Node<int> first = new Node<int>(1);
-            Node<int> second = new Node<int>(2);
-            list.AddFirst(first);
-            list.AddFirst(second);
+            var list = new LinkedList<int>() { 1, 2 };
             list.Clear();
-            Assert.True(list.Count == 0);
+            Assert.True(list.Count == 0 && list.First == list.Sentinel
+                && list.Sentinel.Next == list.Sentinel && list.Sentinel.Previous == list.Sentinel);
         }
 
         [Fact]
         public void ContainsShouldReturnTrueIfElementIsInTheList()
         {
-            var list = new LinkedList<int>();
-            Node<int> first = new Node<int>(1);
-            Node<int> second = new Node<int>(2);
-            Node<int> third = new Node<int>(3);
-            list.AddLast(first);
-            list.AddLast(second);
-            list.AddLast(third);
+            var list = new LinkedList<int>() { 1, 2, 3 };
             Assert.True(list.Contains(2));
         }
 
         [Fact]
         public void ContainsShouldReturnFalseIfElementIsNotInTheList()
         {
-            var list = new LinkedList<int>();
-            Node<int> first = new Node<int>(1);
-            Node<int> second = new Node<int>(2);
-            Node<int> third = new Node<int>(3);
-            list.AddLast(first);
-            list.AddLast(second);
-            list.AddLast(third);
+            var list = new LinkedList<int>() { 1, 2, 3 };
             Assert.False(list.Contains(4));
         }
 
         [Fact]
         public void RemoveMethodShouldRemoveFirstOccurenceOfGivenElementAsValueFromTheList()
         {
-            var list = new LinkedList<int>();
-            list.Add(1);
-            list.Add(2);
-            list.Add(4);
-            list.Add(2);
+            var list = new LinkedList<int>() { 1, 2, 4, 2 };
             Assert.True(list.Remove(2) && list.First.Data == 1
                 && list.First.Next.Data == 4 && list.Last.Data == 2);
         }
 
         [Fact]
-        public void RemoveMethodShouldRemoveFirstOccurenceOfGivenElementAsNodeFromTheList()
+        public void RemoveMethodShouldRemoveGivenNodeFromList()
         {
             var list = new LinkedList<int>();
-            list.Add(1);
-            list.Add(2);
-            list.Add(4);
-            list.Add(2);
-            Assert.True(list.Remove(new Node<int>(2)) && list.First.Data == 1
-                && list.First.Next.Data == 4 && list.Last.Data == 2);
+            Node<int> first = new Node<int>(1);
+            Node<int> second = new Node<int>(2);
+            Node<int> anotherSecond = new Node<int>(2);
+            Node<int> third = new Node<int>(3);
+            list.AddLast(first);
+            list.AddLast(second);
+            list.AddLast(anotherSecond);
+            list.AddLast(third);
+            Assert.True(list.Remove(anotherSecond) && list.First == first
+                && list.Last.Previous == second && list.Last == third);
         }
 
         [Fact]
@@ -451,10 +361,8 @@ namespace DoublyCircularLinkedList.Facts
         [Fact]
         public void CopyToMethodShouldCopyListElementsToArrayStartingAtGivenIndex()
         {
-            var list = new LinkedList<int>();
-            list.Add(3);
-            list.Add(4);
-            int[] array = new int[4];
+            var list = new LinkedList<int>() { 3, 4 };
+            int[] array = new int[6];
             array[0] = 1;
             array[1] = 2;
             list.CopyTo(array, 2);
@@ -464,11 +372,7 @@ namespace DoublyCircularLinkedList.Facts
         [Fact]
         public void CopyToMethodShouldThrowAnExceptionIfArrayIsNull()
         {
-            var list = new LinkedList<int>();
-            Node<int> first = new Node<int>(1);
-            Node<int> second = new Node<int>(2);
-            list.AddFirst(first);
-            list.AddLast(second);
+            var list = new LinkedList<int>() { 1, 2 };
             int[] array = null;
             Assert.Throws<ArgumentNullException>(() => list.CopyTo(array, 2));
         }
@@ -476,11 +380,7 @@ namespace DoublyCircularLinkedList.Facts
         [Fact]
         public void CopyToMethodShouldThrowAnExceptionIfGivenArrayIndexIsLessThanZero()
         {
-            var list = new LinkedList<int>();
-            Node<int> first = new Node<int>(1);
-            Node<int> second = new Node<int>(2);
-            list.AddFirst(first);
-            list.AddLast(second);
+            var list = new LinkedList<int>() { 1, 2 };
             int[] array = new int[4];
             array[0] = 1;
             array[1] = 2;
@@ -490,13 +390,7 @@ namespace DoublyCircularLinkedList.Facts
         [Fact]
         public void CopyToMethodShouldThrowAnExceptionIfGivenArrayDoesNotHaveEnoughEmptyPositions()
         {
-            var list = new LinkedList<int>();
-            Node<int> first = new Node<int>(1);
-            Node<int> second = new Node<int>(2);
-            Node<int> third = new Node<int>(3);
-            list.AddFirst(first);
-            list.AddLast(second);
-            list.AddLast(third);
+            var list = new LinkedList<int>() { 1, 2, 3 };
             int[] array = new int[4];
             array[0] = 1;
             array[1] = 2;
@@ -506,11 +400,7 @@ namespace DoublyCircularLinkedList.Facts
         [Fact]
         public void RemoveFirstShouldRemoveFirstNodeFromTheList()
         {
-            var list = new LinkedList<int>();
-            list.Add(1);
-            list.Add(3);
-            list.Add(4);
-            list.Add(3);
+            var list = new LinkedList<int>() { 1, 3, 4, 3 };
             Assert.True(list.RemoveFirst() && list.First.Data == 3
                 && list.First.Previous == list.Sentinel && list.First.Next.Data == 4);
         }
@@ -525,11 +415,7 @@ namespace DoublyCircularLinkedList.Facts
         [Fact]
         public void RemoveLastShouldRemoveLastNodeFromTheList()
         {
-            var list = new LinkedList<int>();
-            list.Add(1);
-            list.Add(3);
-            list.Add(4);
-            list.Add(3);
+            var list = new LinkedList<int>() { 1, 3, 4, 3 };
             Assert.True(list.RemoveLast() && list.First.Previous == list.Sentinel
                 && list.Last.Data == 4 && list.Last.Next == list.Sentinel);
         }
@@ -544,32 +430,21 @@ namespace DoublyCircularLinkedList.Facts
         [Fact]
         public void FindShouldReturnFirstNodeOccurenceOfTheGivenItem()
         {
-            var list = new LinkedList<int>();
-            list.Add(1);
-            list.Add(3);
-            list.Add(4);
-            list.Add(3);
+            var list = new LinkedList<int>() { 1, 3, 4, 3 };
             Assert.True(list.Find(3) == list.First.Next);
         }
 
         [Fact]
         public void FindLastShouldReturnLastNodeOccurenceOfTheGivenItem()
         {
-            var list = new LinkedList<int>();
-            list.Add(1);
-            list.Add(3);
-            list.Add(4);
-            list.Add(3);
+            var list = new LinkedList<int>() { 1, 3, 4, 3 };
             Assert.True(list.FindLast(3) == list.Last);
         }
 
         [Fact]
         public void FindLastShouldReturnLastNodeOccurenceOfTheGivenItemIfOnlyOneItemThatMatchesExistsInTheList()
         {
-            var list = new LinkedList<int>();
-            list.Add(1);
-            list.Add(3);
-            list.Add(4);
+            var list = new LinkedList<int>() { 1, 3, 4 };
             Assert.True(list.FindLast(3) == list.First.Next);
         }
 
