@@ -292,7 +292,7 @@ namespace DoublyCircularLinkedList.Facts
         {
             var list = new LinkedList<int>() { 1, 2 };
             list.Clear();
-            Assert.True(list.Count == 0 && list.First == list.Sentinel
+            Assert.True(list.Count == 0 && list.First == null
                 && list.Sentinel.Next == list.Sentinel && list.Sentinel.Previous == list.Sentinel);
         }
 

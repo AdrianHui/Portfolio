@@ -14,8 +14,6 @@ namespace DoublyCircularLinkedList
             Sentinel = new Node<T>(default(T));
             Sentinel.Next = Sentinel;
             Sentinel.Previous = Sentinel;
-            First = Sentinel;
-            Last = Sentinel;
         }
 
         public Node<T> First { get; private set; }
@@ -73,6 +71,11 @@ namespace DoublyCircularLinkedList
                 Count++;
                 return;
             }
+            else if (node == Sentinel && First == null && Last == null)
+            {
+                First = newNode;
+                Last = newNode;
+            }
             else if (node == Sentinel)
             {
                 First = newNode;
@@ -102,8 +105,8 @@ namespace DoublyCircularLinkedList
             Count = 0;
             Sentinel.Next = Sentinel;
             Sentinel.Previous = Sentinel;
-            First = Sentinel;
-            Last = Sentinel;
+            First = null;
+            Last = null;
         }
 
         public bool Contains(T item)
@@ -147,7 +150,7 @@ namespace DoublyCircularLinkedList
 
         public bool Remove(Node<T> node)
         {
-            if (First == Sentinel)
+            if (First == null)
             {
                 throw new InvalidOperationException("The list is empty.");
             }
