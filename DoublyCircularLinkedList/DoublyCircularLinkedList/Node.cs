@@ -16,5 +16,7 @@ namespace DoublyCircularLinkedList
         public Node<T> Next { get; set; }
 
         public Node<T> Previous { get; set; }
+
+        public LinkedList<T> AssociatedList { get; internal set; }
     }
 }
