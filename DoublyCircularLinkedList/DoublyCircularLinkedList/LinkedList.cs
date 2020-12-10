@@ -6,19 +6,19 @@ namespace DoublyCircularLinkedList
 {
     class LinkedList<T> : ICollection<T>
     {
-        public Node<T> Sentinel;
-        private Node<T> current;
+        private readonly Node<T> sentinel;
 
         public LinkedList()
         {
-            Sentinel = new Node<T>(default(T));
-            Sentinel.Next = Sentinel;
-            Sentinel.Previous = Sentinel;
+            sentinel = new Node<T>(default(T));
+            sentinel.Next = sentinel;
+            sentinel.Previous = sentinel;
+            sentinel.AssociatedList = this;
         }
 
-        public Node<T> First { get; private set; }
+        public Node<T> First { get => sentinel.Next == sentinel ? null : sentinel.Next; }
 
-        public Node<T> Last { get; private set; }
+        public Node<T> Last { get => sentinel.Previous == sentinel ? null : sentinel.Previous; }
 
         public int Count { get; private set; }
 
@@ -36,7 +36,7 @@ namespace DoublyCircularLinkedList
 
         public void AddFirst(Node<T> newNode)
         {
-            AddAfter(Sentinel, newNode);
+            AddAfter(sentinel, newNode);
         }
 
         public void AddLast(T item)
@@ -46,7 +46,7 @@ namespace DoublyCircularLinkedList
 
         public void AddLast(Node<T> newNode)
         {
-            AddAfter(Sentinel.Previous, newNode);
+            AddBefore(sentinel, newNode);
         }
 
         public void AddAfter(Node<T> node, T item)
@@ -60,23 +60,6 @@ namespace DoublyCircularLinkedList
             CheckIfElementIsInList(node);
             CheckIfIsAValidNode(newNode);
             CheckIfBelongsToAnotherList(newNode);
-            if (node == Last)
-            {
-                newNode.Next = Sentinel;
-                newNode.Previous = Last;
-                Sentinel.Previous = newNode;
-                Last.Next = newNode;
-                Last = newNode;
-                First = Sentinel.Next;
-                Count++;
-                return;
-            }
-            else if (node == Sentinel)
-            {
-                First = newNode;
-                Last ??= newNode;
-            }
-
             newNode.Next = node.Next;
             newNode.Next.Previous = newNode;
             node.Next = newNode;
@@ -99,21 +82,13 @@ namespace DoublyCircularLinkedList
         public void Clear()
         {
             Count = 0;
-            Sentinel.Next = Sentinel;
-            Sentinel.Previous = Sentinel;
-            First = null;
-            Last = null;
+            sentinel.Next = sentinel;
+            sentinel.Previous = sentinel;
         }
 
         public bool Contains(T item)
         {
-            current = Search(item, First);
-            if (current == null)
-            {
-                return false;
-            }
-
-            return current.Data.Equals(item);
+            return Search(item, First) != null;
         }
 
         public void CopyTo(T[] array, int arrayIndex)
@@ -132,7 +107,7 @@ namespace DoublyCircularLinkedList
                 throw new ArgumentException("There is not enough space in destination array.");
             }
 
-            for (current = First; current != Sentinel; current = current.Next)
+            for (var current = First; current != sentinel; current = current.Next)
             {
                 array[arrayIndex] = current.Data;
                 arrayIndex++;
@@ -153,27 +128,10 @@ namespace DoublyCircularLinkedList
 
             CheckIfIsAValidNode(node);
             CheckIfElementIsInList(node);
-            for (current = First; current != Sentinel; current = current.Next)
-            {
-                if (current == node)
-                {
-                    if (current == First)
-                    {
-                        First = First.Next;
-                    }
-                    else if (current == Last)
-                    {
-                        Last = Last.Previous;
-                    }
-
-                    current.Previous.Next = current.Next;
-                    current.Next.Previous = current.Previous;
-                    Count--;
-                    return true;
-                }
-            }
-
-            return false;
+            node.Previous.Next = node.Next;
+            node.Next.Previous = node.Previous;
+            Count--;
+            return true;
         }
 
         public bool RemoveFirst()
@@ -188,17 +146,17 @@ namespace DoublyCircularLinkedList
 
         public Node<T> Find(T item)
         {
-            return Search(item, Sentinel.Next);
+            return Search(item, sentinel.Next);
         }
 
         public Node<T> FindLast(T item)
         {
-            return Search(item, Sentinel.Previous);
+            return Search(item, sentinel.Previous);
         }
 
         public IEnumerator<T> GetEnumerator()
         {
-            for (current = First; current != Sentinel; current = current.Next)
+            for (var current = sentinel.Next; current != sentinel; current = current.Next)
             {
                 yield return current.Data;
             }
@@ -211,13 +169,9 @@ namespace DoublyCircularLinkedList
 
         private Node<T> Search(T item, Node<T> searchStartPoint)
         {
-            if (item == null)
-            {
-                return null;
-            }
-
-            for (current = searchStartPoint; current != Sentinel;
-                current = searchStartPoint == Sentinel.Next
+            Node<T> current;
+            for (current = searchStartPoint; current != sentinel;
+                current = searchStartPoint == sentinel.Next
                         ? current.Next : current.Previous)
             {
                 if (current.Data.Equals(item))
@@ -241,8 +195,9 @@ namespace DoublyCircularLinkedList
 
         private void CheckIfBelongsToAnotherList(Node<T> node)
         {
-            if (node.Next == null && node.Previous == null)
+            if (node.AssociatedList == null || node.AssociatedList == this)
             {
+                node.AssociatedList ??= this;
                 return;
             }
 
@@ -252,8 +207,8 @@ namespace DoublyCircularLinkedList
 
         private void CheckIfElementIsInList(Node<T> node)
         {
-            if (node == Sentinel || node is string
-                || node.Data.GetType().Equals(typeof(object)) || Find(node.Data) != null)
+            if (node == sentinel || node is string
+                || node.Data.GetType().Equals(typeof(object)) || node.AssociatedList == this)
             {
                 return;
             }

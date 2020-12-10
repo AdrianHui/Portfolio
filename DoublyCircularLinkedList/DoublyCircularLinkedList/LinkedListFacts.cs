@@ -243,10 +243,11 @@ namespace DoublyCircularLinkedList.Facts
         public void AddBeforeMethodShouldThrowAnExceptionIfNewNodeBelongsToAnotherList()
         {
             var list = new LinkedList<int>() { 1, 2, 4 };
+            var anotherList = new LinkedList<int>();
             Node<int> newNode = new Node<int>(3);
             Node<int> node = new Node<int>(4);
-            newNode.Next = node;
-            newNode.Previous = node;
+            anotherList.AddLast(newNode);
+            anotherList.AddLast(node);
             Assert.Throws<InvalidOperationException>(() => list.AddBefore(list.Last, newNode));
         }
 
@@ -292,8 +293,7 @@ namespace DoublyCircularLinkedList.Facts
         {
             var list = new LinkedList<int>() { 1, 2 };
             list.Clear();
-            Assert.True(list.Count == 0 && list.First == null
-                && list.Sentinel.Next == list.Sentinel && list.Sentinel.Previous == list.Sentinel);
+            Assert.True(list.Count == 0);
         }
 
         [Fact]
@@ -402,7 +402,7 @@ namespace DoublyCircularLinkedList.Facts
         {
             var list = new LinkedList<int>() { 1, 3, 4, 3 };
             Assert.True(list.RemoveFirst() && list.First.Data == 3
-                && list.First.Previous == list.Sentinel && list.First.Next.Data == 4);
+                && list.First.Previous.Previous == list.Last && list.First.Next.Data == 4);
         }
 
         [Fact]
@@ -416,8 +416,8 @@ namespace DoublyCircularLinkedList.Facts
         public void RemoveLastShouldRemoveLastNodeFromTheList()
         {
             var list = new LinkedList<int>() { 1, 3, 4, 3 };
-            Assert.True(list.RemoveLast() && list.First.Previous == list.Sentinel
-                && list.Last.Data == 4 && list.Last.Next == list.Sentinel);
+            Assert.True(list.RemoveLast() && list.First.Previous.Previous == list.Last
+                && list.Last.Data == 4 && list.Last.Next.Next == list.First);
         }
 
         [Fact]
@@ -462,8 +462,8 @@ namespace DoublyCircularLinkedList.Facts
             list.AddAfter(first, second);
             list.AddBefore(fifth, fourth);
             list.AddAfter(second, third);
-            Assert.True(list.First.Previous == list.Sentinel && list.Last.Next == list.Sentinel
-                && list.Sentinel.Next == list.First && list.Sentinel.Previous == list.Last);
+            Assert.True(list.First.Previous.Previous == list.Last
+                && list.Last.Next.Next == list.First);
         }
     }
 }
