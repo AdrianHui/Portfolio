@@ -60,7 +60,7 @@ namespace DoublyCircularLinkedList
             CheckIfElementIsInList(node);
             CheckIfIsAValidNode(newNode);
             CheckIfBelongsToAnotherList(newNode);
-            newNode.AssociatedList ??= this;
+            newNode.AssociatedList = this;
             newNode.Next = node.Next;
             newNode.Next.Previous = newNode;
             node.Next = newNode;
@@ -197,7 +197,7 @@ namespace DoublyCircularLinkedList
 
         private void CheckIfBelongsToAnotherList(Node<T> node)
         {
-            if (node.AssociatedList == this || node.AssociatedList == null)
+            if (node.AssociatedList == null)
             {
                 return;
             }
