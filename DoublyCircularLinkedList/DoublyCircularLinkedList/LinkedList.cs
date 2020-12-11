@@ -88,7 +88,7 @@ namespace DoublyCircularLinkedList
 
         public bool Contains(T item)
         {
-            return Search(item, First) != null;
+            return Search(item, sentinel.Next) != null;
         }
 
         public void CopyTo(T[] array, int arrayIndex)
