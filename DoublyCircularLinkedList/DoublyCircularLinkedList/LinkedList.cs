@@ -185,7 +185,7 @@ namespace DoublyCircularLinkedList
 
         private void CheckIfIsAValidNode(Node<T> node)
         {
-            if (node is object || node is string || node != null)
+            if (node != null)
             {
                 return;
             }
@@ -207,8 +207,7 @@ namespace DoublyCircularLinkedList
 
         private void CheckIfElementIsInList(Node<T> node)
         {
-            if (node == sentinel || node is string
-                || node.Data.GetType().Equals(typeof(object)) || node.AssociatedList == this)
+            if (node.AssociatedList == this)
             {
                 return;
             }
