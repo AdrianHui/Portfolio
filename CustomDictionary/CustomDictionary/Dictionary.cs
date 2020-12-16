@@ -2,24 +2,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 
 namespace CustomDictionary
 {
     internal class Dictionary<TKey, TValue> : IDictionary<TKey, TValue>
     {
         private readonly int slots;
-        private readonly LinkedList<int> freeIndex;
+        private readonly int[] buckets;
+        private LinkedList<int> freeIndex;
         private Element<TKey, TValue>[] elements;
-        private int[] buckets;
 
         public Dictionary(int slots)
         {
-            buckets = Enumerable.Repeat(-1, slots).ToArray();
-            elements = new Element<TKey, TValue>[slots];
-            freeIndex = new LinkedList<int>();
             this.slots = slots;
-            GetFreeIndexes();
+            elements = new Element<TKey, TValue>[slots];
+            freeIndex = GetIndexes();
+            buckets = new int[slots];
+            Array.Fill(buckets, -1);
         }
 
         public ICollection<TKey> Keys
@@ -154,22 +153,17 @@ namespace CustomDictionary
         public bool TryGetValue(TKey key, [MaybeNullWhen(false)] out TValue value)
         {
             ValidKeyCheck(key);
-            if (this.ContainsKey(key))
-            {
-                value = GetValue(buckets[GetBucketIndex(key)], key);
-                return true;
-            }
-
-            value = default;
-            return false;
+            bool containsKey = this.ContainsKey(key);
+            value = containsKey ? GetValue(buckets[GetBucketIndex(key)], key) : default;
+            return containsKey;
         }
 
         public void Clear()
         {
             Count = 0;
             elements = new Element<TKey, TValue>[slots];
-            buckets = Enumerable.Repeat(-1, slots).ToArray();
-            GetFreeIndexes();
+            Array.Fill(buckets, -1);
+            freeIndex = GetIndexes();
         }
 
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
@@ -212,12 +206,15 @@ namespace CustomDictionary
             return GetEnumerator();
         }
 
-        private void GetFreeIndexes()
+        private LinkedList<int> GetIndexes()
         {
-            for (int i = elements.Length - 1; i >= 0; i--)
+            var list = new LinkedList<int>();
+            for (int i = 0; i < elements.Length; i++)
             {
-                freeIndex.AddFirst(i);
+                list.AddLast(i);
             }
+
+            return list;
         }
 
         private int GetBucketIndex(TKey key)
