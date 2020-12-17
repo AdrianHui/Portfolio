@@ -83,8 +83,7 @@ namespace CustomDictionary
 
         public void Add(KeyValuePair<TKey, TValue> item)
         {
-            ValidKeyCheck(item.Key);
-            if (SearchBucket(buckets[GetBucketIndex(item.Key)], item.Key))
+            if (ContainsKey(item.Key))
             {
                 throw new ArgumentException(
                     "The key you entered already exists in current collection.");
