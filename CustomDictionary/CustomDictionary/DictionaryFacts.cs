@@ -57,7 +57,7 @@ namespace CustomDictionary.Facts
             dict.Add(2, "a");
             dict.Add(0, "c");
             dict.Add(7, "b");
-            Assert.False(dict.ContainsKey(1));
+            Assert.False(dict.ContainsKey(3598));
         }
 
         [Fact]
@@ -225,24 +225,38 @@ namespace CustomDictionary.Facts
         public void TryGetValueMethodShouldGetTheValueAssociatedtoGivenKey()
         {
             var dict = new Dictionary<int, string>(5);
-            string b = "b";
+            string value;
             dict.Add(2, "a");
-            dict.Add(0, b);
-            Assert.True(dict.TryGetValue(0, out b));
+            dict.Add(0, "b");
+            Assert.True(dict.TryGetValue(0, out value) && value == "b");
         }
 
         [Fact]
         public void TryGetValueMethodShouldThrowAnExceptionIfGivenKeyIsNull()
         {
             var dict = new Dictionary<string, string>(5);
-            var value = "a";
-            var first = new KeyValuePair<string, string>("2", value);
+            string value;
+            var first = new KeyValuePair<string, string>("2", "a");
             var second = new KeyValuePair<string, string>("0", "b");
-            var third = new KeyValuePair<string, string>("7", "b");
+            var third = new KeyValuePair<string, string>("7", "c");
             dict.Add(first);
             dict.Add(second);
             dict.Add(third);
             Assert.Throws<ArgumentNullException>(() => dict.TryGetValue(null, out value));
+        }
+
+        [Fact]
+        public void TryGetValueMethodShouldThrowAnExceptionIfGivenKeyIsNotInTheCollection()
+        {
+            var dict = new Dictionary<string, string>(5);
+            string value;
+            var first = new KeyValuePair<string, string>("2", "a");
+            var second = new KeyValuePair<string, string>("0", "b");
+            var third = new KeyValuePair<string, string>("7", "c");
+            dict.Add(first);
+            dict.Add(second);
+            dict.Add(third);
+            Assert.Throws<KeyNotFoundException>(() => dict.TryGetValue("5", out value));
         }
 
         [Fact]

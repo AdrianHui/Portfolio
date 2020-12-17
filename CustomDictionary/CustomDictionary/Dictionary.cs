@@ -102,11 +102,6 @@ namespace CustomDictionary
         {
             ValidKeyCheck(key);
             var bucket = GetBucketIndex(key);
-            if (bucket >= buckets.Length)
-            {
-                return false;
-            }
-
             return SearchBucket(buckets[bucket], key);
         }
 
@@ -152,10 +147,8 @@ namespace CustomDictionary
 
         public bool TryGetValue(TKey key, [MaybeNullWhen(false)] out TValue value)
         {
-            ValidKeyCheck(key);
-            bool containsKey = this.ContainsKey(key);
-            value = containsKey ? GetValue(buckets[GetBucketIndex(key)], key) : default;
-            return containsKey;
+            value = this[key];
+            return true;
         }
 
         public void Clear()
