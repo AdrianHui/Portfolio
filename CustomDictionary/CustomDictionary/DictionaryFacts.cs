@@ -115,8 +115,8 @@ namespace CustomDictionary.Facts
             dict.Add(first);
             dict.Add(second);
             dict.Remove(0);
-            var keys = (List<int>)dict.Keys;
-            Assert.True(keys.Count == 1 && keys[0] == 2);
+            var keys = dict.Keys;
+            Assert.True(keys.Count == 1 && keys.Contains(2));
         }
 
         [Fact]
@@ -141,8 +141,8 @@ namespace CustomDictionary.Facts
             dict.Add(second);
             dict.Add(third);
             dict.Remove(2);
-            var keys = (List<int>)dict.Keys;
-            Assert.True(keys.Count == 2 && keys[0] == 0 && keys[1] == 7);
+            var keys = dict.Keys;
+            Assert.True(keys.Count == 2 && keys.Contains(0) && keys.Contains(7));
         }
 
         [Fact]
@@ -164,8 +164,8 @@ namespace CustomDictionary.Facts
             dict.Add(first);
             dict.Add(second);
             dict.Remove(second);
-            var keys = (List<int>)dict.Keys;
-            Assert.True(keys.Count == 1 && keys[0] == 2);
+            var keys = dict.Keys;
+            Assert.True(keys.Count == 1 && keys.Contains(2));
         }
 
         [Fact]
@@ -191,8 +191,8 @@ namespace CustomDictionary.Facts
             dict.Add(second);
             dict.Add(third);
             dict.Remove(first);
-            var keys = (List<int>)dict.Keys;
-            Assert.True(keys.Count == 2 && keys[0] == 0 && keys[1] == 7);
+            var keys = dict.Keys;
+            Assert.True(keys.Count == 2 && keys.Contains(0) && keys.Contains(7));
         }
 
         [Fact]
@@ -204,9 +204,9 @@ namespace CustomDictionary.Facts
             dict.Add(0, "c");
             dict.Remove(7);
             dict.Add(5, "d");
-            var keys = (List<int>)dict.Keys;
-            Assert.True(keys.Count == 3 && keys[0] == 2
-                && keys[1] == 5 && keys[2] == 0);
+            var keys = dict.Keys;
+            Assert.True(keys.Count == 3 && keys.Contains(2)
+                && keys.Contains(0) && keys.Contains(5));
         }
 
         [Fact]
@@ -216,8 +216,8 @@ namespace CustomDictionary.Facts
             var first = new KeyValuePair<int, string>(2, "a");
             dict.Add(first);
             dict.Clear();
-            var keys = (List<int>)dict.Keys;
-            var values = (List<string>)dict.Values;
+            var keys = dict.Keys;
+            var values = dict.Values;
             Assert.True(keys.Count == 0 && values.Count == 0 && dict.Count == 0);
         }
 
@@ -351,8 +351,8 @@ namespace CustomDictionary.Facts
             dict.Add(2, "a");
             dict.Add(0, "b");
             dict.Add(7, "c");
-            List<int> keys = (List<int>)dict.Keys;
-            Assert.True(keys[0] == 2 && keys[1] == 0 && keys[2] == 7);
+            var keys = dict.Keys;
+            Assert.True(keys.Contains(2) && keys.Contains(0) && keys.Contains(7));
         }
 
         [Fact]
@@ -362,8 +362,8 @@ namespace CustomDictionary.Facts
             dict.Add(2, "a");
             dict.Add(0, "b");
             dict.Add(7, "c");
-            List<string> values = (List<string>)dict.Values;
-            Assert.True(values[0] == "a" && values[1] == "b" && values[2] == "c");
+            var values = dict.Values;
+            Assert.True(values.Contains("a") && values.Contains("b") && values.Contains("c"));
         }
     }
 }

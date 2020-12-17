@@ -7,17 +7,17 @@ namespace CustomDictionary
 {
     internal class Dictionary<TKey, TValue> : IDictionary<TKey, TValue>
     {
-        private readonly int slots;
+        private readonly int elementsNum;
         private readonly int[] buckets;
-        private LinkedList<int> freeIndex;
         private Element<TKey, TValue>[] elements;
+        private LinkedList<int> removedElements;
 
-        public Dictionary(int slots)
+        public Dictionary(int elementsNum)
         {
-            this.slots = slots;
-            elements = new Element<TKey, TValue>[slots];
-            freeIndex = GetIndexes();
-            buckets = new int[slots];
+            this.elementsNum = elementsNum;
+            elements = new Element<TKey, TValue>[elementsNum];
+            removedElements = new LinkedList<int>();
+            buckets = new int[elementsNum];
             Array.Fill(buckets, -1);
         }
 
@@ -25,10 +25,10 @@ namespace CustomDictionary
         {
             get
             {
-                List<TKey> keys = new List<TKey>();
+                ICollection<TKey> keys = new List<TKey>();
                 for (int i = 0; i < elements.Length; i++)
                 {
-                    if (elements[i] != null)
+                    if (elements[i] != null && !removedElements.Contains(i))
                     {
                         keys.Add(elements[i].Key);
                     }
@@ -42,10 +42,10 @@ namespace CustomDictionary
         {
             get
             {
-                List<TValue> values = new List<TValue>();
+                ICollection<TValue> values = new List<TValue>();
                 for (int i = 0; i < elements.Length; i++)
                 {
-                    if (elements[i] != null)
+                    if (elements[i] != null && !removedElements.Contains(i))
                     {
                         values.Add(elements[i].Value);
                     }
@@ -55,7 +55,7 @@ namespace CustomDictionary
             }
         }
 
-        public int Count { get; set; }
+        public int Count { get; private set; }
 
         public bool IsReadOnly { get; }
 
@@ -91,10 +91,10 @@ namespace CustomDictionary
             }
 
             var bucketIndex = GetBucketIndex(item.Key);
-            elements[freeIndex.First.Value] =
+            var firstFreeIndex = GetFirstFreeIndex();
+            elements[firstFreeIndex] =
                 new Element<TKey, TValue>(item.Key, item.Value, buckets[bucketIndex]);
-            buckets[bucketIndex] = freeIndex.First.Value;
-            freeIndex.RemoveFirst();
+            buckets[bucketIndex] = firstFreeIndex;
             Count++;
         }
 
@@ -122,9 +122,9 @@ namespace CustomDictionary
             var firstItem = buckets[bucket];
             if (firstItem != -1 && elements[firstItem].Key.Equals(key))
             {
-                freeIndex.AddFirst(firstItem);
+                removedElements.AddFirst(firstItem);
                 buckets[bucket] = elements[firstItem].Next;
-                elements[firstItem] = default;
+                elements[firstItem].Next = -1;
                 Count--;
                 return true;
             }
@@ -134,9 +134,9 @@ namespace CustomDictionary
                 var nextItem = elements[current].Next;
                 if (elements[nextItem].Key.Equals(key))
                 {
-                    freeIndex.AddFirst(nextItem);
+                    removedElements.AddFirst(nextItem);
                     elements[current].Next = elements[nextItem].Next;
-                    elements[nextItem] = default;
+                    elements[nextItem].Next = -1;
                     Count--;
                     return true;
                 }
@@ -161,9 +161,9 @@ namespace CustomDictionary
         public void Clear()
         {
             Count = 0;
-            elements = new Element<TKey, TValue>[slots];
+            elements = new Element<TKey, TValue>[elementsNum];
+            removedElements = new LinkedList<int>();
             Array.Fill(buckets, -1);
-            freeIndex = GetIndexes();
         }
 
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
@@ -206,21 +206,22 @@ namespace CustomDictionary
             return GetEnumerator();
         }
 
-        private LinkedList<int> GetIndexes()
+        private int GetFirstFreeIndex()
         {
-            var list = new LinkedList<int>();
-            for (int i = 0; i < elements.Length; i++)
+            int freeIndexAfterRemove = removedElements.Count == 0 ? -1 : removedElements.First.Value;
+            if (freeIndexAfterRemove == -1 || Count < freeIndexAfterRemove)
             {
-                list.AddLast(i);
+                return Count;
             }
 
-            return list;
+            removedElements.RemoveFirst();
+            return freeIndexAfterRemove;
         }
 
         private int GetBucketIndex(TKey key)
         {
             var hash = Math.Abs(key.GetHashCode());
-            return hash < slots ? hash : hash % slots;
+            return hash < elementsNum ? hash : hash % elementsNum;
         }
 
         private bool SearchBucket(int elemIndex, TKey key)
