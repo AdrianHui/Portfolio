@@ -24,12 +24,9 @@ namespace CustomDictionary
             get
             {
                 ICollection<TKey> keys = new List<TKey>();
-                for (int i = 0; i < elements.Length; i++)
+                foreach (var elem in this)
                 {
-                    if (elements[i] != null)
-                    {
-                        keys.Add(elements[i].Key);
-                    }
+                    keys.Add(elem.Key);
                 }
 
                 return keys;
@@ -41,12 +38,9 @@ namespace CustomDictionary
             get
             {
                 ICollection<TValue> values = new List<TValue>();
-                for (int i = 0; i < elements.Length; i++)
+                foreach (var elem in this)
                 {
-                    if (elements[i] != null)
-                    {
-                        values.Add(elements[i].Value);
-                    }
+                    values.Add(elem.Value);
                 }
 
                 return values;
@@ -98,8 +92,7 @@ namespace CustomDictionary
         public bool ContainsKey(TKey key)
         {
             ValidKeyCheck(key);
-            var bucket = GetBucketIndex(key);
-            return SearchBucket(buckets[bucket], key);
+            return GetPreviousAndCurrentElements(key) != (-1, -1);
         }
 
         public bool Contains(KeyValuePair<TKey, TValue> item)
@@ -110,27 +103,26 @@ namespace CustomDictionary
         public bool Remove(TKey key)
         {
             ValidKeyCheck(key);
-            var bucket = GetBucketIndex(key);
-            var firstItem = buckets[bucket];
-            if (firstItem != -1 && elements[firstItem].Key.Equals(key))
+            var element = GetPreviousAndCurrentElements(key);
+            var currentElement = element.Item2;
+            var previousElement = element.Item1;
+            if (previousElement == -1 && currentElement != -1)
             {
-                buckets[bucket] = elements[firstItem].Next;
-                elements[firstItem].Next = removedElements;
-                removedElements = firstItem;
-                elements[firstItem] = default;
+                buckets[GetBucketIndex(key)] = this.elements[currentElement].Next;
+                this.elements[currentElement].Next = removedElements;
+                removedElements = currentElement;
                 Count--;
                 return true;
             }
 
-            for (var current = firstItem; current != -1; current = elements[current].Next)
+            for (var current = previousElement; current != -1;
+                current = this.elements[current].Next)
             {
-                var nextItem = elements[current].Next;
-                if (elements[nextItem].Key.Equals(key))
+                if (this.elements[currentElement].Key.Equals(key))
                 {
-                    elements[current].Next = elements[nextItem].Next;
-                    elements[nextItem].Next = removedElements;
-                    removedElements = nextItem;
-                    elements[nextItem] = default;
+                    this.elements[current].Next = this.elements[currentElement].Next;
+                    this.elements[currentElement].Next = removedElements;
+                    removedElements = currentElement;
                     Count--;
                     return true;
                 }
@@ -174,14 +166,11 @@ namespace CustomDictionary
                 throw new ArgumentException("There is not enough space in destination array.");
             }
 
-            for (int i = 0; i < elements.Length; i++)
+            foreach (var elem in this)
             {
-                if (elements[i] != null)
-                {
-                    array[arrayIndex] =
-                    new KeyValuePair<TKey, TValue>(elements[i].Key, elements[i].Value);
-                    arrayIndex++;
-                }
+                array[arrayIndex] =
+                    new KeyValuePair<TKey, TValue>(elem.Key, elem.Value);
+                arrayIndex++;
             }
         }
 
@@ -189,7 +178,10 @@ namespace CustomDictionary
         {
             foreach (var item in elements)
             {
-                yield return new KeyValuePair<TKey, TValue>(item.Key, item.Value);
+                if (item != null && ContainsKey(item.Key))
+                {
+                    yield return new KeyValuePair<TKey, TValue>(item.Key, item.Value);
+                }
             }
         }
 
@@ -206,21 +198,27 @@ namespace CustomDictionary
 
         private int GetBucketIndex(TKey key)
         {
-            var hash = Math.Abs(key.GetHashCode());
-            return hash < buckets.Length ? hash : hash % buckets.Length;
+            return Math.Abs(key.GetHashCode()) % buckets.Length;
         }
 
-        private bool SearchBucket(int elemIndex, TKey key)
+        private (int, int) GetPreviousAndCurrentElements(TKey key)
         {
-            for (var current = elemIndex; current != -1; current = elements[current].Next)
+            var bucketFirstElem = buckets[GetBucketIndex(key)];
+            if (bucketFirstElem != -1 && elements[bucketFirstElem].Key.Equals(key))
             {
-                if (elements[current].Key.Equals(key))
+                return (-1, bucketFirstElem);
+            }
+
+            for (var current = bucketFirstElem; current != -1; current = elements[current].Next)
+            {
+                var nextItem = elements[current].Next;
+                if (nextItem != -1 && elements[nextItem].Key.Equals(key))
                 {
-                    return true;
+                    return (current, nextItem);
                 }
             }
 
-            return false;
+            return (-1, -1);
         }
 
         private TValue GetValue(int elemIndex, TKey key)
@@ -259,7 +257,7 @@ namespace CustomDictionary
 
         private void CheckIfKeyIsInDict(TKey key)
         {
-            if (SearchBucket(buckets[GetBucketIndex(key)], key))
+            if (GetPreviousAndCurrentElements(key) != (-1, -1))
             {
                 return;
             }
