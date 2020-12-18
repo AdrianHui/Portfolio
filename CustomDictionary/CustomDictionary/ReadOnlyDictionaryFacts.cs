@@ -165,8 +165,8 @@ namespace CustomDictionary.Facts
             var arr = new KeyValuePair<int, string>[5];
             var readOnlyDict = new ReadOnlyDictionary<int, string>(dict);
             readOnlyDict.CopyTo(arr, 3);
-            Assert.True(arr[3].Key == 2 && arr[3].Value == "a"
-                && arr[4].Key == 0 && arr[4].Value == "b");
+            Assert.True(arr[3].Key == 0 && arr[3].Value == "b"
+                && arr[4].Key == 2 && arr[4].Value == "a");
         }
     }
 }

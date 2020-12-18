@@ -57,14 +57,14 @@ namespace CustomDictionary
             {
                 ValidKeyCheck(key);
                 CheckIfKeyIsInDict(key);
-                return GetValue(buckets[GetBucketIndex(key)], key);
+                return GetValue(key);
             }
 
             set
             {
                 ValidKeyCheck(key);
                 CheckIfKeyIsInDict(key);
-                SetValue(buckets[GetBucketIndex(key)], key, value);
+                SetValue(key, value);
             }
         }
 
@@ -103,27 +103,24 @@ namespace CustomDictionary
         public bool Remove(TKey key)
         {
             ValidKeyCheck(key);
-            var element = GetPreviousAndCurrentElements(key);
-            var currentElement = element.Item2;
-            var previousElement = element.Item1;
-            if (previousElement == -1 && currentElement != -1)
+            var (previousElement, currentElement) = GetPreviousAndCurrentElements(key);
+            if (previousElement == -1 && currentElement == -1)
+            {
+                return false;
+            }
+            else if (previousElement == -1)
             {
                 buckets[GetBucketIndex(key)] = elements[currentElement].Next;
-                elements[currentElement].Next = removedElements;
-                removedElements = currentElement;
-                Count--;
-                return true;
             }
-            else if (previousElement != -1)
+            else
             {
                 elements[previousElement].Next = elements[currentElement].Next;
-                elements[currentElement].Next = removedElements;
-                removedElements = currentElement;
-                Count--;
-                return true;
             }
 
-            return false;
+            elements[currentElement].Next = removedElements;
+            removedElements = currentElement;
+            Count--;
+            return true;
         }
 
         public bool Remove(KeyValuePair<TKey, TValue> item)
@@ -133,7 +130,14 @@ namespace CustomDictionary
 
         public bool TryGetValue(TKey key, [MaybeNullWhen(false)] out TValue value)
         {
-            value = this[key];
+            ValidKeyCheck(key);
+            if (!ContainsKey(key))
+            {
+                value = default;
+                return false;
+            }
+
+            value = GetValue(key);
             return true;
         }
 
@@ -171,11 +175,15 @@ namespace CustomDictionary
 
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
-            foreach (var item in elements)
+            for (int i = 0; i < buckets.Length; i++)
             {
-                if (item != null && ContainsKey(item.Key))
+                if (buckets[i] != -1)
                 {
-                    yield return new KeyValuePair<TKey, TValue>(item.Key, item.Value);
+                    for (var current = buckets[i]; current != -1; current = elements[current].Next)
+                    {
+                        yield return new KeyValuePair<TKey, TValue>(
+                            elements[current].Key, elements[current].Value);
+                    }
                 }
             }
         }
@@ -216,28 +224,14 @@ namespace CustomDictionary
             return (-1, -1);
         }
 
-        private TValue GetValue(int elemIndex, TKey key)
+        private TValue GetValue(TKey key)
         {
-            for (var current = elemIndex; current != -1; current = elements[current].Next)
-            {
-                if (elements[current].Key.Equals(key))
-                {
-                    return elements[current].Value;
-                }
-            }
-
-            return default;
+            return elements[GetPreviousAndCurrentElements(key).Item2].Value;
         }
 
-        private void SetValue(int elemIndex, TKey key, TValue value)
+        private void SetValue(TKey key, TValue value)
         {
-            for (var current = elemIndex; current != -1; current = elements[current].Next)
-            {
-                if (elements[current].Key.Equals(key))
-                {
-                    elements[current].Value = value;
-                }
-            }
+            elements[GetPreviousAndCurrentElements(key).Item2].Value = value;
         }
 
         private void ValidKeyCheck(TKey key)

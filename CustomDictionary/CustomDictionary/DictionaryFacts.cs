@@ -232,6 +232,16 @@ namespace CustomDictionary.Facts
         }
 
         [Fact]
+        public void TryGetValueMethodShouldReturnFalseIfGivenKeyIsNotInTheCollection()
+        {
+            var dict = new Dictionary<int, string>(5);
+            string value;
+            dict.Add(2, "a");
+            dict.Add(0, "b");
+            Assert.False(dict.TryGetValue(5, out value));
+        }
+
+        [Fact]
         public void TryGetValueMethodShouldThrowAnExceptionIfGivenKeyIsNull()
         {
             var dict = new Dictionary<string, string>(5);
@@ -246,20 +256,6 @@ namespace CustomDictionary.Facts
         }
 
         [Fact]
-        public void TryGetValueMethodShouldThrowAnExceptionIfGivenKeyIsNotInTheCollection()
-        {
-            var dict = new Dictionary<string, string>(5);
-            string value;
-            var first = new KeyValuePair<string, string>("2", "a");
-            var second = new KeyValuePair<string, string>("0", "b");
-            var third = new KeyValuePair<string, string>("7", "c");
-            dict.Add(first);
-            dict.Add(second);
-            dict.Add(third);
-            Assert.Throws<KeyNotFoundException>(() => dict.TryGetValue("5", out value));
-        }
-
-        [Fact]
         public void CopyToMethodShouldCopyElementsToGivenArray()
         {
             var dict = new Dictionary<int, string>(5);
@@ -267,8 +263,8 @@ namespace CustomDictionary.Facts
             dict.Add(0, "b");
             var arr = new KeyValuePair<int, string>[5];
             dict.CopyTo(arr, 3);
-            Assert.True(arr[3].Key == 2 && arr[3].Value == "a"
-                && arr[4].Key == 0 && arr[4].Value == "b");
+            Assert.True(arr[3].Key == 0 && arr[3].Value == "b"
+                && arr[4].Key == 2 && arr[4].Value == "a");
         }
 
         [Fact]
