@@ -177,13 +177,10 @@ namespace CustomDictionary
         {
             for (int i = 0; i < buckets.Length; i++)
             {
-                if (buckets[i] != -1)
+                for (var current = buckets[i]; current != -1; current = elements[current].Next)
                 {
-                    for (var current = buckets[i]; current != -1; current = elements[current].Next)
-                    {
-                        yield return new KeyValuePair<TKey, TValue>(
-                            elements[current].Key, elements[current].Value);
-                    }
+                    yield return new KeyValuePair<TKey, TValue>(
+                        elements[current].Key, elements[current].Value);
                 }
             }
         }
