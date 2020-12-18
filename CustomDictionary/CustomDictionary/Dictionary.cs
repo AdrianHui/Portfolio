@@ -108,24 +108,19 @@ namespace CustomDictionary
             var previousElement = element.Item1;
             if (previousElement == -1 && currentElement != -1)
             {
-                buckets[GetBucketIndex(key)] = this.elements[currentElement].Next;
-                this.elements[currentElement].Next = removedElements;
+                buckets[GetBucketIndex(key)] = elements[currentElement].Next;
+                elements[currentElement].Next = removedElements;
                 removedElements = currentElement;
                 Count--;
                 return true;
             }
-
-            for (var current = previousElement; current != -1;
-                current = this.elements[current].Next)
+            else if (previousElement != -1)
             {
-                if (this.elements[currentElement].Key.Equals(key))
-                {
-                    this.elements[current].Next = this.elements[currentElement].Next;
-                    this.elements[currentElement].Next = removedElements;
-                    removedElements = currentElement;
-                    Count--;
-                    return true;
-                }
+                elements[previousElement].Next = elements[currentElement].Next;
+                elements[currentElement].Next = removedElements;
+                removedElements = currentElement;
+                Count--;
+                return true;
             }
 
             return false;
@@ -209,12 +204,12 @@ namespace CustomDictionary
                 return (-1, bucketFirstElem);
             }
 
-            for (var current = bucketFirstElem; current != -1; current = elements[current].Next)
+            for (var previousElem = bucketFirstElem; previousElem != -1; previousElem = elements[previousElem].Next)
             {
-                var nextItem = elements[current].Next;
-                if (nextItem != -1 && elements[nextItem].Key.Equals(key))
+                var current = elements[previousElem].Next;
+                if (current != -1 && elements[current].Key.Equals(key))
                 {
-                    return (current, nextItem);
+                    return (previousElem, current);
                 }
             }
 
@@ -257,7 +252,7 @@ namespace CustomDictionary
 
         private void CheckIfKeyIsInDict(TKey key)
         {
-            if (GetPreviousAndCurrentElements(key) != (-1, -1))
+            if (ContainsKey(key))
             {
                 return;
             }
