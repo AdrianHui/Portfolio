@@ -68,6 +68,7 @@ namespace Enumerable
             this IEnumerable<TSource> source, Func<TSource, IEnumerable<TResult>> selector)
         {
             CheckArgumentNotNull(source, nameof(source));
+            CheckArgumentNotNull(selector, nameof(selector));
             foreach (var elem in source)
             {
                 foreach (var item in selector(elem))
