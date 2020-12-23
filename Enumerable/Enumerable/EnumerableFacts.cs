@@ -89,5 +89,21 @@ namespace Enumerable.Facts
             int[] absNums = { -1, -45, -376 };
             Assert.Throws<ArgumentNullException>(() => absNums.First(null));
         }
+
+        [Fact]
+        public void SelectShouldReturnACollectionWithElementsInNewFormIndicatedBySelector()
+        {
+            int[] absNums = { -1, -45, -376 };
+            IEnumerable<int> newCollection = absNums.Select(num => Math.Abs(num));
+            Assert.True(newCollection.All(num => num > 0));
+        }
+
+        [Fact]
+        public void SelectShouldThrowAnExceptionIfSourceCollectionIsNull()
+        {
+            int[] absNums = null;
+            IEnumerable<int> newCollection = absNums.Select(num => Math.Abs(num));
+            Assert.Throws<ArgumentNullException>(() => newCollection.All(num => num > 0));
+        }
     }
 }
