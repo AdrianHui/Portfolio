@@ -64,6 +64,19 @@ namespace Enumerable
             }
         }
 
+        public static IEnumerable<TResult> SelectMany<TSource, TResult>(
+            this IEnumerable<TSource> source, Func<TSource, IEnumerable<TResult>> selector)
+        {
+            CheckArgumentNotNull(source, nameof(source));
+            foreach (var elem in source)
+            {
+                foreach (var item in selector(elem))
+                {
+                    yield return item;
+                }
+            }
+        }
+
         private static void CheckArgumentNotNull<T>(T argument, string argName)
         {
             if (argument != null)

@@ -105,5 +105,26 @@ namespace Enumerable.Facts
             IEnumerable<int> newCollection = absNums.Select(num => Math.Abs(num));
             Assert.Throws<ArgumentNullException>(() => newCollection.All(num => num > 0));
         }
+
+        [Fact]
+        public void SelectManyShouldReturnACollectionWithElementsInNewFormIndicatedBySelector()
+        {
+            int[][] nums =
+            {
+                new[] { 1, 2, 3 },
+                new[] { 5, 6, 7 },
+                new[] { 8, 9, 10 }
+            };
+            IEnumerable<int> newCollection = nums.SelectMany(num => num);
+            Assert.True(newCollection.All(num => num > 0));
+        }
+
+        [Fact]
+        public void SelectManyShouldThrowAnExceptionIfSourceCollectionIsNull()
+        {
+            int[][] nums = null;
+            IEnumerable<int> newCollection = nums.SelectMany(num => num);
+            Assert.Throws<ArgumentNullException>(() => newCollection.All(num => num > 0));
+        }
     }
 }
