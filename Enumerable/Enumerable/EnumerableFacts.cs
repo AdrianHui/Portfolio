@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace Enumerable.Facts
@@ -59,6 +60,34 @@ namespace Enumerable.Facts
         {
             int[] absNums = null;
             Assert.Throws<ArgumentNullException>(() => absNums.Any(null));
+        }
+
+        [Fact]
+        public void FirstShouldReturnFirstElementThatMeetTheCondition()
+        {
+            int[] absNums = { -1, -45, 376 };
+            Assert.True(absNums.First(num => num > 0) == 376);
+        }
+
+        [Fact]
+        public void FirstShouldThrowAnExceptionIfNoneOfTheElementsMeetTheCondition()
+        {
+            int[] absNums = { -1, -45, -376 };
+            Assert.Throws<InvalidOperationException>(() => absNums.First(num => num > 0));
+        }
+
+        [Fact]
+        public void FirstShouldThrowAnExceptionIfCollectionIsNull()
+        {
+            int[] absNums = null;
+            Assert.Throws<ArgumentNullException>(() => absNums.First(num => num > 0));
+        }
+
+        [Fact]
+        public void FirstShouldThrowAnExceptionIfPredicateIsNull()
+        {
+            int[] absNums = { -1, -45, -376 };
+            Assert.Throws<ArgumentNullException>(() => absNums.First(null));
         }
     }
 }

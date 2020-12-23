@@ -21,7 +21,8 @@ namespace Enumerable
             return true;
         }
 
-        public static bool Any<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+        public static bool Any<TSource>(
+            this IEnumerable<TSource> source, Func<TSource, bool> predicate)
         {
             SourceValidCheck(source);
             PredicateValidCheck(predicate);
@@ -34,6 +35,22 @@ namespace Enumerable
             }
 
             return false;
+        }
+
+        public static TSource First<TSource>(
+            this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+        {
+            SourceValidCheck(source);
+            PredicateValidCheck(predicate);
+            foreach (var elem in source)
+            {
+                if (predicate(elem))
+                {
+                    return elem;
+                }
+            }
+
+            throw new InvalidOperationException("None of the elements meet the condition.");
         }
 
         private static void SourceValidCheck<TSource>(IEnumerable<TSource> source)
