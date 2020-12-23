@@ -32,5 +32,33 @@ namespace Enumerable.Facts
             int[] absNums = null;
             Assert.Throws<ArgumentNullException>(() => absNums.All(null));
         }
+
+        [Fact]
+        public void AnyShouldReturnTrueIfAtLeastOneElementMeetTheCondition()
+        {
+            int[] absNums = { -1, 45, -376 };
+            Assert.True(absNums.Any(num => num > 0));
+        }
+
+        [Fact]
+        public void AnyShouldReturnFalseIfAllElementsDoesntMeetTheCondition()
+        {
+            int[] absNums = { -1, -45, -376 };
+            Assert.False(absNums.Any(num => num > 0));
+        }
+
+        [Fact]
+        public void AnyShouldThrowAnExceptionIfCollectionIsNull()
+        {
+            int[] absNums = null;
+            Assert.Throws<ArgumentNullException>(() => absNums.Any(num => num > 0));
+        }
+
+        [Fact]
+        public void AnyShouldThrowAnExceptionIfPredicateIsNull()
+        {
+            int[] absNums = null;
+            Assert.Throws<ArgumentNullException>(() => absNums.Any(null));
+        }
     }
 }
