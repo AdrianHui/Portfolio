@@ -125,6 +125,21 @@ namespace Enumerable
             }
         }
 
+        public static TAccumulate Aggregate<TSource, TAccumulate>(
+            this IEnumerable<TSource> source,
+            TAccumulate seed,
+            Func<TAccumulate, TSource, TAccumulate> func)
+        {
+            CheckArgumentNotNull(source, nameof(source));
+            CheckArgumentNotNull(func, nameof(func));
+            foreach (var elem in source)
+            {
+                seed = func(seed, elem);
+            }
+
+            return seed;
+        }
+
         private static void CheckArgumentNotNull<T>(T argument, string argName)
         {
             if (argument != null)

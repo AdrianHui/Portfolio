@@ -199,5 +199,29 @@ namespace Enumerable.Facts
             Assert.Throws<ArgumentNullException>(()
                 => newCollection.All(predicate => predicate != null));
         }
+
+        [Fact]
+        public void AggregateShouldApplyAccumulatorFuncOverEachElementInTheCollectionAndReturnTheResult()
+        {
+            int[] absNums = { 1, 2, 3, 4 };
+            var result = absNums.Aggregate(0, (sum, current) => sum + current);
+            Assert.Equal(10, result);
+        }
+
+        [Fact]
+        public void AggregateShouldThrowAnExceptionIfSourceIsNull()
+        {
+            int[] absNums = null;
+            Assert.Throws<ArgumentNullException>(()
+                => absNums.Aggregate(0, (sum, current) => sum + current));
+        }
+
+        [Fact]
+        public void AggregateShouldThrowAnExceptionIfFuncIsNull()
+        {
+            int[] absNums = { 1, 2, 3, 4 };
+            Assert.Throws<ArgumentNullException>(()
+                => absNums.Aggregate(0, null));
+        }
     }
 }
