@@ -97,6 +97,9 @@ namespace Enumerable
            Func<TSource, TKey> keySelector,
            Func<TSource, TElement> elementSelector)
         {
+            CheckArgumentNotNull(source, nameof(source));
+            CheckArgumentNotNull(keySelector, nameof(keySelector));
+            CheckArgumentNotNull(elementSelector, nameof(elementSelector));
             Dictionary<TKey, TElement> dict = new Dictionary<TKey, TElement>();
             foreach (var elem in source)
             {
@@ -104,6 +107,22 @@ namespace Enumerable
             }
 
             return dict;
+        }
+
+        public static IEnumerable<TResult> Zip<TFirst, TSecond, TResult>(
+            this IEnumerable<TFirst> first,
+            IEnumerable<TSecond> second,
+            Func<TFirst, TSecond, TResult> resultSelector)
+        {
+            CheckArgumentNotNull(first, nameof(first));
+            CheckArgumentNotNull(second, nameof(second));
+            CheckArgumentNotNull(resultSelector, nameof(resultSelector));
+            var firstEnum = first.GetEnumerator();
+            var secondEnum = second.GetEnumerator();
+            while (firstEnum.MoveNext() && secondEnum.MoveNext())
+            {
+                yield return resultSelector(firstEnum.Current, secondEnum.Current);
+            }
         }
 
         private static void CheckArgumentNotNull<T>(T argument, string argName)

@@ -95,7 +95,7 @@ namespace Enumerable.Facts
         {
             int[] absNums = { -1, -45, -376 };
             IEnumerable<int> newCollection = absNums.Select(num => Math.Abs(num));
-            Assert.True(newCollection.All(num => num > 0));
+            Assert.Equal(new[] { 1, 45, 376 }, newCollection);
         }
 
         [Fact]
@@ -112,11 +112,10 @@ namespace Enumerable.Facts
             int[][] nums =
             {
                 new[] { 1, 2, 3 },
-                new[] { 5, 6, 7 },
-                new[] { 8, 9, 10 }
+                new[] { 4, 5, 6 }
             };
             IEnumerable<int> newCollection = nums.SelectMany(num => num);
-            Assert.True(newCollection.All(num => num > 0));
+            Assert.Equal(new[] { 1, 2, 3, 4, 5, 6 }, newCollection);
         }
 
         [Fact]
@@ -132,7 +131,7 @@ namespace Enumerable.Facts
         {
             int[] absNums = { 1, -45, 376 };
             IEnumerable<int> newCollection = absNums.Where(num => num > 0);
-            Assert.True(newCollection.All(num => num > 0));
+            Assert.Equal(new[] { 1, 376 }, newCollection);
         }
 
         [Fact]
@@ -149,6 +148,56 @@ namespace Enumerable.Facts
             int[] absNums = { 1, -45, 376 };
             IEnumerable<int> newCollection = absNums.Where(null);
             Assert.Throws<ArgumentNullException>(() => newCollection.All(num => num > 0));
+        }
+
+        [Fact]
+        public void ToDictionaryShouldReturnADictionaryWithKeysAndValuesAccordingToSelectors()
+        {
+            int[] absNums = { 1, 2, 3, 4 };
+            Dictionary<int, string> dict =
+                absNums.ToDictionary(key => key * 2, val => val.ToString());
+            Assert.True(dict[2] == "1" && dict[4] == "2"
+                && dict[6] == "3" && dict[8] == "4");
+        }
+
+        [Fact]
+        public void ToDictionaryShouldThrowAnExceptionIfSourceIsNull()
+        {
+            int[] absNums = null;
+            Assert.Throws<ArgumentNullException>(()
+                => absNums.ToDictionary(key => key * 2, val => val.ToString()));
+        }
+
+        [Fact]
+        public void ZipShouldReturnANewCollectionSameSizeAsShortestContainingFirstAndSecondCollectionsElementsMerged()
+        {
+            int[] absNums = { 1, 2, 3, 4 };
+            string[] strings = { "one", "two", "three" };
+            IEnumerable<string> newCollection =
+                absNums.Zip(strings, (first, second) => first + " - " + second);
+            Assert.Equal(new[] { "1 - one", "2 - two", "3 - three" }, newCollection);
+        }
+
+        [Fact]
+        public void ZipShouldThrowAnExceptionIfFirstCollectionIsNull()
+        {
+            int[] first = null;
+            string[] second = { "one", "two", "three" };
+            IEnumerable<string> newCollection =
+                first.Zip(second, (first, second) => first + " - " + second);
+            Assert.Throws<ArgumentNullException>(()
+                => newCollection.All(predicate => predicate != null));
+        }
+
+        [Fact]
+        public void ZipShouldThrowAnExceptionIfSecondCollectionIsNull()
+        {
+            int[] first = { 1, 2, 3, 4 };
+            string[] second = null;
+            IEnumerable<string> newCollection =
+                first.Zip(second, (first, second) => first + " - " + second);
+            Assert.Throws<ArgumentNullException>(()
+                => newCollection.All(predicate => predicate != null));
         }
     }
 }
