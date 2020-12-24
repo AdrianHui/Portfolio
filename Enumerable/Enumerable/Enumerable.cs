@@ -78,6 +78,34 @@ namespace Enumerable
             }
         }
 
+        public static IEnumerable<TSource> Where<TSource>(
+            this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+        {
+            CheckArgumentNotNull(source, nameof(source));
+            CheckArgumentNotNull(predicate, nameof(predicate));
+            foreach (var elem in source)
+            {
+                if (predicate(elem))
+                {
+                    yield return elem;
+                }
+            }
+        }
+
+        public static Dictionary<TKey, TElement> ToDictionary<TSource, TKey, TElement>(
+           this IEnumerable<TSource> source,
+           Func<TSource, TKey> keySelector,
+           Func<TSource, TElement> elementSelector)
+        {
+            Dictionary<TKey, TElement> dict = new Dictionary<TKey, TElement>();
+            foreach (var elem in source)
+            {
+                dict.Add(keySelector(elem), elementSelector(elem));
+            }
+
+            return dict;
+        }
+
         private static void CheckArgumentNotNull<T>(T argument, string argName)
         {
             if (argument != null)

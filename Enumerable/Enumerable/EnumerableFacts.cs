@@ -126,5 +126,29 @@ namespace Enumerable.Facts
             IEnumerable<int> newCollection = nums.SelectMany(num => num);
             Assert.Throws<ArgumentNullException>(() => newCollection.All(num => num > 0));
         }
+
+        [Fact]
+        public void WhereShouldReturnANewCollectionWithElementThatMeetTheCondition()
+        {
+            int[] absNums = { 1, -45, 376 };
+            IEnumerable<int> newCollection = absNums.Where(num => num > 0);
+            Assert.True(newCollection.All(num => num > 0));
+        }
+
+        [Fact]
+        public void WhereShouldShouldThrowAnExceptionIfSourceIsNull()
+        {
+            int[] absNums = null;
+            IEnumerable<int> newCollection = absNums.Where(num => num > 0);
+            Assert.Throws<ArgumentNullException>(() => newCollection.All(num => num > 0));
+        }
+
+        [Fact]
+        public void WhereShouldShouldThrowAnExceptionIfPredicateIsNull()
+        {
+            int[] absNums = { 1, -45, 376 };
+            IEnumerable<int> newCollection = absNums.Where(null);
+            Assert.Throws<ArgumentNullException>(() => newCollection.All(num => num > 0));
+        }
     }
 }
