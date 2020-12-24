@@ -223,5 +223,78 @@ namespace Enumerable.Facts
             Assert.Throws<ArgumentNullException>(()
                 => absNums.Aggregate(0, null));
         }
+
+        [Fact]
+        public void JoinShouldReturnACollectionWithElementsThatHaveCommonKeys()
+        {
+            int[] outer = { 1, 2, 3, 4 };
+            int[] inner = { 1, 2, 5, 6 };
+            var result = outer.Join(
+                inner,
+                outerKey => outerKey,
+                innerKey => innerKey,
+                (outer, inner) => outer + " - " + inner);
+            Assert.Equal(new[] { "1 - 1", "2 - 2" }, result);
+        }
+
+        [Fact]
+        public void JoinShouldThrowAnExceptionIfOuterCollectionIsNull()
+        {
+            int[] outer = null;
+            int[] inner = { 1, 2, 5, 6 };
+            var result = outer.Join(
+                inner,
+                outerKey => outerKey,
+                innerKey => innerKey,
+                (outer, inner) => outer + " - " + inner);
+            Assert.Throws<ArgumentNullException>(() => result.All(predicate => predicate != null));
+        }
+
+        [Fact]
+        public void JoinShouldThrowAnExceptionIfInnerCollectionIsNull()
+        {
+            int[] outer = { 1, 2, 3, 4 };
+            int[] inner = null;
+            var result = outer.Join(
+                inner,
+                outerKey => outerKey,
+                innerKey => innerKey,
+                (outer, inner) => outer + " - " + inner);
+            Assert.Throws<ArgumentNullException>(() => result.All(predicate => predicate != null));
+        }
+
+        [Fact]
+        public void JoinShouldThrowAnExceptionIfOuterKeySelectorIsNull()
+        {
+            int[] outer = { 1, 2, 3, 4 };
+            int[] inner = { 1, 2, 5, 6 };
+            var result = outer.Join(
+                inner,
+                null,
+                innerKey => innerKey,
+                (outer, inner) => outer + " - " + inner);
+            Assert.Throws<ArgumentNullException>(() => result.All(predicate => predicate != null));
+        }
+
+        [Fact]
+        public void JoinShouldThrowAnExceptionIfInnerKeySelectorIsNull()
+        {
+            int[] outer = { 1, 2, 3, 4 };
+            int[] inner = { 1, 2, 5, 6 };
+            var result = outer.Join(
+                inner,
+                outerKey => outerKey,
+                null,
+                (outer, inner) => outer + " - " + inner);
+            Assert.Throws<ArgumentNullException>(() => result.All(predicate => predicate != null));
+        }
+
+        [Fact]
+        public void DistinctShouldReturnACollectionWithElementsThatHaveCommonKeys()
+        {
+            int[] outer = { 1, 2, 3, 2 };
+            var result = outer.Distinct(new CustomEqualityComparer<int>());
+            Assert.Equal(new[] { 1, 2, 3 }, result);
+        }
     }
 }

@@ -6,7 +6,7 @@ namespace Enumerable
     static class Enumerable
     {
         public static bool All<TSource>(
-            this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+                    this IEnumerable<TSource> source, Func<TSource, bool> predicate)
         {
             CheckArgumentNotNull(source, nameof(source));
             CheckArgumentNotNull(predicate, nameof(predicate));
@@ -22,7 +22,7 @@ namespace Enumerable
         }
 
         public static bool Any<TSource>(
-            this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+                    this IEnumerable<TSource> source, Func<TSource, bool> predicate)
         {
             CheckArgumentNotNull(source, nameof(source));
             CheckArgumentNotNull(predicate, nameof(predicate));
@@ -38,7 +38,7 @@ namespace Enumerable
         }
 
         public static TSource First<TSource>(
-            this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+                    this IEnumerable<TSource> source, Func<TSource, bool> predicate)
         {
             CheckArgumentNotNull(source, nameof(source));
             CheckArgumentNotNull(predicate, nameof(predicate));
@@ -54,7 +54,7 @@ namespace Enumerable
         }
 
         public static IEnumerable<TResult> Select<TSource, TResult>(
-            this IEnumerable<TSource> source, Func<TSource, TResult> selector)
+                    this IEnumerable<TSource> source, Func<TSource, TResult> selector)
         {
             CheckArgumentNotNull(source, nameof(source));
             CheckArgumentNotNull(selector, nameof(selector));
@@ -65,7 +65,7 @@ namespace Enumerable
         }
 
         public static IEnumerable<TResult> SelectMany<TSource, TResult>(
-            this IEnumerable<TSource> source, Func<TSource, IEnumerable<TResult>> selector)
+                    this IEnumerable<TSource> source, Func<TSource, IEnumerable<TResult>> selector)
         {
             CheckArgumentNotNull(source, nameof(source));
             CheckArgumentNotNull(selector, nameof(selector));
@@ -79,7 +79,7 @@ namespace Enumerable
         }
 
         public static IEnumerable<TSource> Where<TSource>(
-            this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+                    this IEnumerable<TSource> source, Func<TSource, bool> predicate)
         {
             CheckArgumentNotNull(source, nameof(source));
             CheckArgumentNotNull(predicate, nameof(predicate));
@@ -93,9 +93,9 @@ namespace Enumerable
         }
 
         public static Dictionary<TKey, TElement> ToDictionary<TSource, TKey, TElement>(
-           this IEnumerable<TSource> source,
-           Func<TSource, TKey> keySelector,
-           Func<TSource, TElement> elementSelector)
+                   this IEnumerable<TSource> source,
+                   Func<TSource, TKey> keySelector,
+                   Func<TSource, TElement> elementSelector)
         {
             CheckArgumentNotNull(source, nameof(source));
             CheckArgumentNotNull(keySelector, nameof(keySelector));
@@ -110,9 +110,9 @@ namespace Enumerable
         }
 
         public static IEnumerable<TResult> Zip<TFirst, TSecond, TResult>(
-            this IEnumerable<TFirst> first,
-            IEnumerable<TSecond> second,
-            Func<TFirst, TSecond, TResult> resultSelector)
+                    this IEnumerable<TFirst> first,
+                    IEnumerable<TSecond> second,
+                    Func<TFirst, TSecond, TResult> resultSelector)
         {
             CheckArgumentNotNull(first, nameof(first));
             CheckArgumentNotNull(second, nameof(second));
@@ -126,9 +126,9 @@ namespace Enumerable
         }
 
         public static TAccumulate Aggregate<TSource, TAccumulate>(
-            this IEnumerable<TSource> source,
-            TAccumulate seed,
-            Func<TAccumulate, TSource, TAccumulate> func)
+                    this IEnumerable<TSource> source,
+                    TAccumulate seed,
+                    Func<TAccumulate, TSource, TAccumulate> func)
         {
             CheckArgumentNotNull(source, nameof(source));
             CheckArgumentNotNull(func, nameof(func));
@@ -138,6 +138,44 @@ namespace Enumerable
             }
 
             return seed;
+        }
+
+        public static IEnumerable<TResult> Join<TOuter, TInner, TKey, TResult>(
+                    this IEnumerable<TOuter> outer,
+                    IEnumerable<TInner> inner,
+                    Func<TOuter, TKey> outerKeySelector,
+                    Func<TInner, TKey> innerKeySelector,
+                    Func<TOuter, TInner, TResult> resultSelector)
+        {
+            CheckArgumentNotNull(outer, nameof(outer));
+            CheckArgumentNotNull(inner, nameof(inner));
+            CheckArgumentNotNull(outerKeySelector, nameof(outerKeySelector));
+            CheckArgumentNotNull(innerKeySelector, nameof(innerKeySelector));
+            CheckArgumentNotNull(resultSelector, nameof(resultSelector));
+            foreach (var elem in outer)
+            {
+                foreach (var item in inner)
+                {
+                    if (outerKeySelector(elem).Equals(innerKeySelector(item)))
+                    {
+                        yield return resultSelector(elem, item);
+                    }
+                }
+            }
+        }
+
+        public static IEnumerable<TSource> Distinct<TSource>(
+                    this IEnumerable<TSource> source,
+                    IEqualityComparer<TSource> comparer)
+        {
+            HashSet<TSource> returned = new HashSet<TSource>(comparer);
+            foreach (var elem in source)
+            {
+                if (returned.Add(elem))
+                {
+                    yield return elem;
+                }
+            }
         }
 
         private static void CheckArgumentNotNull<T>(T argument, string argName)
