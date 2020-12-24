@@ -290,11 +290,46 @@ namespace Enumerable.Facts
         }
 
         [Fact]
-        public void DistinctShouldReturnACollectionWithElementsThatHaveCommonKeys()
+        public void DistinctShouldReturnACollectionContainingOnlyUniqueElements()
         {
-            int[] outer = { 1, 2, 3, 2 };
-            var result = outer.Distinct(new CustomEqualityComparer<int>());
+            int[] source = { 1, 2, 3, 2 };
+            var result = source.Distinct(new CustomEqualityComparer<int>());
             Assert.Equal(new[] { 1, 2, 3 }, result);
+        }
+
+        [Fact]
+        public void DistinctShouldThrowAnExceptionIfSourceIsNull()
+        {
+            int[] source = null;
+            var result = source.Distinct(new CustomEqualityComparer<int>());
+            Assert.Throws<ArgumentNullException>(() => result.All(predicate => predicate != null));
+        }
+
+        [Fact]
+        public void UnionShouldReturnACollectionContainingOnlyUniqueElementsFromBothCollections()
+        {
+            int[] first = { 1, 2, 3, 2 };
+            int[] second = { 5, 3, 6, 2 };
+            var result = first.Union(second, new CustomEqualityComparer<int>());
+            Assert.Equal(new[] { 1, 2, 3, 5, 6 }, result);
+        }
+
+        [Fact]
+        public void UnionShouldThrowAnExceptionIfFirstCollectionIsNull()
+        {
+            int[] first = null;
+            int[] second = { 5, 3, 6, 2 };
+            var result = first.Union(second, new CustomEqualityComparer<int>());
+            Assert.Throws<ArgumentNullException>(() => result.All(predicate => predicate != null));
+        }
+
+        [Fact]
+        public void UnionShouldThrowAnExceptionIfSecondCollectionIsNull()
+        {
+            int[] first = { 1, 2, 3, 2 };
+            int[] second = null;
+            var result = first.Union(second, new CustomEqualityComparer<int>());
+            Assert.Throws<ArgumentNullException>(() => result.All(predicate => predicate != null));
         }
     }
 }

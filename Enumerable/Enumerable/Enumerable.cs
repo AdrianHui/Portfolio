@@ -168,12 +168,38 @@ namespace Enumerable
                     this IEnumerable<TSource> source,
                     IEqualityComparer<TSource> comparer)
         {
+            CheckArgumentNotNull(source, nameof(source));
             HashSet<TSource> returned = new HashSet<TSource>(comparer);
             foreach (var elem in source)
             {
                 if (returned.Add(elem))
                 {
                     yield return elem;
+                }
+            }
+        }
+
+        public static IEnumerable<TSource> Union<TSource>(
+                    this IEnumerable<TSource> first,
+                    IEnumerable<TSource> second,
+                    IEqualityComparer<TSource> comparer)
+        {
+            CheckArgumentNotNull(first, nameof(first));
+            CheckArgumentNotNull(second, nameof(second));
+            HashSet<TSource> result = new HashSet<TSource>(comparer);
+            foreach (var elem in first)
+            {
+                if (result.Add(elem))
+                {
+                    yield return elem;
+                }
+            }
+
+            foreach (var item in second)
+            {
+                if (result.Add(item))
+                {
+                    yield return item;
                 }
             }
         }
