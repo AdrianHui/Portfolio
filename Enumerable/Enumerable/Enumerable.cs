@@ -186,10 +186,10 @@ namespace Enumerable
         {
             CheckArgumentNotNull(first, nameof(first));
             CheckArgumentNotNull(second, nameof(second));
-            HashSet<TSource> result = new HashSet<TSource>(comparer);
+            HashSet<TSource> items = new HashSet<TSource>(comparer);
             foreach (var elem in first)
             {
-                if (result.Add(elem))
+                if (items.Add(elem))
                 {
                     yield return elem;
                 }
@@ -197,9 +197,29 @@ namespace Enumerable
 
             foreach (var item in second)
             {
-                if (result.Add(item))
+                if (items.Add(item))
                 {
                     yield return item;
+                }
+            }
+        }
+
+        public static IEnumerable<TSource> Intersect<TSource>(
+                    this IEnumerable<TSource> first,
+                    IEnumerable<TSource> second,
+                    IEqualityComparer<TSource> comparer)
+        {
+            CheckArgumentNotNull(first, nameof(first));
+            CheckArgumentNotNull(second, nameof(second));
+            HashSet<TSource> items = new HashSet<TSource>(comparer);
+            foreach (var elem in first)
+            {
+                foreach (var item in second)
+                {
+                    if (comparer.Equals(elem, item) && items.Add(elem))
+                    {
+                        yield return elem;
+                    }
                 }
             }
         }

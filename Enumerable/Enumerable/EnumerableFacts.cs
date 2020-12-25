@@ -331,5 +331,32 @@ namespace Enumerable.Facts
             var result = first.Union(second, new CustomEqualityComparer<int>());
             Assert.Throws<ArgumentNullException>(() => result.All(predicate => predicate != null));
         }
+
+        [Fact]
+        public void IntersectShouldReturnACollectionContainingElementsThatCanBeFoundInBothCollections()
+        {
+            int[] first = { 1, 2, 3, 2 };
+            int[] second = { 5, 3, 6, 2 };
+            var result = first.Intersect(second, new CustomEqualityComparer<int>());
+            Assert.Equal(new[] { 2, 3 }, result);
+        }
+
+        [Fact]
+        public void IntersectShouldThrowAnExceptionIfFirstCollectionIsNull()
+        {
+            int[] first = null;
+            int[] second = { 5, 3, 6, 2 };
+            var result = first.Intersect(second, new CustomEqualityComparer<int>());
+            Assert.Throws<ArgumentNullException>(() => result.All(predicate => predicate != null));
+        }
+
+        [Fact]
+        public void IntersectShouldThrowAnExceptionIfSecondCollectionIsNull()
+        {
+            int[] first = { 1, 2, 3, 2 };
+            int[] second = null;
+            var result = first.Intersect(second, new CustomEqualityComparer<int>());
+            Assert.Throws<ArgumentNullException>(() => result.All(predicate => predicate != null));
+        }
     }
 }
