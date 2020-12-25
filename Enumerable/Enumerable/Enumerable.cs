@@ -224,6 +224,33 @@ namespace Enumerable
             }
         }
 
+        public static IEnumerable<TSource> Except<TSource>(
+                    this IEnumerable<TSource> first,
+                    IEnumerable<TSource> second,
+                    IEqualityComparer<TSource> comparer)
+        {
+            CheckArgumentNotNull(first, nameof(first));
+            CheckArgumentNotNull(second, nameof(second));
+            HashSet<TSource> items = new HashSet<TSource>(comparer);
+            foreach (var elem in first)
+            {
+                bool found = false;
+                foreach (var item in second)
+                {
+                    if (comparer.Equals(elem, item))
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found && items.Add(elem))
+                {
+                    yield return elem;
+                }
+            }
+        }
+
         private static void CheckArgumentNotNull<T>(T argument, string argName)
         {
             if (argument != null)

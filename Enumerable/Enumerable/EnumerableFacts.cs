@@ -358,5 +358,32 @@ namespace Enumerable.Facts
             var result = first.Intersect(second, new CustomEqualityComparer<int>());
             Assert.Throws<ArgumentNullException>(() => result.All(predicate => predicate != null));
         }
+
+        [Fact]
+        public void ExceptShouldReturnACollectionContainingElementsFromFirstCollectionThatCanNotBeFoundInSecondCollections()
+        {
+            int[] first = { 1, 2, 3, 2, 4 };
+            int[] second = { 5, 3, 6, 2 };
+            var result = first.Except(second, new CustomEqualityComparer<int>());
+            Assert.Equal(new[] { 1, 4 }, result);
+        }
+
+        [Fact]
+        public void ExceptShouldThrowAnExceptionIfFirstCollectionIsNull()
+        {
+            int[] first = null;
+            int[] second = { 5, 3, 6, 2 };
+            var result = first.Except(second, new CustomEqualityComparer<int>());
+            Assert.Throws<ArgumentNullException>(() => result.All(predicate => predicate != null));
+        }
+
+        [Fact]
+        public void ExceptShouldThrowAnExceptionIfSecondCollectionIsNull()
+        {
+            int[] first = { 1, 2, 3, 2, 4 };
+            int[] second = null;
+            var result = first.Except(second, new CustomEqualityComparer<int>());
+            Assert.Throws<ArgumentNullException>(() => result.All(predicate => predicate != null));
+        }
     }
 }
