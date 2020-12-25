@@ -231,20 +231,10 @@ namespace Enumerable
         {
             CheckArgumentNotNull(first, nameof(first));
             CheckArgumentNotNull(second, nameof(second));
-            HashSet<TSource> items = new HashSet<TSource>(comparer);
+            HashSet<TSource> items = new HashSet<TSource>(second, comparer);
             foreach (var elem in first)
             {
-                bool found = false;
-                foreach (var item in second)
-                {
-                    if (comparer.Equals(elem, item))
-                    {
-                        found = true;
-                        break;
-                    }
-                }
-
-                if (!found && items.Add(elem))
+                if (items.Add(elem))
                 {
                     yield return elem;
                 }
