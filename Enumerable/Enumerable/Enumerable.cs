@@ -241,6 +241,36 @@ namespace Enumerable
             }
         }
 
+        public static IEnumerable<TResult> GroupBy<TSource, TKey, TElement, TResult>(
+                    this IEnumerable<TSource> source,
+                    Func<TSource, TKey> keySelector,
+                    Func<TSource, TElement> elementSelector,
+                    Func<TKey, IEnumerable<TElement>, TResult> resultSelector,
+                    IEqualityComparer<TKey> comparer)
+        {
+            CheckArgumentNotNull(source, nameof(source));
+            CheckArgumentNotNull(keySelector, nameof(keySelector));
+            CheckArgumentNotNull(elementSelector, nameof(elementSelector));
+            Dictionary<TKey, List<TElement>> items = new Dictionary<TKey, List<TElement>>(comparer);
+            foreach (var elem in source)
+            {
+                var key = keySelector(elem);
+                if (items.ContainsKey(key))
+                {
+                    items[key].Add(elementSelector(elem));
+                }
+                else
+                {
+                    items.Add(key, new List<TElement>() { elementSelector(elem) });
+                }
+            }
+
+            foreach (var item in items)
+            {
+                yield return resultSelector(item.Key, item.Value);
+            }
+        }
+
         private static void CheckArgumentNotNull<T>(T argument, string argName)
         {
             if (argument != null)

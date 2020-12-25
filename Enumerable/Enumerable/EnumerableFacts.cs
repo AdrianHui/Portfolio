@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace Enumerable.Facts
@@ -384,6 +385,22 @@ namespace Enumerable.Facts
             int[] second = null;
             var result = first.Except(second, new CustomEqualityComparer<int>());
             Assert.Throws<ArgumentNullException>(() => result.All(predicate => predicate != null));
+        }
+
+        [Fact]
+        public void GroupByShouldGroupElementsByKeySelectorAndReturnTheResultsAccordingToResultSelector()
+        {
+            int[] source = { 1, 1, 2, 1, 2, 3, 1, 2, 3, 4 };
+            var result = source.GroupBy(
+                x => x,
+                y => y,
+                (key, values) => $"{key} occurs {values.Count()} times",
+                new CustomEqualityComparer<int>());
+            Assert.Equal(
+                new[]
+                {
+                    "1 occurs 4 times", "2 occurs 3 times", "3 occurs 2 times", "4 occurs 1 times"
+                }, result);
         }
     }
 }
