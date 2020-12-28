@@ -452,5 +452,56 @@ namespace Enumerable.Facts
             Assert.Throws<ArgumentNullException>(() =>
                             source.OrderBy(null, new CustomComparer<int>()));
         }
+
+        [Fact]
+        public void OrderByShouldThrowAnExceptionIfComparerIsNull()
+        {
+            int[] source = { 5, 8, 4, 4, 3 };
+            Assert.Throws<ArgumentNullException>(() =>
+                            source.OrderBy(x => x, null));
+        }
+
+        [Fact]
+        public void ThenByShouldOrderElementsByKeyInAscendingOrder()
+        {
+            int[] source = { 5, 8, 4, 4, 3 };
+            var result = source.OrderBy(
+                x => x,
+                new CustomComparer<int>()).ThenBy(
+                x => x % 2,
+                new CustomComparer<int>());
+            Assert.Equal(new[] { 4, 4, 8, 3, 5 }, result);
+        }
+
+        [Fact]
+        public void ThenByShouldThrowAnExceptionIfSourceIsNull()
+        {
+            int[] source = { 5, 8, 4, 4, 3 };
+            IOrderedEnumerable<int> ord = null;
+            Assert.Throws<ArgumentNullException>(() =>
+                            ord.ThenBy(x => x % 2, new CustomComparer<int>()));
+        }
+
+        [Fact]
+        public void ThenByShouldThrowAnExceptionIfKeySelectorIsNull()
+        {
+            int[] source = { 5, 8, 4, 4, 3 };
+            IOrderedEnumerable<int> ord = source.OrderBy(
+                x => x,
+                new CustomComparer<int>());
+            Assert.Throws<ArgumentNullException>(() =>
+                            ord.ThenBy(null, new CustomComparer<int>()));
+        }
+
+        [Fact]
+        public void ThenByShouldThrowAnExceptionIfComparerIsNull()
+        {
+            int[] source = { 5, 8, 4, 4, 3 };
+            IOrderedEnumerable<int> ord = source.OrderBy(
+                x => x,
+                new CustomComparer<int>());
+            Assert.Throws<ArgumentNullException>(() =>
+                            ord.ThenBy(x => x % 2, null));
+        }
     }
 }

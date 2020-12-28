@@ -258,7 +258,19 @@ namespace Enumerable
         {
             CheckArgumentNotNull(source, nameof(source));
             CheckArgumentNotNull(keySelector, nameof(keySelector));
+            CheckArgumentNotNull(comparer, nameof(comparer));
             return new OrderedEnumerable<TSource>(source).CreateOrderedEnumerable(keySelector, comparer, false);
+        }
+
+        public static IOrderedEnumerable<TSource> ThenBy<TSource, TKey>(
+                    this IOrderedEnumerable<TSource> source,
+                    Func<TSource, TKey> keySelector,
+                    IComparer<TKey> comparer)
+        {
+            CheckArgumentNotNull(source, nameof(source));
+            CheckArgumentNotNull(keySelector, nameof(keySelector));
+            CheckArgumentNotNull(comparer, nameof(comparer));
+            return source.CreateOrderedEnumerable(keySelector, comparer, false);
         }
 
         private static void CheckArgumentNotNull<T>(T argument, string argName)
