@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Enumerable
 {
@@ -169,13 +170,9 @@ namespace Enumerable
                     IEqualityComparer<TSource> comparer)
         {
             CheckArgumentNotNull(source, nameof(source));
-            HashSet<TSource> returned = new HashSet<TSource>(comparer);
-            foreach (var elem in source)
+            foreach (var elem in new HashSet<TSource>(source, comparer))
             {
-                if (returned.Add(elem))
-                {
-                    yield return elem;
-                }
+                yield return elem;
             }
         }
 
@@ -186,21 +183,11 @@ namespace Enumerable
         {
             CheckArgumentNotNull(first, nameof(first));
             CheckArgumentNotNull(second, nameof(second));
-            HashSet<TSource> items = new HashSet<TSource>(comparer);
-            foreach (var elem in first)
+            HashSet<TSource> items = new HashSet<TSource>(first, comparer);
+            items.UnionWith(second);
+            foreach (var elem in items)
             {
-                if (items.Add(elem))
-                {
-                    yield return elem;
-                }
-            }
-
-            foreach (var item in second)
-            {
-                if (items.Add(item))
-                {
-                    yield return item;
-                }
+                yield return elem;
             }
         }
 
@@ -211,16 +198,11 @@ namespace Enumerable
         {
             CheckArgumentNotNull(first, nameof(first));
             CheckArgumentNotNull(second, nameof(second));
-            HashSet<TSource> items = new HashSet<TSource>(comparer);
-            foreach (var elem in first)
+            HashSet<TSource> items = new HashSet<TSource>(first, comparer);
+            items.IntersectWith(second);
+            foreach (var elem in items)
             {
-                foreach (var item in second)
-                {
-                    if (comparer.Equals(elem, item) && items.Add(elem))
-                    {
-                        yield return elem;
-                    }
-                }
+                yield return elem;
             }
         }
 
@@ -231,13 +213,11 @@ namespace Enumerable
         {
             CheckArgumentNotNull(first, nameof(first));
             CheckArgumentNotNull(second, nameof(second));
-            HashSet<TSource> items = new HashSet<TSource>(second, comparer);
-            foreach (var elem in first)
+            HashSet<TSource> items = new HashSet<TSource>(first, comparer);
+            items.ExceptWith(second);
+            foreach (var elem in items)
             {
-                if (items.Add(elem))
-                {
-                    yield return elem;
-                }
+                yield return elem;
             }
         }
 
