@@ -251,6 +251,16 @@ namespace Enumerable
             }
         }
 
+        public static IOrderedEnumerable<TSource> OrderBy<TSource, TKey>(
+                   this IEnumerable<TSource> source,
+                   Func<TSource, TKey> keySelector,
+                   IComparer<TKey> comparer)
+        {
+            CheckArgumentNotNull(source, nameof(source));
+            CheckArgumentNotNull(keySelector, nameof(keySelector));
+            return new OrderedEnumerable<TSource>(source).CreateOrderedEnumerable(keySelector, comparer, false);
+        }
+
         private static void CheckArgumentNotNull<T>(T argument, string argName)
         {
             if (argument != null)

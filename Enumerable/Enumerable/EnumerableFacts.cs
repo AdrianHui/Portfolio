@@ -426,5 +426,31 @@ namespace Enumerable.Facts
                 new CustomEqualityComparer<int>());
             Assert.Throws<ArgumentNullException>(() => result.All(predicate => predicate != null));
         }
+
+        [Fact]
+        public void OrderByShouldOrderElementsByKeyInAscendingOrder()
+        {
+            int[] source = { 5, 8, 4, 4, 3 };
+            var result = source.OrderBy(
+                x => x,
+                new CustomComparer<int>());
+            Assert.Equal(new[] { 3, 4, 4, 5, 8 }, result);
+        }
+
+        [Fact]
+        public void OrderByShouldThrowAnExceptionIfSourceIsNull()
+        {
+            int[] source = null;
+            Assert.Throws<ArgumentNullException>(() =>
+                            source.OrderBy(x => x, new CustomComparer<int>()));
+        }
+
+        [Fact]
+        public void OrderByShouldThrowAnExceptionIfKeySelectorIsNull()
+        {
+            int[] source = { 5, 8, 4, 4, 3 };
+            Assert.Throws<ArgumentNullException>(() =>
+                            source.OrderBy(null, new CustomComparer<int>()));
+        }
     }
 }
