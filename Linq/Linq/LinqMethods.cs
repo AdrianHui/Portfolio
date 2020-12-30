@@ -21,5 +21,10 @@ namespace Linq
             int consonantsCount = text.Length - vowelsCount;
             return (vowelsCount, consonantsCount);
         }
+
+        public char FirstUniqueCharacter(string text)
+        {
+            return text.First(chr => text.Count(character => character == chr) == 1);
+        }
     }
 }

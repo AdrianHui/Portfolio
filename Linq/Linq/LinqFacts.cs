@@ -13,5 +13,13 @@ namespace Linq.Facts
             var (vowels, consonants) = linq.ConsonantAndVowelCounter("test");
             Assert.True(vowels == 1 && consonants == 3);
         }
+
+        [Fact]
+        public void FirstUniqueCharacterShouldReturnFirstUniqueCharacterFromGivenString()
+        {
+            var linq = new LinqMethods();
+            char result = linq.FirstUniqueCharacter("test");
+            Assert.Equal('e', result);
+        }
     }
 }
