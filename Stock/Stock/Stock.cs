@@ -31,9 +31,10 @@ namespace Stock
         {
             int prodIndex =
                 products.FindIndex(prod => prod.GetType().Equals(product.GetType()));
-            if (products[prodIndex].Quantity < product.Quantity)
+            if (prodIndex == -1 || products[prodIndex].Quantity < product.Quantity)
             {
-                throw new InvalidOperationException("There is not enough quantity on stock.");
+                throw new InvalidOperationException(
+                    "The product is not on stock or there is not enough quantity.");
             }
             else if (products[prodIndex].Quantity > product.Quantity)
             {

@@ -34,6 +34,13 @@ namespace Stock.Facts
         }
 
         [Fact]
+        public void SellProductShouldThrowAnExceptionIfProductIsNotOnStock()
+        {
+            var stock = new Stock<IProduct>();
+            Assert.Throws<InvalidOperationException>(() => stock.SellProduct(new Pears(60, 0.4m)));
+        }
+
+        [Fact]
         public void SellProductShouldRemoveSoldQuantityFromStock()
         {
             var stock = new Stock<IProduct>();
@@ -60,6 +67,14 @@ namespace Stock.Facts
             var apples = new Apples(50, 0.2m);
             stock.AddProduct(apples);
             Assert.True(stock.CheckQuantity(apples) == apples.Quantity);
+        }
+
+        [Fact]
+        public void CheckQuantityShouldThrowAnExceptionIfProductIsNotOnStock()
+        {
+            var stock = new Stock<IProduct>();
+            var apples = new Apples(50, 0.2m);
+            Assert.Throws<InvalidOperationException>(() => stock.CheckQuantity(apples));
         }
     }
 }
