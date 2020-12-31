@@ -21,5 +21,13 @@ namespace Linq.Facts
             char result = linq.FirstUniqueCharacter("test");
             Assert.Equal('e', result);
         }
+
+        [Fact]
+        public void MostOccurencesShouldReturnTheCharacterWithMostOccurencesInGivenString()
+        {
+            var linq = new LinqMethods();
+            var result = linq.MostOccurences("test");
+            Assert.Equal('t', result);
+        }
     }
 }

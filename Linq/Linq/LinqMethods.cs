@@ -26,5 +26,15 @@ namespace Linq
         {
             return text.First(chr => text.Count(character => character == chr) == 1);
         }
+
+        public int ConvertToInt(string text)
+        {
+            throw new NotImplementedException();
+        }
+
+        public char MostOccurences(string text)
+        {
+            return text.OrderByDescending(chr => text.Count(character => character == chr)).First();
+        }
     }
 }
