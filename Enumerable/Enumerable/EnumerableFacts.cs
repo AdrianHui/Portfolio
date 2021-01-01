@@ -466,11 +466,11 @@ namespace Enumerable.Facts
         {
             int[] source = { 5, 8, 4, 4, 3 };
             var result = source.OrderBy(
-                x => x,
+                x => source.Count(num => num == x),
                 new CustomComparer<int>()).ThenBy(
                 x => x % 2,
                 new CustomComparer<int>());
-            Assert.Equal(new[] { 4, 4, 8, 3, 5 }, result);
+            Assert.Equal(new[] { 8, 5, 3, 4, 4 }, result);
         }
 
         [Fact]

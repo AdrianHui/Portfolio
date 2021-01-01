@@ -259,7 +259,8 @@ namespace Enumerable
             CheckArgumentNotNull(source, nameof(source));
             CheckArgumentNotNull(keySelector, nameof(keySelector));
             CheckArgumentNotNull(comparer, nameof(comparer));
-            return new OrderedEnumerable<TSource>(source).CreateOrderedEnumerable(keySelector, comparer, false);
+            return new OrderedEnumerable<TSource>(
+                source, new SourceComparer<TSource, TKey>(keySelector, comparer));
         }
 
         public static IOrderedEnumerable<TSource> ThenBy<TSource, TKey>(
