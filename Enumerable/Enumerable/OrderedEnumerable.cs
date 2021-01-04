@@ -22,7 +22,7 @@ namespace Enumerable
                     bool descending)
         {
             IComparer<TSource> secondComparer =
-                new SourceComparer<TSource, TKey>(keySelector, comparer);
+                new ElementComparer<TSource, TKey>(keySelector, comparer);
             return new OrderedEnumerable<TSource>(
                 source, new CompoundComparer<TSource>(this.comparer, secondComparer));
         }

@@ -260,7 +260,7 @@ namespace Enumerable
             CheckArgumentNotNull(keySelector, nameof(keySelector));
             CheckArgumentNotNull(comparer, nameof(comparer));
             return new OrderedEnumerable<TSource>(
-                source, new SourceComparer<TSource, TKey>(keySelector, comparer));
+                source, new ElementComparer<TSource, TKey>(keySelector, comparer));
         }
 
         public static IOrderedEnumerable<TSource> ThenBy<TSource, TKey>(
