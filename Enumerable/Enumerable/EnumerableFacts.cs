@@ -474,6 +474,15 @@ namespace Enumerable.Facts
         }
 
         [Fact]
+        public void ThenByShouldOrderElementsByKeyInAscendingOrderWhenUsingMultipleThenBy()
+        {
+            string[] source = { "cd", "eaf", "a", "de" };
+            var result = source.OrderBy(x => x.Contains('a')).ThenBy(
+                x => x[0]).ThenBy(x => x.Length);
+            Assert.Equal(new[] { "cd", "de", "a", "eaf" }, result);
+        }
+
+        [Fact]
         public void ThenByShouldThrowAnExceptionIfSourceIsNull()
         {
             int[] source = { 5, 8, 4, 4, 3 };
