@@ -29,7 +29,8 @@ namespace Linq
 
         public int ConvertToInt(string text)
         {
-            throw new NotImplementedException();
+            int[] array = text.Select(x => (int)char.GetNumericValue(x)).ToArray();
+            return array.Aggregate((x, y) => x * 10 + y);
         }
 
         public char MostOccurences(string text)

@@ -23,6 +23,14 @@ namespace Linq.Facts
         }
 
         [Fact]
+        public void ConvertToIntShouldConvertNumberAsStringToInt()
+        {
+            var linq = new LinqMethods();
+            int result = linq.ConvertToInt("12345678");
+            Assert.Equal(12345678, result);
+        }
+
+        [Fact]
         public void MostOccurencesShouldReturnTheCharacterWithMostOccurencesInGivenString()
         {
             var linq = new LinqMethods();
