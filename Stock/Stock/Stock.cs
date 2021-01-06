@@ -19,10 +19,11 @@ namespace Stock
 
         public void AddProduct(T product)
         {
-            if (products.Any(prod => prod.GetType().Equals(product.GetType())))
+            if (products.Any(prod => prod.Name == product.Name))
             {
-                products[products.FindIndex(prod => prod.GetType().Equals(product.GetType()))]
-                    .Quantity += product.Quantity;
+                T current = products.First(prod => prod.Name == product.Name);
+                current.Quantity = products.Aggregate(
+                    current.Quantity, (seed, num) => seed + product.Quantity);
                 return;
             }
 
@@ -31,26 +32,26 @@ namespace Stock
 
         public void SellProduct(T product)
         {
-            int prodIndex =
-                products.FindIndex(prod => prod.GetType().Equals(product.GetType()));
-            if (prodIndex == -1 || products[prodIndex].Quantity < product.Quantity)
+            T current = products.First(prod => prod.Name == product.Name);
+            if (current.Quantity < product.Quantity)
             {
                 throw new InvalidOperationException(
-                    "The product is not on stock or there is not enough quantity.");
+                    "There is not enough quantity on stock.");
             }
-            else if (products[prodIndex].Quantity > product.Quantity)
+            else if (current.Quantity > product.Quantity)
             {
-                products[prodIndex].Quantity -= product.Quantity;
-                act?.Invoke(products[prodIndex]);
+                current.Quantity = products.Aggregate(
+                    current.Quantity, (seed, num) => seed - product.Quantity);
+                act?.Invoke(current);
                 return;
             }
 
-            products.RemoveAt(prodIndex);
+            products.RemoveAt(products.IndexOf(current));
         }
 
         public int CheckQuantity(T product)
         {
-            return products.Single(prod => prod.GetType().Equals(product.GetType())).Quantity;
+            return products.Single(prod => prod.Name == product.Name).Quantity;
         }
 
         public IEnumerator<T> GetEnumerator()

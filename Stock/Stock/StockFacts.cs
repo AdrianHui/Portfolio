@@ -9,7 +9,7 @@ namespace Stock.Facts
         public void AddProductShouldAddANewProductToTheList()
         {
             var stock = new Stock<IProduct>();
-            var apples = new Apples(50, 0.2m);
+            var apples = new Product("apples", 50, 0.2m);
             stock.AddProduct(apples);
             Assert.Contains(apples, stock);
         }
@@ -18,9 +18,9 @@ namespace Stock.Facts
         public void AddProductShouldIncreaseProductQuantityIfProductAlreadyExists()
         {
             var stock = new Stock<IProduct>();
-            var apples = new Apples(50, 0.2m);
+            var apples = new Product("apples", 50, 0.2m);
             stock.AddProduct(apples);
-            stock.AddProduct(new Apples(20, 0.2m));
+            stock.AddProduct(new Product("apples", 20, 0.2m));
             Assert.True(stock.CheckQuantity(apples) == 70);
         }
 
@@ -28,25 +28,26 @@ namespace Stock.Facts
         public void SellProductShouldThrowAnExceptionIfQuantitySoldIsGreaterThanQuantityOnStock()
         {
             var stock = new Stock<IProduct>();
-            var pears = new Pears(50, 0.4m);
+            var pears = new Product("pears", 50, 0.4m);
             stock.AddProduct(pears);
-            Assert.Throws<InvalidOperationException>(() => stock.SellProduct(new Pears(60, 0.4m)));
+            Assert.Throws<InvalidOperationException>(()
+                => stock.SellProduct(new Product("pears", 60, 0.4m)));
         }
 
         [Fact]
         public void SellProductShouldThrowAnExceptionIfProductIsNotOnStock()
         {
             var stock = new Stock<IProduct>();
-            Assert.Throws<InvalidOperationException>(() => stock.SellProduct(new Pears(60, 0.4m)));
+            Assert.Throws<InvalidOperationException>(() => stock.SellProduct(new Product("pears", 60, 0.4m)));
         }
 
         [Fact]
         public void SellProductShouldRemoveSoldQuantityFromStock()
         {
             var stock = new Stock<IProduct>();
-            var apples = new Apples(50, 0.2m);
+            var apples = new Product("apples", 50, 0.2m);
             stock.AddProduct(apples);
-            stock.SellProduct(new Apples(41, 0.2m));
+            stock.SellProduct(new Product("apples", 41, 0.2m));
             Assert.True(stock.CheckQuantity(apples) == 9);
         }
 
@@ -54,9 +55,9 @@ namespace Stock.Facts
         public void SellProductShouldRemoveTheProductFromStockIfWholeQuantityIsSold()
         {
             var stock = new Stock<IProduct>();
-            var apples = new Apples(50, 0.2m);
+            var apples = new Product("apples", 50, 0.2m);
             stock.AddProduct(apples);
-            stock.SellProduct(new Apples(50, 0.2m));
+            stock.SellProduct(new Product("apples", 50, 0.2m));
             Assert.DoesNotContain(apples, stock);
         }
 
@@ -64,7 +65,7 @@ namespace Stock.Facts
         public void CheckQuantityShouldReturnNumberOfQuantityOnStockForGivenProduct()
         {
             var stock = new Stock<IProduct>();
-            var apples = new Apples(50, 0.2m);
+            var apples = new Product("apples", 50, 0.2m);
             stock.AddProduct(apples);
             Assert.True(stock.CheckQuantity(apples) == apples.Quantity);
         }
@@ -73,7 +74,7 @@ namespace Stock.Facts
         public void CheckQuantityShouldThrowAnExceptionIfProductIsNotOnStock()
         {
             var stock = new Stock<IProduct>();
-            var apples = new Apples(50, 0.2m);
+            var apples = new Product("apples", 50, 0.2m);
             Assert.Throws<InvalidOperationException>(() => stock.CheckQuantity(apples));
         }
 
@@ -81,9 +82,9 @@ namespace Stock.Facts
         public void IfStockIsLowerThanTenStockShouldCallBackTheAction()
         {
             var stock = new Stock<IProduct>(ActionTest);
-            var apples = new Apples(50, 0.2m);
+            var apples = new Product("apples", 50, 0.2m);
             stock.AddProduct(apples);
-            stock.SellProduct(new Apples(41, 0.2m));
+            stock.SellProduct(new Product("apples", 41, 0.2m));
             Assert.True(stock.CheckQuantity(apples) == 11);
         }
 
