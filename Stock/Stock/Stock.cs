@@ -8,22 +8,22 @@ namespace Stock
     internal class Stock<T> : IEnumerable<T>
         where T : IProduct
     {
+        private readonly int[] limits = { 2, 5, 10 };
         private readonly List<T> products;
-        private readonly Action<T> act;
 
-        public Stock(Action<T> act = null)
+        public Stock()
         {
             products = new List<T>();
-            this.act = act;
         }
+
+        public event Action<T> Notify;
 
         public void AddProduct(T product)
         {
-            if (products.Any(prod => prod.Name == product.Name))
+            T current = products.FirstOrDefault(prod => prod.Name == product.Name);
+            if (current != null)
             {
-                T current = products.First(prod => prod.Name == product.Name);
-                current.Quantity = products.Aggregate(
-                    current.Quantity, (seed, num) => seed + product.Quantity);
+                current.Quantity += product.Quantity;
                 return;
             }
 
@@ -32,17 +32,21 @@ namespace Stock
 
         public void SellProduct(T product)
         {
-            T current = products.First(prod => prod.Name == product.Name);
-            if (current.Quantity < product.Quantity)
+            T current = products.FirstOrDefault(prod => prod.Name == product.Name);
+            if (current == null || current.Quantity < product.Quantity)
             {
                 throw new InvalidOperationException(
-                    "There is not enough quantity on stock.");
+                    "The product is not on stock or there is not enough quantity.");
             }
             else if (current.Quantity > product.Quantity)
             {
-                current.Quantity = products.Aggregate(
-                    current.Quantity, (seed, num) => seed - product.Quantity);
-                act?.Invoke(current);
+                int limit = GetCrossedLimit(current.Quantity, product.Quantity);
+                current.Quantity -= product.Quantity;
+                if (limit != -1)
+                {
+                    Notify?.Invoke(current);
+                }
+
                 return;
             }
 
@@ -65,6 +69,19 @@ namespace Stock
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        private int GetCrossedLimit(int currentQty, int qtyToSell)
+        {
+            foreach (var limit in limits)
+            {
+                if (currentQty > limit && currentQty - qtyToSell < limit)
+                {
+                    return limit;
+                }
+            }
+
+            return -1;
         }
     }
 }

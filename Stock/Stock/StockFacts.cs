@@ -79,18 +79,39 @@ namespace Stock.Facts
         }
 
         [Fact]
-        public void IfStockIsLowerThanTenStockShouldCallBackTheAction()
+        public void IfStockIsLowerThanAnyLimitStockShouldCallBackTheAction()
         {
-            var stock = new Stock<IProduct>(ActionTest);
-            var apples = new Product("apples", 50, 0.2m);
-            stock.AddProduct(apples);
-            stock.SellProduct(new Product("apples", 41, 0.2m));
-            Assert.True(stock.CheckQuantity(apples) == 11);
+            var stock = new Stock<IProduct>();
+            stock.AddProduct(new Product("apples", 50, 0.2m));
+            stock.AddProduct(new Product("pears", 30, 0.3m));
+            bool wasCallbackCalled = false;
+            stock.Notify += x => wasCallbackCalled = true;
+            stock.SellProduct(new Product("apples", 42, 0.2m));
+            Assert.True(wasCallbackCalled);
         }
 
-        private void ActionTest(IProduct prod)
+        [Fact]
+        public void IfStockIsLowerThanAnyLimitShouldCallBackTheActionAndIncludeCorrectProductAndRemainingQuantity()
         {
-            prod.Quantity += 2;
+            var stock = new Stock<IProduct>();
+            stock.AddProduct(new Product("apples", 50, 0.2m));
+            stock.AddProduct(new Product("pears", 30, 0.3m));
+            IProduct lowStockProduct = null;
+            stock.Notify += x => lowStockProduct = x;
+            stock.SellProduct(new Product("apples", 49, 0.2m));
+            Assert.True(lowStockProduct.Name == "apples" && lowStockProduct.Quantity == 1);
+        }
+
+        [Fact]
+        public void IfStockIsLowerThanOneLimitButDoesntCrossAnotherLimitShouldNotCallbackTheAction()
+        {
+            var stock = new Stock<IProduct>();
+            stock.AddProduct(new Product("apples", 9, 0.2m));
+            stock.AddProduct(new Product("pears", 30, 0.3m));
+            bool wasCallbackCalled = false;
+            stock.Notify += x => wasCallbackCalled = true;
+            stock.SellProduct(new Product("apples", 2, 0.2m));
+            Assert.False(wasCallbackCalled);
         }
     }
 }
