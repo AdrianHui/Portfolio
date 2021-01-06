@@ -76,5 +76,20 @@ namespace Stock.Facts
             var apples = new Apples(50, 0.2m);
             Assert.Throws<InvalidOperationException>(() => stock.CheckQuantity(apples));
         }
+
+        [Fact]
+        public void IfStockIsLowerThanTenStockShouldCallBackTheAction()
+        {
+            var stock = new Stock<IProduct>(ActionTest);
+            var apples = new Apples(50, 0.2m);
+            stock.AddProduct(apples);
+            stock.SellProduct(new Apples(41, 0.2m));
+            Assert.True(stock.CheckQuantity(apples) == 11);
+        }
+
+        private void ActionTest(IProduct prod)
+        {
+            prod.Quantity += 2;
+        }
     }
 }

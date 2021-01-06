@@ -9,10 +9,12 @@ namespace Stock
         where T : IProduct
     {
         private readonly List<T> products;
+        private readonly Action<T> act;
 
-        public Stock()
+        public Stock(Action<T> act = null)
         {
             products = new List<T>();
+            this.act = act;
         }
 
         public void AddProduct(T product)
@@ -39,7 +41,7 @@ namespace Stock
             else if (products[prodIndex].Quantity > product.Quantity)
             {
                 products[prodIndex].Quantity -= product.Quantity;
-                LowQuantityCheck(products[prodIndex]);
+                act?.Invoke(products[prodIndex]);
                 return;
             }
 
@@ -62,29 +64,6 @@ namespace Stock
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
-        }
-
-        private void LowQuantityCheck(T product)
-        {
-            Action<T, int> lowStockWarning = (arg, min) =>
-            {
-                Console.WriteLine(
-                    $"Remaining quantity for {arg} is less than {min}. " +
-                    $"Current quantity: {arg.Quantity}.");
-            };
-
-            if (product.Quantity < 2)
-            {
-                lowStockWarning(product, 2);
-            }
-            else if (product.Quantity < 5)
-            {
-                lowStockWarning(product, 5);
-            }
-            else if (product.Quantity < 10)
-            {
-                lowStockWarning(product, 10);
-            }
         }
     }
 }
