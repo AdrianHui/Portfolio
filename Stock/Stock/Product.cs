@@ -2,13 +2,16 @@
 
 namespace Stock
 {
-    class Apples : IProduct
+    class Product : IProduct
     {
-        public Apples(int quantity, decimal price)
+        public Product(string name, int quantity, decimal price)
         {
+            Name = name;
             Quantity = quantity;
             Price = price;
         }
+
+        public string Name { get; set; }
 
         public int Quantity { get; set; }
 
