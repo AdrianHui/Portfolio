@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Linq
@@ -36,6 +37,20 @@ namespace Linq
         public char MostOccurences(string text)
         {
             return text.OrderByDescending(chr => text.Count(character => character == chr)).First();
+        }
+
+        public IEnumerable<string> GetPalindromes(string text)
+        {
+            if (text == null)
+            {
+                throw new ArgumentNullException("text");
+            }
+
+            var substrings = from i in Enumerable.Range(0, text.Length)
+                             from j in Enumerable.Range(0, text.Length - i + 1)
+                             where j >= 1
+                             select text.Substring(i, j);
+            return substrings.Where(x => !x.Where((t, i) => t != x[x.Length - 1 - i]).Any());
         }
     }
 }

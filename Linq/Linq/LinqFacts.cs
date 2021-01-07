@@ -37,5 +37,13 @@ namespace Linq.Facts
             var result = linq.MostOccurences("test");
             Assert.Equal('t', result);
         }
+
+        [Fact]
+        public void GetPalindromesShouldGenerateAllPossiblePalindromesFromGivenString()
+        {
+            var linq = new LinqMethods();
+            var result = linq.GetPalindromes("aabaac");
+            Assert.Equal(new[] { "a", "aa", "aabaa", "a", "aba", "b", "a", "aa", "a", "c" }, result);
+        }
     }
 }
