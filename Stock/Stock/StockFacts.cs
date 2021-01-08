@@ -113,5 +113,17 @@ namespace Stock.Facts
             stock.SellProduct(new Product("apples", 2, 0.2m));
             Assert.False(wasCallbackCalled);
         }
+
+        [Fact]
+        public void IfStockIsEqualToALimitShouldCallbackTheActionIfAnyQuantityIsSold()
+        {
+            var stock = new Stock<IProduct>();
+            stock.AddProduct(new Product("apples", 10, 0.2m));
+            stock.AddProduct(new Product("pears", 30, 0.3m));
+            bool wasCallbackCalled = false;
+            stock.Notify += x => wasCallbackCalled = true;
+            stock.SellProduct(new Product("apples", 2, 0.2m));
+            Assert.True(wasCallbackCalled);
+        }
     }
 }

@@ -73,7 +73,7 @@ namespace Stock
 
         private bool HasCrossedALimit(int currentQty, int qtyToSell)
         {
-            return limits.Any(x => currentQty > x && currentQty - qtyToSell < x);
+            return limits.Any(x => currentQty >= x && currentQty - qtyToSell < x);
         }
     }
 }
