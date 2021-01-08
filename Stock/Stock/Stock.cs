@@ -40,9 +40,9 @@ namespace Stock
             }
             else if (current.Quantity > product.Quantity)
             {
-                int limit = GetCrossedLimit(current.Quantity, product.Quantity);
+                bool hasCrossedALimit = HasCrossedALimit(current.Quantity, product.Quantity);
                 current.Quantity -= product.Quantity;
-                if (limit != -1)
+                if (hasCrossedALimit)
                 {
                     Notify?.Invoke(current);
                 }
@@ -71,17 +71,9 @@ namespace Stock
             return GetEnumerator();
         }
 
-        private int GetCrossedLimit(int currentQty, int qtyToSell)
+        private bool HasCrossedALimit(int currentQty, int qtyToSell)
         {
-            foreach (var limit in limits)
-            {
-                if (currentQty > limit && currentQty - qtyToSell < limit)
-                {
-                    return limit;
-                }
-            }
-
-            return -1;
+            return limits.Any(x => currentQty > x && currentQty - qtyToSell < x);
         }
     }
 }
