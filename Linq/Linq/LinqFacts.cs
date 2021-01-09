@@ -19,8 +19,8 @@ namespace Linq.Facts
         public void FirstUniqueCharacterShouldReturnFirstUniqueCharacterFromGivenString()
         {
             var linq = new LinqMethods();
-            char result = linq.FirstUniqueCharacter("test");
-            Assert.Equal('e', result);
+            char result = linq.FirstUniqueCharacter("teest");
+            Assert.Equal('s', result);
         }
 
         [Fact]
@@ -45,14 +45,6 @@ namespace Linq.Facts
             var linq = new LinqMethods();
             var result = linq.GetPalindromes("aabaac");
             Assert.Equal(new[] { "a", "aa", "aabaa", "a", "aba", "b", "a", "aa", "a", "c" }, result);
-        }
-
-        [Fact]
-        public void GetSubShouldReturnAllPossibleArraysThatEvaluateLessOrEqualToGivenNumber()
-        {
-            var linq = new LinqMethods();
-            var result = linq.GetSub(new[] { 1, 2, 3, 4 }, 8);
-            Assert.Equal(new[] { 1, 2, 3 }, result);
         }
     }
 }
