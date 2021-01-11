@@ -26,8 +26,8 @@ namespace Linq
 
         public char FirstUniqueCharacter(string text)
         {
-            return text.GroupBy(x => x, y => y, (key, value) => (key, value.Count()))
-                .OrderBy(x => x.Item2).First().key;
+            return text.GroupBy(x => x, y => y, (key, value) => (key, count: value.Count()))
+                .OrderBy(x => x.count).First().key;
         }
 
         public int ConvertToInt(string text)
@@ -38,7 +38,7 @@ namespace Linq
         public char MostOccurences(string text)
         {
             return text.GroupBy(x => x, y => y, (key, value) => (key, value.Count()))
-                .OrderByDescending(x => x.Item2).First().key;
+                .Max(x => x.key);
         }
 
         public IEnumerable<string> GetPalindromes(string text)
@@ -51,7 +51,7 @@ namespace Linq
             var substrings = Enumerable.Range(0, text.Length)
                 .SelectMany(x => Enumerable.Range(1, text.Length - x)
                 .Select(y => text.Substring(x, y)));
-            return substrings.Where(x => !x.Where((t, i) => t != x[x.Length - 1 - i]).Any());
+            return substrings.Where(x => x.SequenceEqual(x.Reverse()));
         }
 
         public IEnumerable GetSubArraysThatEvaluateTo(int[] numbers, int expectedResult)
