@@ -46,5 +46,20 @@ namespace Linq.Facts
             var result = linq.GetPalindromes("aabaac");
             Assert.Equal(new[] { "a", "aa", "aabaa", "a", "aba", "b", "a", "aa", "a", "c" }, result);
         }
+
+        [Fact]
+        public void GetSubShouldReturnAllPossibleArraysThatEvaluateLessOrEqualToGivenNumber()
+        {
+            var linq = new LinqMethods();
+            var result = linq.GetSubArraysThatEvaluateTo(new[] { 1, 2, 3, 4 }, 8);
+            Assert.Equal(
+                new[]
+                {
+                new[] { 1, 2 },
+                new[] { 1, 2, 3 },
+                new[] { 2, 3 },
+                new[] { 3, 4 }
+                },  result);
+        }
     }
 }

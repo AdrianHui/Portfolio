@@ -53,5 +53,18 @@ namespace Linq
                 .Select(y => text.Substring(x, y)));
             return substrings.Where(x => !x.Where((t, i) => t != x[x.Length - 1 - i]).Any());
         }
+
+        public IEnumerable GetSubArraysThatEvaluateTo(int[] numbers, int expectedResult)
+        {
+            if (numbers == null)
+            {
+                throw new ArgumentNullException("numbers");
+            }
+
+            var sub = Enumerable.Range(0, numbers.Length - 1)
+                .SelectMany(x => Enumerable.Range(2, numbers.Length - x - 1)
+                .Select(y => numbers.Skip(x).Take(y)));
+            return sub.Where(y => y.Aggregate(0, (seed, v) => seed + v) <= expectedResult);
+        }
     }
 }
