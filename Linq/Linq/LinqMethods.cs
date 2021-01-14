@@ -69,26 +69,13 @@ namespace Linq
 
         public IEnumerable GenerateExpressionsThatHitTarget(int n, int k)
         {
-            return GetExpressions(n).Where(x => x.Select(y => y[0] == '+'
-                                                   ? char.GetNumericValue(y[1])
-                                                   : char.GetNumericValue(y[1]) * -1).Sum() <= k)
-                                    .Select(x => string.Concat(x.ToArray()));
-        }
-
-        private IEnumerable<string> GetOperatorsCombinations(int n)
-        {
             const string operators = "+-";
-            var combinations = new[] { "" };
+            IEnumerable<string> combinations = new[] { "" };
             return Enumerable.Range(1, n).Aggregate(
                     combinations, (seed, v) => seed.SelectMany(
-                        y => operators.Select(z => y + z)).ToArray());
-        }
-
-        private IEnumerable<IEnumerable<string>> GetExpressions(int n)
-        {
-            return GetOperatorsCombinations(n).Select(x => x.Select(y => y.ToString())
-                                              .Zip(Enumerable.Range(1, n).Select(x => x.ToString()))
-                                              .Select(x => x.First + x.Second));
+                            y => operators.Select(z => y + z)))
+                    .Select(x => x.Select((z, y) => z == '+' ? y + 1 : (y + 1) * -1))
+                    .Where(x => x.Sum() <= k);
         }
     }
 }
