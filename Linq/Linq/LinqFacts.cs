@@ -61,5 +61,18 @@ namespace Linq.Facts
                 new[] { 3, 4 }
                 },  result);
         }
+
+        [Fact]
+        public void GenerateExpressionsThatHitTargetShouldReturnAllExpressionsOfLengthNThatEvaluateLessOrEqualToK()
+        {
+            var linq = new LinqMethods();
+            var result = linq.GenerateExpressionsThatHitTarget(4, 0);
+            Assert.Equal(
+                new[]
+                {
+                    "+1+2-3-4", "+1-2+3-4", "+1-2-3+4", "+1-2-3-4",
+                    "-1+2+3-4", "-1+2-3-4", "-1-2+3-4", "-1-2-3+4", "-1-2-3-4"
+                }, result);
+        }
     }
 }

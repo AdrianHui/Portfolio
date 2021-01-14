@@ -64,7 +64,38 @@ namespace Linq
             var sub = Enumerable.Range(0, numbers.Length - 1)
                 .SelectMany(x => Enumerable.Range(2, numbers.Length - x - 1)
                 .Select(y => numbers.Skip(x).Take(y)));
-            return sub.Where(y => y.Aggregate(0, (seed, v) => seed + v) <= expectedResult);
+            return sub.Where(y => y.Sum() <= expectedResult);
+        }
+
+        public IEnumerable GenerateExpressionsThatHitTarget(int n, int k)
+        {
+            var expressions = GetExpressions(n);
+            return expressions.Where(x => x.Select(y => y[0] == '+'
+                                                   ? char.GetNumericValue(y[1])
+                                                   : char.GetNumericValue(y[1]) * -1).Sum() <= k)
+                   .Select(x => string.Concat(x.ToArray()));
+        }
+
+        private IEnumerable<string> GetOperatorsCombinations(int n)
+        {
+            const string operators = "+-";
+            var combinations = operators.Select(x => x.ToString());
+            while (combinations.First().Length < n)
+            {
+                combinations = combinations.SelectMany(x => operators.Select(z => x + z));
+            }
+
+            return combinations;
+        }
+
+        private IEnumerable<IEnumerable<string>> GetExpressions(int n)
+        {
+            var operatorsCombinations = GetOperatorsCombinations(n);
+            var numbers = Enumerable.Range(1, n).Select(x => x.ToString());
+            var expressions = operatorsCombinations.Select(
+                x => x.Select(y => y.ToString())).ToArray();
+            return operatorsCombinations.Select(
+                x => x.Select(y => y.ToString()).Zip(numbers).Select(x => x.First + x.Second));
         }
     }
 }
