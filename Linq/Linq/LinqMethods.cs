@@ -69,11 +69,10 @@ namespace Linq
 
         public IEnumerable GenerateExpressionsThatHitTarget(int n, int k)
         {
-            var expressions = GetExpressions(n);
-            return expressions.Where(x => x.Select(y => y[0] == '+'
+            return GetExpressions(n).Where(x => x.Select(y => y[0] == '+'
                                                    ? char.GetNumericValue(y[1])
                                                    : char.GetNumericValue(y[1]) * -1).Sum() <= k)
-                   .Select(x => string.Concat(x.ToArray()));
+                                    .Select(x => string.Concat(x.ToArray()));
         }
 
         private IEnumerable<string> GetOperatorsCombinations(int n)
@@ -90,12 +89,9 @@ namespace Linq
 
         private IEnumerable<IEnumerable<string>> GetExpressions(int n)
         {
-            var operatorsCombinations = GetOperatorsCombinations(n);
-            var numbers = Enumerable.Range(1, n).Select(x => x.ToString());
-            var expressions = operatorsCombinations.Select(
-                x => x.Select(y => y.ToString())).ToArray();
-            return operatorsCombinations.Select(
-                x => x.Select(y => y.ToString()).Zip(numbers).Select(x => x.First + x.Second));
+            return GetOperatorsCombinations(n).Select(x => x.Select(y => y.ToString())
+                                              .Zip(Enumerable.Range(1, n).Select(x => x.ToString()))
+                                              .Select(x => x.First + x.Second));
         }
     }
 }
