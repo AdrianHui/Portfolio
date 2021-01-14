@@ -78,13 +78,10 @@ namespace Linq
         private IEnumerable<string> GetOperatorsCombinations(int n)
         {
             const string operators = "+-";
-            var combinations = operators.Select(x => x.ToString());
-            while (combinations.First().Length < n)
-            {
-                combinations = combinations.SelectMany(x => operators.Select(z => x + z));
-            }
-
-            return combinations;
+            var combinations = new[] { "" };
+            return Enumerable.Range(1, n).Aggregate(
+                    combinations, (seed, v) => seed.SelectMany(
+                        y => operators.Select(z => y + z)).ToArray());
         }
 
         private IEnumerable<IEnumerable<string>> GetExpressions(int n)
