@@ -77,5 +77,14 @@ namespace Linq
                     .Select(x => x.Select((z, y) => z == '+' ? y + 1 : (y + 1) * -1))
                     .Where(x => x.Sum() <= k);
         }
+
+        public IEnumerable GetPythagoreanNumbers(int[] numbers)
+        {
+            var triplets = numbers.SelectMany(
+                (x, i) => numbers.SelectMany(
+                (y, j) => numbers.Select(
+                (z, k) => i == j || i == k || j == k ? null : new[] { x, y, z })));
+            return triplets.Where(x => x != null && x[0] * x[0] + x[1] * x[1] == x[2] * x[2]);
+        }
     }
 }

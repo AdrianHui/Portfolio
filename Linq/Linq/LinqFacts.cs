@@ -75,5 +75,18 @@ namespace Linq.Facts
                 new[] { -1, -2, 3, -4 }, new[] { -1, -2, -3, 4 }, new[] { -1, -2, -3, -4 }
             }, result);
         }
+
+        [Fact]
+        public void GetPythagoreanNumbersShouldReturnAllPythagoreanTriplesInGivenArray()
+        {
+            var linq = new LinqMethods();
+            var result = linq.GetPythagoreanNumbers(new[] { 15, 3, 4, 5, 6, 25, 20 });
+            Assert.Equal(
+                new[]
+                {
+                    new[] { 15, 20, 25 }, new[] { 3, 4, 5 },
+                    new[] { 4, 3, 5 }, new[] { 20, 15, 25 }
+                }, result);
+        }
     }
 }
