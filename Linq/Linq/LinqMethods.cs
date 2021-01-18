@@ -104,5 +104,13 @@ namespace Linq
         {
             return products.Where(x => !x.Features.Intersect(features).Any());
         }
+
+        public IEnumerable MergeCollectionsByProductName(
+            ICollection<Product> products1, ICollection<Product> products2)
+        {
+            return products1.Concat(products2)
+                .GroupBy(x => x.Name)
+                .Select(x => new { Name = x.Key, Quantity = x.Sum(x => x.Quantity) });
+        }
     }
 }

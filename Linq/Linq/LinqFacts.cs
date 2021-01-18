@@ -93,18 +93,12 @@ namespace Linq.Facts
         public void ProductsThatHaveAtLeastAFeatureInCommonShouldReturnAllProductsThatHaveAtLeastAFeatureFromFeaturesList()
         {
             var linq = new LinqMethods();
-            Product prod1 = new Product();
-            Product prod2 = new Product();
-            Product prod3 = new Product();
-            Feature feat1 = new Feature();
-            Feature feat2 = new Feature();
-            Feature feat3 = new Feature();
-            feat1.Id = 1;
-            feat2.Id = 5;
-            feat3.Id = 10;
-            prod1.Features = new[] { feat1, feat3 };
-            prod2.Features = new[] { feat2, feat3 };
-            prod3.Features = new[] { feat1, feat2 };
+            Feature feat1 = new Feature() { Id = 1 };
+            Feature feat2 = new Feature() { Id = 5 };
+            Feature feat3 = new Feature() { Id = 10 };
+            Product prod1 = new Product() { Features = new[] { feat1, feat3 } };
+            Product prod2 = new Product() { Features = new[] { feat2, feat3 } };
+            Product prod3 = new Product() { Features = new[] { feat1, feat2 } };
             var products = new[] { prod1, prod2, prod3 };
             var features = new[] { feat2 };
             var result = linq.ProductsThatHaveAtLeastAFeatureInCommon(products, features);
@@ -115,18 +109,12 @@ namespace Linq.Facts
         public void ProductsThatHaveAllFeaturesShouldReturnAllProductsThatHaveAllFeaturesFromGivenList()
         {
             var linq = new LinqMethods();
-            Product prod1 = new Product();
-            Product prod2 = new Product();
-            Product prod3 = new Product();
-            Feature feat1 = new Feature();
-            Feature feat2 = new Feature();
-            Feature feat3 = new Feature();
-            feat1.Id = 1;
-            feat2.Id = 5;
-            feat3.Id = 10;
-            prod1.Features = new[] { feat1, feat3 };
-            prod2.Features = new[] { feat1, feat2, feat3 };
-            prod3.Features = new[] { feat1, feat2 };
+            Feature feat1 = new Feature() { Id = 1 };
+            Feature feat2 = new Feature() { Id = 5 };
+            Feature feat3 = new Feature() { Id = 10 };
+            Product prod1 = new Product() { Features = new[] { feat1, feat3 } };
+            Product prod2 = new Product() { Features = new[] { feat1, feat2, feat3 } };
+            Product prod3 = new Product() { Features = new[] { feat1, feat2 } };
             var products = new[] { prod1, prod2, prod3 };
             var features = new[] { feat1, feat3 };
             var result = linq.ProductsThatHaveAllFeatures(products, features);
@@ -137,18 +125,32 @@ namespace Linq.Facts
         public void ProductsThatDontHaveAntFeatureInCommonShouldReturnAllProductsThatDontHaveAnyOfTheFeaturesFromGivenList()
         {
             var linq = new LinqMethods();
-            Product prod1 = new Product();
-            Product prod2 = new Product();
-            Feature feat1 = new Feature();
-            Feature feat2 = new Feature();
-            feat1.Id = 1;
-            feat2.Id = 5;
-            prod1.Features = new[] { feat1 };
-            prod2.Features = new[] { feat2 };
+            Feature feat1 = new Feature() { Id = 1 };
+            Feature feat2 = new Feature() { Id = 5 };
+            Product prod1 = new Product() { Features = new[] { feat1 } };
+            Product prod2 = new Product() { Features = new[] { feat2 } };
             var products = new[] { prod1, prod2 };
             var features = new[] { feat2 };
             var result = linq.ProductsThatDontHaveAnyFeatureInCommon(products, features);
             Assert.Equal(new[] { prod1 }, result);
+        }
+
+        [Fact]
+        public void MergeCollectionsByProductNameShouldMergeCollectionsByNameAndCalculateTotalQuantity()
+        {
+            var linq = new LinqMethods();
+            Product prod1 = new Product() { Name = "x", Quantity = 2 };
+            Product prod2 = new Product() { Name = "x", Quantity = 1 };
+            Product prod3 = new Product() { Name = "y", Quantity = 5 };
+            var products1 = new[] { prod1, prod3 };
+            var products2 = new[] { prod2 };
+            var result = linq.MergeCollectionsByProductName(products2, products1);
+            Assert.Equal(
+                new[]
+                {
+                    new { Name = "x", Quantity = 3 },
+                    new { Name = "y", Quantity = 5 }
+                }, result);
         }
     }
 }
