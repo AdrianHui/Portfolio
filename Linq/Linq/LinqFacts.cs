@@ -110,5 +110,23 @@ namespace Linq.Facts
             var result = linq.ProductsThatHaveAtLeastAFeatureInCommon(products, features);
             Assert.Equal(new[] { prod2, prod3 }, result);
         }
+
+        [Fact]
+        public void ProductsThatDontHaveAntFeatureInCommonShouldReturnAllProductsThatDontHaveAnyOfTheFeaturesFromGivenList()
+        {
+            var linq = new LinqMethods();
+            Product prod1 = new Product();
+            Product prod2 = new Product();
+            Feature feat1 = new Feature();
+            Feature feat2 = new Feature();
+            feat1.Id = 1;
+            feat2.Id = 5;
+            prod1.Features = new[] { feat1 };
+            prod2.Features = new[] { feat2 };
+            var products = new[] { prod1, prod2 };
+            var features = new[] { feat2 };
+            var result = linq.ProductsThatDontHaveAnyFeatureInCommon(products, features);
+            Assert.Equal(new[] { prod1 }, result);
+        }
     }
 }
