@@ -86,5 +86,11 @@ namespace Linq
                 (z, k) => i == j || i == k || j == k ? null : new[] { x, y, z })));
             return triplets.Where(x => x != null && x[0] * x[0] + x[1] * x[1] == x[2] * x[2]);
         }
+
+        public IEnumerable ProductsThatHaveAtLeastAFeatureInCommon(
+            ICollection<Product> products, ICollection<Feature> features)
+        {
+            return products.Where(x => x.Features.Intersect(features).Any());
+        }
     }
 }

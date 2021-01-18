@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Linq": {
+      "commandName": "Project",
+      "nativeDebugging": false
+    }
+  }
+}
