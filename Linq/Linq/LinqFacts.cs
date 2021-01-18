@@ -152,5 +152,23 @@ namespace Linq.Facts
                     new { Name = "y", Quantity = 5 }
                 }, result);
         }
+
+        [Fact]
+        public void GetFamilyHighScoreShouldReturnHighestScoreForEachFamily()
+        {
+            var linq = new LinqMethods();
+            var contestant1 = new TestResults { Id = "1", FamilyId = "10", Score = 100 };
+            var contestant2 = new TestResults { Id = "2", FamilyId = "20", Score = 99 };
+            var contestant3 = new TestResults { Id = "3", FamilyId = "10", Score = 110 };
+            var contestant4 = new TestResults { Id = "4", FamilyId = "10", Score = 110 };
+            var result = linq.GetFamilyHighScore(
+                new[] { contestant1, contestant2, contestant3, contestant4 });
+            Assert.Equal(
+                new[]
+                {
+                    new { Id = "3", FamilyId = "10", Score = 110 },
+                    new { Id = "2", FamilyId = "20", Score = 99 }
+                }, result);
+        }
     }
 }

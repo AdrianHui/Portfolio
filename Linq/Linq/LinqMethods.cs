@@ -112,5 +112,16 @@ namespace Linq
                 .GroupBy(x => x.Name)
                 .Select(x => new { Name = x.Key, Quantity = x.Sum(x => x.Quantity) });
         }
+
+        public IEnumerable GetFamilyHighScore(ICollection<TestResults> results)
+        {
+            return results.GroupBy(x => x.FamilyId).Select(x =>
+                        new
+                        {
+                            Id = x.First(y => y.Score == x.Max(y => y.Score)).Id,
+                            FamilyId = x.Key,
+                            Score = x.Max(y => y.Score)
+                        });
+        }
     }
 }
