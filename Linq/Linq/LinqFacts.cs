@@ -112,6 +112,28 @@ namespace Linq.Facts
         }
 
         [Fact]
+        public void ProductsThatHaveAllFeaturesShouldReturnAllProductsThatHaveAllFeaturesFromGivenList()
+        {
+            var linq = new LinqMethods();
+            Product prod1 = new Product();
+            Product prod2 = new Product();
+            Product prod3 = new Product();
+            Feature feat1 = new Feature();
+            Feature feat2 = new Feature();
+            Feature feat3 = new Feature();
+            feat1.Id = 1;
+            feat2.Id = 5;
+            feat3.Id = 10;
+            prod1.Features = new[] { feat1, feat3 };
+            prod2.Features = new[] { feat1, feat2, feat3 };
+            prod3.Features = new[] { feat1, feat2 };
+            var products = new[] { prod1, prod2, prod3 };
+            var features = new[] { feat1, feat3 };
+            var result = linq.ProductsThatHaveAllFeatures(products, features);
+            Assert.Equal(new[] { prod1, prod2 }, result);
+        }
+
+        [Fact]
         public void ProductsThatDontHaveAntFeatureInCommonShouldReturnAllProductsThatDontHaveAnyOfTheFeaturesFromGivenList()
         {
             var linq = new LinqMethods();

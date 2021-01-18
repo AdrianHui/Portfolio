@@ -93,7 +93,13 @@ namespace Linq
             return products.Where(x => x.Features.Intersect(features).Any());
         }
 
-        public IEnumerable ProductsThatDontHaveAnyFeaturesInCommon(
+        public IEnumerable ProductsThatHaveAllFeatures(
+            ICollection<Product> products, ICollection<Feature> features)
+        {
+            return products.Where(x => x.Features.Intersect(features).Count() == features.Count);
+        }
+
+        public IEnumerable ProductsThatDontHaveAnyFeatureInCommon(
             ICollection<Product> products, ICollection<Feature> features)
         {
             return products.Where(x => !x.Features.Intersect(features).Any());
