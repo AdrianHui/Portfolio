@@ -118,5 +118,15 @@ namespace Linq
             return results.GroupBy(x => x.FamilyId)
                 .Select(x => x.Aggregate((i, j) => i.Score > j.Score ? i : j));
         }
+
+        public IEnumerable GetTopWords(string text, int topCount)
+        {
+            return new string(text.Where(c => !char.IsPunctuation(c)).ToArray())
+                   .Split(" ")
+                   .GroupBy(x => x.ToLower())
+                   .OrderByDescending(x => x.Count())
+                   .Take(topCount)
+                   .Select(x => x.Key);
+        }
     }
 }

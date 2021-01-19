@@ -165,5 +165,14 @@ namespace Linq.Facts
                 new[] { contestant1, contestant2, contestant3, contestant4 });
             Assert.Equal(new[] { contestant4, contestant2 }, result);
         }
+
+        [Fact]
+        public void GetTopWordsShouldReturnTopGivenNumberOfWordsByFrequencyFromGivenText()
+        {
+            var linq = new LinqMethods();
+            const string str = "Ijk, de fgh. Abc fgh abc. De abc.";
+            var result = linq.GetTopWords(str, 2);
+            Assert.Equal(new[] { "abc", "de" }, result);
+        }
     }
 }
