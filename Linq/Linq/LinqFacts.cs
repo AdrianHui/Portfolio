@@ -172,7 +172,7 @@ namespace Linq.Facts
             var linq = new LinqMethods();
             const string str = "Ijk, de fgh. Abc fgh abc. De abc.";
             var result = linq.GetTopWords(str, 2);
-            Assert.Equal(new[] { "abc", "de" }, result);
+            Assert.Equal(new[] { ("abc", 3), ("de", 2) }, result);
         }
     }
 }
