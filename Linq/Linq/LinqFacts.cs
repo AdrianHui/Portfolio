@@ -154,7 +154,7 @@ namespace Linq.Facts
         }
 
         [Fact]
-        public void GetFamilyHighScoreShouldReturnHighestScoreForEachFamily()
+        public void GetFamilyHighScoreShouldReturnHighestScoreForEachFamilyWithoutDuplicates()
         {
             var linq = new LinqMethods();
             var contestant1 = new TestResults { Id = "1", FamilyId = "10", Score = 100 };
@@ -163,12 +163,7 @@ namespace Linq.Facts
             var contestant4 = new TestResults { Id = "4", FamilyId = "10", Score = 110 };
             var result = linq.GetFamilyHighScore(
                 new[] { contestant1, contestant2, contestant3, contestant4 });
-            Assert.Equal(
-                new[]
-                {
-                    new { Id = "3", FamilyId = "10", Score = 110 },
-                    new { Id = "2", FamilyId = "20", Score = 99 }
-                }, result);
+            Assert.Equal(new[] { contestant4, contestant2 }, result);
         }
     }
 }

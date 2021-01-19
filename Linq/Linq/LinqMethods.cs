@@ -115,13 +115,8 @@ namespace Linq
 
         public IEnumerable GetFamilyHighScore(ICollection<TestResults> results)
         {
-            return results.GroupBy(x => x.FamilyId).Select(x =>
-                        new
-                        {
-                            Id = x.First(y => y.Score == x.Max(y => y.Score)).Id,
-                            FamilyId = x.Key,
-                            Score = x.Max(y => y.Score)
-                        });
+            return results.GroupBy(x => x.FamilyId)
+                .Select(x => x.Aggregate((i, j) => i.Score > j.Score ? i : j));
         }
     }
 }
