@@ -131,16 +131,16 @@ namespace Linq
 
         public bool IsValidSudokuBoard(int[][] board)
         {
-            bool validLinesCheck = Enumerable.Range(0, 9).Select(x => board[x])
-                         .All(x => x.Distinct().Count() == 9);
-            bool validColumnsCheck = Enumerable.Range(0, 9).Select(col => Enumerable.Range(0, 9)
-                                .Select(line => board[line][col]))
-                           .All(x => x.Distinct().Count() == 9);
-            bool validBoxesCheck = Enumerable.Range(0, 3).SelectMany(x => Enumerable.Range(0, 3)
+            var digits = Enumerable.Range(1, 9);
+            var lines = Enumerable.Range(0, 9).Select(line => Enumerable.Range(0, 9)
+                                .Select(col => board[line][col]));
+            var columns = Enumerable.Range(0, 9).Select(col => Enumerable.Range(0, 9)
+                                .Select(line => board[line][col]));
+            var boxes = Enumerable.Range(0, 3).SelectMany(x => Enumerable.Range(0, 3)
                                 .Select(y => board.Skip(x * 3).Take(3)
-                                .SelectMany(z => z.Skip(y * 3).Take(3))))
-                          .All(x => x.Distinct().Count() == 9);
-            return validLinesCheck && validColumnsCheck && validBoxesCheck;
+                                .SelectMany(z => z.Skip(y * 3).Take(3))));
+            return lines.Concat(columns).Concat(boxes)
+                    .All(x => digits.Intersect(x).SequenceEqual(digits));
         }
     }
 }
