@@ -128,5 +128,19 @@ namespace Linq
                    .OrderByDescending(x => x.count)
                    .Take(topCount);
         }
+
+        public bool IsValidSudokuBoard(int[][] board)
+        {
+            bool validLinesCheck = Enumerable.Range(0, 9).Select(x => board[x])
+                         .All(x => x.Distinct().Count() == 9);
+            bool validColumnsCheck = Enumerable.Range(0, 9).Select(col => Enumerable.Range(0, 9)
+                                .Select(line => board[line][col]))
+                           .All(x => x.Distinct().Count() == 9);
+            bool validBoxesCheck = Enumerable.Range(0, 3).SelectMany(x => Enumerable.Range(0, 3)
+                                .Select(y => board.Skip(x * 3).Take(3)
+                                .SelectMany(z => z.Skip(y * 3).Take(3))))
+                          .All(x => x.Distinct().Count() == 9);
+            return validLinesCheck && validColumnsCheck && validBoxesCheck;
+        }
     }
 }

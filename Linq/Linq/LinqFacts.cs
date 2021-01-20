@@ -174,5 +174,24 @@ namespace Linq.Facts
             var result = linq.GetTopWords(str, 2);
             Assert.Equal(new[] { ("abc", 3), ("de", 2) }, result);
         }
+
+        [Fact]
+        public void IsValidSudokuBoardShouldReturnTrueIfTheSolutionBoardIsCorrect()
+        {
+            var linq = new LinqMethods();
+            var board = new[]
+            {
+                new[] { 4, 3, 5, 2, 6, 9, 7, 8, 1 },
+                new[] { 6, 8, 2, 5, 7, 1, 4, 9, 3 },
+                new[] { 1, 9, 7, 8, 3, 4, 5, 6, 2 },
+                new[] { 8, 2, 6, 1, 9, 5, 3, 4, 7 },
+                new[] { 3, 7, 4, 6, 8, 2, 9, 1, 5 },
+                new[] { 9, 5, 1, 7, 4, 3, 6, 2, 8 },
+                new[] { 5, 1, 9, 3, 2, 6, 8, 7, 4 },
+                new[] { 2, 4, 8, 9, 5, 7, 1, 3, 6 },
+                new[] { 7, 6, 3, 4, 1, 8, 2, 5, 9 }
+            };
+            Assert.True(linq.IsValidSudokuBoard(board));
+        }
     }
 }
