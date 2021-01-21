@@ -193,5 +193,14 @@ namespace Linq.Facts
             };
             Assert.True(linq.IsValidSudokuBoard(board));
         }
+
+        [Fact]
+        public void ReversedPolishCaluclatorShouldReturnTheResultOfAnReversedPolishNotationExpression()
+        {
+            var linq = new LinqMethods();
+            string[] polishExpr = { "2", "3", "+", "4", "*" };
+            var result = linq.ReversedPolishCalculator(polishExpr);
+            Assert.Equal(20, result);
+        }
     }
 }
