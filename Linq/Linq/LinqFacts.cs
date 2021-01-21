@@ -202,5 +202,13 @@ namespace Linq.Facts
             var result = linq.ReversedPolishCalculator(polishExpr);
             Assert.Equal(20, result);
         }
+
+        [Fact]
+        public void ReversedPolishCaluclatorShouldThrowAnExceptionIfOperatorIsNotValid()
+        {
+            var linq = new LinqMethods();
+            string[] polishExpr = { "2", "3", "&", "4", "*" };
+            Assert.Throws<InvalidOperationException>(() => linq.ReversedPolishCalculator(polishExpr));
+        }
     }
 }

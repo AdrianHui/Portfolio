@@ -148,31 +148,23 @@ namespace Linq
             IEnumerable<double> result = new List<double>();
             double parseResult;
             return expression.Aggregate(result, (seed, val) =>
-                        double.TryParse(val, out parseResult) ? seed.Append(parseResult)
-                        : seed.SkipLast(2).Append(PerformOperation(seed.TakeLast(2), val)))
+                        double.TryParse(val, out parseResult)
+                            ? seed.Append(parseResult)
+                            : seed.SkipLast(2).Append(PerformOperation(seed.TakeLast(2), val)))
                    .Single();
         }
 
         private double PerformOperation(IEnumerable<double> operands, string operation)
         {
-            if (operation == "+")
+            return operation switch
             {
-                return operands.First() + operands.Last();
-            }
-            else if (operation == "-")
-            {
-                return operands.First() - operands.Last();
-            }
-            else if (operation == "*")
-            {
-                return operands.First() * operands.Last();
-            }
-            else if (operation == "/")
-            {
-                return operands.First() / operands.Last();
-            }
-
-            return Math.Pow(operands.First(), operands.Last());
+                "+" => operands.First() + operands.Last(),
+                "-" => operands.First() - operands.Last(),
+                "*" => operands.First() * operands.Last(),
+                "/" => operands.First() / operands.Last(),
+                "^" => Math.Pow(operands.First(), operands.Last()),
+                _ =>throw new InvalidOperationException()
+            };
         }
     }
 }
