@@ -145,12 +145,10 @@ namespace Linq
 
         public double ReversedPolishCalculator(string[] expression)
         {
-            IEnumerable<double> result = new List<double>();
-            double parseResult;
-            return expression.Aggregate(result, (seed, val) =>
-                        double.TryParse(val, out parseResult)
-                            ? seed.Append(parseResult)
-                            : seed.SkipLast(2).Append(PerformOperation(seed.TakeLast(2), val)))
+            return expression.Aggregate(Enumerable.Empty<double>(), (operands, current) =>
+                        double.TryParse(current, out double parseResult)
+                        ? operands.Append(parseResult)
+                        : operands.SkipLast(2).Append(PerformOperation(operands.TakeLast(2), current)))
                    .Single();
         }
 
