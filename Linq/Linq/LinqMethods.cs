@@ -154,13 +154,15 @@ namespace Linq
 
         private double PerformOperation(IEnumerable<double> operands, string operation)
         {
+            var operand1 = operands.First();
+            var operand2 = operands.Last();
             return operation switch
             {
-                "+" => operands.First() + operands.Last(),
-                "-" => operands.First() - operands.Last(),
-                "*" => operands.First() * operands.Last(),
-                "/" => operands.First() / operands.Last(),
-                "^" => Math.Pow(operands.First(), operands.Last()),
+                "+" => operand1 + operand2,
+                "-" => operand1 - operand2,
+                "*" => operand1 * operand2,
+                "/" => operand1 / operand2,
+                "^" => Math.Pow(operand1, operand2),
                 _ =>throw new InvalidOperationException()
             };
         }
