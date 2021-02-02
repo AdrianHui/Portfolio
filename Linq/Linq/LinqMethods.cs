@@ -163,7 +163,7 @@ namespace Linq
                 "*" => operand1 * operand2,
                 "/" => operand1 / operand2,
                 "^" => Math.Pow(operand1, operand2),
-                _ =>throw new InvalidOperationException()
+                _ => throw new InvalidOperationException()
             };
         }
     }
