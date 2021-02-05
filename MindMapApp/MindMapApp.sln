@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30523.141
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MindMapApp", "MindMapApp\MindMapApp.csproj", "{4CA895B1-8538-40EB-A386-86B55A6F8FEA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MindMap", "MindMap\MindMap.csproj", "{2DC03287-0D40-4F0F-BB5C-FBA0C8CF5F18}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4CA895B1-8538-40EB-A386-86B55A6F8FEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CA895B1-8538-40EB-A386-86B55A6F8FEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CA895B1-8538-40EB-A386-86B55A6F8FEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CA895B1-8538-40EB-A386-86B55A6F8FEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DC03287-0D40-4F0F-BB5C-FBA0C8CF5F18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DC03287-0D40-4F0F-BB5C-FBA0C8CF5F18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DC03287-0D40-4F0F-BB5C-FBA0C8CF5F18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DC03287-0D40-4F0F-BB5C-FBA0C8CF5F18}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {706BDCBF-8296-4E7B-9F09-ACB2AA2BF91B}
+	EndGlobalSection
+EndGlobal
