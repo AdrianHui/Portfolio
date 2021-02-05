@@ -4,37 +4,30 @@ using System.Linq;
 
 namespace MindMap
 {
-    public class Node
+    class Node
     {
-        public Node()
+        public Node(string text = "new node")
         {
+            Text = text;
+            Childs = new List<Node>();
         }
 
-        public string Text { get; private set; } = "new node";
+        public string Text { get; private set; }
 
-        public void DisplayNode()
-        {
-            Console.WriteLine(WrapText(Text));
-        }
+        public Node Parent { get; set; }
 
-        public void ChangeNodeText()
+        public List<Node> Childs { get; }
+
+        public void ChangeNodeText(ConsoleKeyInfo key)
         {
             const int low = 31;
             const int high = 127;
-            var key = Console.ReadKey();
             Text = key.KeyChar switch
             {
                 '\b' => Text.Substring(0, Text.Length - 1),
                 var x when x > low && x < high => Text + x,
-                _ => throw new NotImplementedException()
+                _ => Text
             };
-        }
-
-        private string WrapText(string text)
-        {
-            return new string('-', text.Length + 2)
-                   + "\n|" + text + "|\n"
-                   + new string('-', text.Length + 2);
         }
     }
 }

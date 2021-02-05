@@ -9,12 +9,12 @@ namespace MindMapApp
     {
         static void Main()
         {
-            var centralNode = new Node();
+            var map = new Map();
             while (true)
             {
                 Console.Clear();
-                centralNode.DisplayNode();
-                centralNode.ChangeNodeText();
+                map.DisplayNodes();
+                map.ReadKey();
             }
         }
     }
