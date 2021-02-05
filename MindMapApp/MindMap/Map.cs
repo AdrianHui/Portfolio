@@ -35,7 +35,7 @@ namespace MindMap
                     AddChild();
                     break;
                 case ConsoleKey.UpArrow:
-                    Current = Current.Parent == null ? Current : Current.Parent;
+                    Current = Current.Parent ?? Current;
                     break;
                 case ConsoleKey.DownArrow:
                     Current = Current.Childs.Count == 0 ? Current : Current.Childs.First();
