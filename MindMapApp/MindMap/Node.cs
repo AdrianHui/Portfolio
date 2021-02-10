@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace MindMap
 {
-    class Node
+    public class Node
     {
         public Node(string text = "new node")
         {
