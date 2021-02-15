@@ -49,21 +49,74 @@ namespace MindMap
                 case ConsoleKey.Enter:
                     AddNode(currentKey.Key);
                     break;
-                case ConsoleKey.UpArrow:
-                    Current = Current.Parent.Childs[Current.Parent.Childs.IndexOf(Current) - 1];
+                case ConsoleKey.Delete:
+                    DeleteNode();
                     break;
+                case ConsoleKey.UpArrow:
                 case ConsoleKey.DownArrow:
-                    Current = Current.Parent.Childs[Current.Parent.Childs.IndexOf(Current) + 1];
+                    MoveUpAndDown(currentKey.Key);
                     break;
                 case ConsoleKey.LeftArrow:
-                    Current = Current.Parent ?? Current;
-                    break;
                 case ConsoleKey.RightArrow:
-                    Current = Current.Childs.Count > 0 ? Current.Childs.First() : Current;
+                    MoveRightAndLeft(currentKey.Key);
                     break;
                 default:
                     Current.ChangeNodeText(currentKey);
                     break;
+            }
+        }
+
+        private void DeleteNode()
+        {
+            if (Current == centralNode)
+            {
+                return;
+            }
+
+            var childIndex = Current.Parent.Childs.IndexOf(Current);
+            bool last = childIndex == Current.Parent.Childs.Count - 1;
+            Current.Parent.Childs.RemoveAt(childIndex);
+            if (Current.Parent.Childs.Count == 0)
+            {
+                Current = Current.Parent;
+            }
+            else
+            {
+                Current = last
+                        ? Current.Parent.Childs[childIndex - 1]
+                        : Current.Parent.Childs[childIndex];
+            }
+        }
+
+        private void MoveRightAndLeft(ConsoleKey key)
+        {
+            if (key == ConsoleKey.LeftArrow)
+            {
+                Current = Current.Parent ?? Current;
+            }
+            else
+            {
+                Current = Current.Childs.Count > 0 ? Current.Childs.First() : Current;
+            }
+        }
+
+        private void MoveUpAndDown(ConsoleKey key)
+        {
+            if (Current == centralNode)
+            {
+                return;
+            }
+
+            var childIndex = Current.Parent.Childs.IndexOf(Current);
+            if (key == ConsoleKey.UpArrow)
+            {
+                Current = childIndex == 0 ? Current : Current.Parent.Childs[childIndex - 1];
+            }
+            else
+            {
+                Current = Current.Parent.Childs[childIndex] == Current.Parent.Childs.Last()
+                    ? Current
+                    : Current.Parent.Childs[childIndex + 1];
             }
         }
 

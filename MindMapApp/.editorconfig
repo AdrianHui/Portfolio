@@ -1,0 +1,7 @@
+﻿[*.{cs,vb}]
+
+# IDE0045: Convert to conditional expression
+dotnet_style_prefer_conditional_expression_over_assignment = true:silent
+
+# S3240: The simplest possible condition syntax should be used
+dotnet_diagnostic.S3240.severity = none
