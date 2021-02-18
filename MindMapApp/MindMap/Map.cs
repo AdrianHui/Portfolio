@@ -6,140 +6,52 @@ namespace MindMap
 {
     public class Map
     {
-        readonly Node centralNode = new Node("central node");
-
         public Map()
         {
-            Current = centralNode;
+            Current = CentralNode;
         }
+
+        internal Node CentralNode { get; } = new Node("central node");
 
         internal Node Current { get; set; }
 
-        public void DisplayNodes(Node node = null, string indent = "\t")
+        public void PrintMindMap()
         {
-            node ??= centralNode;
-            if (node == centralNode)
-            {
-                Console.WriteLine(Current == centralNode
-                ? WrapText($"\u001b[48;5;{243}m{centralNode.Text}\u001b[0m")
-                : WrapText(centralNode.Text));
-            }
-
-            for (int i = 0; i < node.Childs.Count; i++)
-            {
-                Console.WriteLine(indent + "|\n" + indent + "|");
-                Console.WriteLine(Current == node.Childs[i]
-                    ? indent + "|--" + WrapText($"\u001b[48;5;{243}m{node.Childs[i].Text}\u001b[0m")
-                    : indent + "|--" + WrapText(node.Childs[i].Text));
-
-                if (node.Childs[i].Childs.Count > 0)
-                {
-                    var last = node.Childs[i] == node.Childs.Last();
-                    DisplayNodes(node.Childs[i], indent + (last ? "\t" : "|\t"));
-                }
-            }
+            new DisplayMap(this).Print(CentralNode);
         }
 
-        public void ReadKey()
+        public void Edit(ConsoleKeyInfo currentKey)
         {
-            var currentKey = Console.ReadKey();
             switch (currentKey.Key)
             {
                 case ConsoleKey.Insert:
+                    new Control(this).Insert();
+                    break;
                 case ConsoleKey.Enter:
-                    AddNode(currentKey.Key);
+                    new Control(this).Enter();
                     break;
                 case ConsoleKey.Delete:
-                    DeleteNode();
+                    new Control(this).Delete();
+                    break;
+                case ConsoleKey.Backspace:
+                    new Control(this).Backspace();
                     break;
                 case ConsoleKey.UpArrow:
+                    new Control(this).UpArrow();
+                    break;
                 case ConsoleKey.DownArrow:
-                    MoveUpAndDown(currentKey.Key);
+                    new Control(this).DownArrow();
                     break;
                 case ConsoleKey.LeftArrow:
+                    new Control(this).LeftArrow();
+                    break;
                 case ConsoleKey.RightArrow:
-                    MoveRightAndLeft(currentKey.Key);
+                    new Control(this).RightArrow();
                     break;
                 default:
-                    Current.ChangeNodeText(currentKey);
+                    new Control(this).ChangeNodeText(currentKey.KeyChar);
                     break;
             }
-        }
-
-        private void DeleteNode()
-        {
-            if (Current == centralNode)
-            {
-                return;
-            }
-
-            var childIndex = Current.Parent.Childs.IndexOf(Current);
-            bool last = childIndex == Current.Parent.Childs.Count - 1;
-            Current.Parent.Childs.RemoveAt(childIndex);
-            if (Current.Parent.Childs.Count == 0)
-            {
-                Current = Current.Parent;
-            }
-            else
-            {
-                Current = last
-                        ? Current.Parent.Childs[childIndex - 1]
-                        : Current.Parent.Childs[childIndex];
-            }
-        }
-
-        private void MoveRightAndLeft(ConsoleKey key)
-        {
-            if (key == ConsoleKey.LeftArrow)
-            {
-                Current = Current.Parent ?? Current;
-            }
-            else
-            {
-                Current = Current.Childs.Count > 0 ? Current.Childs.First() : Current;
-            }
-        }
-
-        private void MoveUpAndDown(ConsoleKey key)
-        {
-            if (Current == centralNode)
-            {
-                return;
-            }
-
-            var childIndex = Current.Parent.Childs.IndexOf(Current);
-            if (key == ConsoleKey.UpArrow)
-            {
-                Current = childIndex == 0 ? Current : Current.Parent.Childs[childIndex - 1];
-            }
-            else
-            {
-                Current = Current.Parent.Childs[childIndex] == Current.Parent.Childs.Last()
-                    ? Current
-                    : Current.Parent.Childs[childIndex + 1];
-            }
-        }
-
-        private void AddNode(ConsoleKey key)
-        {
-            Node newNode = new Node();
-            if (key == ConsoleKey.Insert)
-            {
-                newNode.Parent = Current;
-                Current.Childs.Add(newNode);
-            }
-            else
-            {
-                newNode.Parent = Current.Parent;
-                Current.Parent.Childs.Add(newNode);
-            }
-
-            Current = newNode;
-        }
-
-        private string WrapText(string text)
-        {
-            return "(" + text + ")";
         }
     }
 }

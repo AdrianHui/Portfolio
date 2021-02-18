@@ -11,5 +11,13 @@ namespace MindMap.Facts
             var map = new Map();
             Assert.Equal("central node", map.Current.Text);
         }
+
+        [Fact]
+        public void CurrentShouldReturnLastAddedNode()
+        {
+            var map = new Map();
+            new Control(map).Insert();
+            Assert.Equal("new node", map.Current.Text);
+        }
     }
 }

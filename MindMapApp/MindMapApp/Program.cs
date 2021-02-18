@@ -10,11 +10,13 @@ namespace MindMapApp
         static void Main()
         {
             var map = new Map();
-            while (true)
+            ConsoleKeyInfo key = default;
+            while (key.Key != ConsoleKey.Escape)
             {
                 Console.Clear();
-                map.DisplayNodes();
-                map.ReadKey();
+                map.PrintMindMap();
+                key = Console.ReadKey();
+                map.Edit(key);
             }
         }
     }

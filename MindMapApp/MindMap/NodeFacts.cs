@@ -31,29 +31,5 @@ namespace MindMap.Facts
             node.Childs.Add(child2);
             Assert.Equal(new[] { child1, child2 }, node.Childs);
         }
-
-        [Fact]
-        public void ChangeNodeTextShouldAddGivenCharToNodeTextIfGivenKeyIsALetter()
-        {
-            var node = new Node("node text");
-            node.ChangeNodeText(new ConsoleKeyInfo('X', ConsoleKey.X, false, false, false));
-            Assert.Equal("node textX", node.Text);
-        }
-
-        [Fact]
-        public void ChangeNodeTextShouldAddGivenCharToNodeTextIfGivenKeyIsASymbol()
-        {
-            var node = new Node("node text");
-            node.ChangeNodeText(new ConsoleKeyInfo('%', ConsoleKey.D5, true, false, false));
-            Assert.Equal("node text%", node.Text);
-        }
-
-        [Fact]
-        public void ChangeNodeTextShouldRemoveLastCharIfGivenKeyIsBackspace()
-        {
-            var node = new Node("node text");
-            node.ChangeNodeText(new ConsoleKeyInfo('\b', ConsoleKey.Backspace, false, false, false));
-            Assert.Equal("node tex", node.Text);
-        }
     }
 }
