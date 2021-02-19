@@ -24,7 +24,7 @@ namespace MindMap
 
             for (int i = 0; i < node.Childs.Count; i++)
             {
-                Console.WriteLine(indent + "|\n" + indent + "|");
+                Console.WriteLine(indent + "|");
                 Console.WriteLine(map.Current == node.Childs[i]
                     ? indent + "|--" + $"\u001b[48;5;{243}m{node.Childs[i].Text}\u001b[0m"
                     : indent + "|--" + node.Childs[i].Text);

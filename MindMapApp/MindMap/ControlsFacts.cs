@@ -27,12 +27,11 @@ namespace MindMap.Facts
         public void EnterShouldAddASiblingToCurrentNode()
         {
             var map = new Map();
-            new Control(map).Insert();
-            new Control(map).ChangeNodeText('1');
-            new Control(map).Enter();
+            new Control(map).Insert("first");
+            new Control(map).Enter("second");
             Assert.True(map.Current.Parent.Childs.Count == 2
-                && map.Current.Parent.Childs[0].Text == "new node1"
-                && map.Current.Text == "new node");
+                && map.Current.Parent.Childs[0].Text == "first"
+                && map.Current.Parent.Childs[1].Text == "second");
         }
 
         [Fact]
@@ -55,12 +54,10 @@ namespace MindMap.Facts
         public void UpArrowShouldChangeSelectionBetweenSiblings()
         {
             var map = new Map();
-            new Control(map).Insert();
-            new Control(map).ChangeNodeText('1');
-            new Control(map).Enter();
-            new Control(map).ChangeNodeText('2');
+            new Control(map).Insert("first");
+            new Control(map).Enter("second");
             new Control(map).UpArrow();
-            Assert.True(map.Current.Text == "new node1");
+            Assert.True(map.Current.Text == "first");
         }
 
         [Fact]
@@ -75,13 +72,11 @@ namespace MindMap.Facts
         public void DownArrowShouldChangeSelectionBetweenSiblings()
         {
             var map = new Map();
-            new Control(map).Insert();
-            new Control(map).ChangeNodeText('1');
-            new Control(map).Enter();
-            new Control(map).ChangeNodeText('2');
+            new Control(map).Insert("first");
+            new Control(map).Enter("second");
             new Control(map).UpArrow();
             new Control(map).DownArrow();
-            Assert.True(map.Current.Text == "new node2");
+            Assert.True(map.Current.Text == "second");
         }
 
         [Fact]

@@ -13,22 +13,22 @@ namespace MindMap
             this.map = map;
         }
 
-        public void Insert()
+        public void Insert(string nodeText = "new node")
         {
-            Node newNode = new Node();
+            Node newNode = new Node(nodeText);
             newNode.Parent = map.Current;
             map.Current.Childs.Add(newNode);
             map.Current = newNode;
         }
 
-        public void Enter()
+        public void Enter(string nodeText = "new node")
         {
             if (map.Current == map.CentralNode)
             {
                 return;
             }
 
-            Node newNode = new Node();
+            Node newNode = new Node(nodeText);
             newNode.Parent = map.Current.Parent;
             map.Current.Parent.Childs.Add(newNode);
             map.Current = newNode;

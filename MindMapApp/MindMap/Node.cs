@@ -6,7 +6,7 @@ namespace MindMap
 {
     class Node
     {
-        public Node(string text = "new node")
+        public Node(string text)
         {
             Text = text;
             Childs = new List<Node>();
