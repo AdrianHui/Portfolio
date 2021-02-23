@@ -157,5 +157,23 @@ namespace MindMap.Facts
             new Control(map).ChangeNodeText('%');
             Assert.Equal("central node%", map.Current.Text);
         }
+
+        [Fact]
+        public void TabShouldChangeCollapsedPropertyToOppositeValueIfCurrentNodeHasChilds()
+        {
+            var map = new Map();
+            new Control(map).Insert();
+            new Control(map).LeftArrow();
+            new Control(map).Tab();
+            Assert.True(map.Current.Collapsed);
+        }
+
+        [Fact]
+        public void TabShouldNotChangeCollapsedPropertyIfCurrentNodeDoesNotHaveChilds()
+        {
+            var map = new Map();
+            new Control(map).Tab();
+            Assert.False(map.Current.Collapsed);
+        }
     }
 }

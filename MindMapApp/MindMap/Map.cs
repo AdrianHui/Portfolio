@@ -18,6 +18,7 @@ namespace MindMap
         public void PrintMindMap()
         {
             new DisplayMap(this).Print(CentralNode);
+            Console.WriteLine("\n\n\n\n" + HelpMenu());
         }
 
         public void Edit(ConsoleKeyInfo currentKey)
@@ -36,6 +37,9 @@ namespace MindMap
                 case ConsoleKey.Backspace:
                     new Control(this).Backspace();
                     break;
+                case ConsoleKey.Tab:
+                    new Control(this).Tab();
+                    break;
                 case ConsoleKey.UpArrow:
                     new Control(this).UpArrow();
                     break;
@@ -52,6 +56,29 @@ namespace MindMap
                     new Control(this).ChangeNodeText(currentKey.KeyChar);
                     break;
             }
+        }
+
+        private string HelpMenu()
+        {
+            string[] elements =
+            {
+                " Shortcut Keys:",
+                "  - Esc - stops the application.",
+                "  - Insert - adds new child node.",
+                "  - Enter - adds new sibling node.",
+                "  - Delete - deletes current node.",
+                "  - Backspace - erases last character from node's name.",
+                "  - RightArrow - changes selection to current node's first child node.",
+                "  - Tab - collapses / expands current node childs.",
+                "  - LeftArrow - changes selection to current node's parent.",
+                "  - DownArrow - changes selection to node below the current node.",
+                "  - UpArrow - changes selection to node above the current node."
+            };
+            var maxLength = elements.Max(x => x.Length);
+            var helpBox = elements.Select(x => x.PadRight(maxLength, ' '))
+                                    .Select(x => $"\u001b[48;5;{17}m{"*" + x + "*"}\u001b[0m");
+            var border = $"\u001b[48;5;{17}m{"".PadRight(maxLength + 2, '*')}\u001b[0m";
+            return border + "\n" + string.Join('\n', helpBox) + "\n" + border;
         }
     }
 }

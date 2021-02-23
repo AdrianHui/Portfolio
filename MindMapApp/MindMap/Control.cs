@@ -15,6 +15,11 @@ namespace MindMap
 
         public void Insert(string nodeText = "new node")
         {
+            if (map.Current.Collapsed)
+            {
+                return;
+            }
+
             Node newNode = new Node(nodeText);
             newNode.Parent = map.Current;
             map.Current.Childs.Add(newNode);
@@ -36,6 +41,11 @@ namespace MindMap
 
         public void Backspace()
         {
+            if (map.Current.Text == "")
+            {
+                return;
+            }
+
             map.Current.Text =
                 map.Current.Text.Substring(0, map.Current.Text.Length - 1);
         }
@@ -69,6 +79,11 @@ namespace MindMap
 
         public void RightArrow()
         {
+            if (map.Current.Collapsed)
+            {
+                return;
+            }
+
             map.Current = map.Current.Childs.Count > 0
                 ? map.Current.Childs.First()
                 : map.Current;
@@ -98,6 +113,13 @@ namespace MindMap
                 map.Current = last ? map.Current.Parent.Childs[childIndex - 1]
                                        : map.Current.Parent.Childs[childIndex];
             }
+        }
+
+        public void Tab()
+        {
+            map.Current.Collapsed = map.Current.Childs.Count > 0
+                ? !map.Current.Collapsed
+                : map.Current.Collapsed;
         }
 
         public void ChangeNodeText(char character)

@@ -13,27 +13,40 @@ namespace MindMap
             this.map = map;
         }
 
-        public void Print(Node node, string indent = "\t")
+        public void Print(Node node, string indent = "   ")
         {
             if (node == map.CentralNode)
             {
-                Console.WriteLine(map.Current == map.CentralNode
-                ? $"\u001b[48;5;{243}m{map.CentralNode.Text}\u001b[0m"
-                : map.CentralNode.Text);
+                PrintNode(node, map.CentralNode.Collapsed ? "+" : "-");
             }
 
-            for (int i = 0; i < node.Childs.Count; i++)
+            for (int i = 0; i < node.Childs.Count && !node.Collapsed; i++)
             {
-                Console.WriteLine(indent + "|");
-                Console.WriteLine(map.Current == node.Childs[i]
-                    ? indent + "|--" + $"\u001b[48;5;{243}m{node.Childs[i].Text}\u001b[0m"
-                    : indent + "|--" + node.Childs[i].Text);
+                PrintNode(node.Childs[i], indent);
 
                 if (node.Childs[i].Childs.Count > 0)
                 {
                     var last = node.Childs[i] == node.Childs.Last();
-                    Print(node.Childs[i], indent + (last ? "\t" : "|\t"));
+                    Print(node.Childs[i], indent + (last ? "   " : "|  "));
                 }
+            }
+        }
+
+        private void PrintNode(Node node, string indent)
+        {
+            if (node == map.CentralNode)
+            {
+                Console.WriteLine(map.Current == map.CentralNode
+                ? $"\u001b[48;5;{4}m{indent + map.CentralNode.Text}\u001b[0m"
+                : indent + map.CentralNode.Text);
+            }
+            else
+            {
+                string collapsedNodeIndent = node.Collapsed ? indent + "+--" : indent + "|--";
+                Console.WriteLine(indent + "|");
+                Console.WriteLine(map.Current == node
+                    ? collapsedNodeIndent + $"\u001b[48;5;{4}m{node.Text}\u001b[0m"
+                    : collapsedNodeIndent + node.Text);
             }
         }
     }

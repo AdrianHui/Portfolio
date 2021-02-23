@@ -17,5 +17,7 @@ namespace MindMap
         public Node Parent { get; set; }
 
         public IList<Node> Childs { get; }
+
+        public bool Collapsed { get; set; }
     }
 }
