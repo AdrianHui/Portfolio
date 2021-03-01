@@ -17,8 +17,9 @@ namespace MindMap
 
         public void PrintMindMap()
         {
-            new DisplayMap(this).Print(CentralNode);
+            new DisplayMap(this).PrintMap(CentralNode);
             Console.WriteLine("\n\n\n\n" + HelpMenu());
+            Console.SetCursorPosition(Current.LeftCoord, Current.TopCoord);
         }
 
         public void Edit(ConsoleKeyInfo currentKey)
@@ -36,9 +37,6 @@ namespace MindMap
                     break;
                 case ConsoleKey.Backspace:
                     new Control(this).Backspace();
-                    break;
-                case ConsoleKey.Tab:
-                    new Control(this).Tab();
                     break;
                 case ConsoleKey.UpArrow:
                     new Control(this).UpArrow();
@@ -68,9 +66,8 @@ namespace MindMap
                 "  - Enter - adds new sibling node.",
                 "  - Delete - deletes current node.",
                 "  - Backspace - erases last character from node's name.",
-                "  - RightArrow - changes selection to current node's first child node.",
-                "  - Tab - collapses / expands current node childs.",
-                "  - LeftArrow - changes selection to current node's parent.",
+                "  - RightArrow -  expands the node or changes selection to current node's first child node.",
+                "  - LeftArrow - collapses the node or changes selection to current node's parent.",
                 "  - DownArrow - changes selection to node below the current node.",
                 "  - UpArrow - changes selection to node above the current node."
             };
@@ -78,7 +75,7 @@ namespace MindMap
             var helpBox = elements.Select(x => x.PadRight(maxLength, ' '))
                                     .Select(x => $"\u001b[48;5;{17}m{"*" + x + "*"}\u001b[0m");
             var border = $"\u001b[48;5;{17}m{"".PadRight(maxLength + 2, '*')}\u001b[0m";
-            return border + "\n" + string.Join('\n', helpBox) + "\n" + border;
+            return $"{border}\n{string.Join('\n', helpBox)}\n{border}";
         }
     }
 }
