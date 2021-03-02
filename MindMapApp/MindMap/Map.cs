@@ -11,6 +11,10 @@ namespace MindMap
             Current = CentralNode;
         }
 
+        public int MaxWidth { get; set; }
+
+        public int MaxHeight { get; set; }
+
         internal Node CentralNode { get; } = new Node("central node");
 
         internal Node Current { get; set; }

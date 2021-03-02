@@ -12,6 +12,8 @@ namespace MindMapApp
             ConsoleKeyInfo key = default;
             while (key.Key != ConsoleKey.Escape)
             {
+                map.MaxHeight = Console.WindowHeight;
+                map.MaxWidth = Console.WindowWidth;
                 Console.Clear();
                 map.PrintMindMap();
                 key = Console.ReadKey();

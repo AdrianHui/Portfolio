@@ -16,8 +16,8 @@ namespace MindMap
         public void Insert(string nodeText = "new node")
         {
             if (map.Current.Collapsed
-                || map.Current.LeftCoord + nodeText.Length > Console.WindowWidth
-                || GetLastRowCoord() + 3 >= Console.WindowHeight)
+                || map.Current.LeftCoord + nodeText.Length > map.MaxWidth
+                || GetLastRowCoord() + 4 > map.MaxHeight)
             {
                 return;
             }
@@ -32,7 +32,7 @@ namespace MindMap
         public void Enter(string nodeText = "new node")
         {
             if (map.Current == map.CentralNode
-                || GetLastRowCoord() + 3 >= Console.WindowHeight)
+                || GetLastRowCoord() + 4 > map.MaxHeight)
             {
                 return;
             }
@@ -156,7 +156,7 @@ namespace MindMap
         {
             const int low = 31;
             const int high = 127;
-            map.Current.Text = map.Current.LeftCoord + 1 < Console.WindowWidth
+            map.Current.Text = map.Current.LeftCoord + 1 < map.MaxWidth
                 && character > low && character < high
                         ? map.Current.Text + character
                         : map.Current.Text;
