@@ -15,17 +15,14 @@ namespace MindMap
 
         public void Insert(string nodeText = "new node")
         {
-            Node newNode = new Node(nodeText);
             if (map.Current.Collapsed
-                || map.Current.LeftCoord + nodeText.Length > Console.WindowWidth)
+                || map.Current.LeftCoord + nodeText.Length > Console.WindowWidth
+                || GetLastRowCoord() + 3 >= Console.WindowHeight)
             {
                 return;
             }
-            else if (map.Current.Childs.Count > 0)
-            {
-                newNode.Siblings = map.Current.Childs;
-            }
 
+            Node newNode = new Node(nodeText);
             newNode.Parent = map.Current;
             map.Current.Childs.Add(newNode);
             newNode.Siblings = map.Current.Childs;
@@ -34,7 +31,8 @@ namespace MindMap
 
         public void Enter(string nodeText = "new node")
         {
-            if (map.Current == map.CentralNode)
+            if (map.Current == map.CentralNode
+                || GetLastRowCoord() + 3 >= Console.WindowHeight)
             {
                 return;
             }
@@ -89,15 +87,21 @@ namespace MindMap
             }
             else
             {
-                while (map.Current == map.Current.Siblings.Last()
-                    && map.Current != map.CentralNode.Childs.Last())
+                Node temp = map.Current;
+                while (temp == temp.Siblings.Last()
+                    && temp != map.CentralNode.Childs.Last())
                 {
-                    map.Current = map.Current.Parent;
+                    temp = temp.Parent;
                 }
 
-                map.Current = map.Current == map.CentralNode.Childs.Last()
-                    ? map.Current
-                    : map.Current.Siblings[map.Current.Siblings.IndexOf(map.Current) + 1];
+                if (temp.Childs.Count > 0 && temp == temp.Siblings.Last())
+                {
+                    return;
+                }
+
+                map.Current = temp == temp.Siblings.Last()
+                    ? temp
+                    : temp.Siblings[temp.Siblings.IndexOf(temp) + 1];
             }
         }
 
@@ -156,6 +160,23 @@ namespace MindMap
                 && character > low && character < high
                         ? map.Current.Text + character
                         : map.Current.Text;
+        }
+
+        private int GetLastRowCoord()
+        {
+            const int helpMenuRows = 13;
+            if (map.CentralNode.Childs.Count == 0)
+            {
+                return map.CentralNode.TopCoord + helpMenuRows;
+            }
+
+            Node temp = map.CentralNode.Childs.Last();
+            while (temp.Childs.Count > 0 && !temp.Collapsed)
+            {
+                temp = temp.Childs.Last();
+            }
+
+            return temp.TopCoord + helpMenuRows;
         }
     }
 }

@@ -18,7 +18,7 @@ namespace MindMap
         public void PrintMindMap()
         {
             new DisplayMap(this).PrintMap(CentralNode);
-            Console.WriteLine("\n\n\n\n" + HelpMenu());
+            Console.WriteLine("\n\n" + HelpMenu());
             Console.SetCursorPosition(Current.LeftCoord, Current.TopCoord);
         }
 
