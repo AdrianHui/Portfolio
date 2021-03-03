@@ -46,13 +46,9 @@ namespace MindMap
 
         public void Backspace()
         {
-            if (map.Current.Text == "")
-            {
-                return;
-            }
-
-            map.Current.Text =
-                map.Current.Text.Substring(0, map.Current.Text.Length - 1);
+            map.Current.Text = map.Current.Text == ""
+                ? ""
+                : map.Current.Text.Substring(0, map.Current.Text.Length - 1);
         }
 
         public void UpArrow()
@@ -75,7 +71,7 @@ namespace MindMap
             {
                 map.Current = index == 0
                 ? map.Current.Parent
-                : map.Current.Parent.Childs[index - 1];
+                : map.Current.Siblings[index - 1];
             }
         }
 
@@ -87,13 +83,7 @@ namespace MindMap
             }
             else
             {
-                Node temp = map.Current;
-                while (temp == temp.Siblings.Last()
-                    && temp != map.CentralNode.Childs.Last())
-                {
-                    temp = temp.Parent;
-                }
-
+                Node temp = ChangeSelectionToNodeBelowOnAnotherLevel();
                 if (temp.Childs.Count > 0 && temp == temp.Siblings.Last())
                 {
                     return;
@@ -138,17 +128,17 @@ namespace MindMap
                 return;
             }
 
-            var childIndex = map.Current.Parent.Childs.IndexOf(map.Current);
-            bool last = childIndex == map.Current.Parent.Childs.Count - 1;
-            map.Current.Parent.Childs.RemoveAt(childIndex);
-            if (map.Current.Parent.Childs.Count == 0)
+            var index = map.Current.Siblings.IndexOf(map.Current);
+            bool last = index == map.Current.Siblings.Count - 1;
+            map.Current.Siblings.RemoveAt(index);
+            if (map.Current.Siblings.Count == 0)
             {
                 map.Current = map.Current.Parent;
             }
             else
             {
-                map.Current = last ? map.Current.Parent.Childs[childIndex - 1]
-                                       : map.Current.Parent.Childs[childIndex];
+                map.Current = last ? map.Current.Siblings[index - 1]
+                                       : map.Current.Siblings[index];
             }
         }
 
@@ -160,6 +150,18 @@ namespace MindMap
                 && character > low && character < high
                         ? map.Current.Text + character
                         : map.Current.Text;
+        }
+
+        private Node ChangeSelectionToNodeBelowOnAnotherLevel()
+        {
+            Node node = map.Current;
+            while (node == node.Siblings.Last()
+                && node != map.CentralNode.Childs.Last())
+            {
+                node = node.Parent;
+            }
+
+            return node;
         }
 
         private int GetLastRowCoord()
