@@ -16,8 +16,7 @@ namespace MindMap.Facts
         public void CurrentShouldReturnLastAddedNode()
         {
             var map = new Map();
-            map.MaxHeight = 30;
-            map.MaxWidth = 120;
+            map.WindowSize = (30, 120);
             new Control(map).Insert();
             Assert.Equal("new node", map.Current.Text);
         }
@@ -26,8 +25,7 @@ namespace MindMap.Facts
         public void EditShouldAddANewChildToCurrentNodeIfInsertKeyIsPressed()
         {
             var map = new Map();
-            map.MaxHeight = 30;
-            map.MaxWidth = 120;
+            map.WindowSize = (30, 120);
             map.Edit(new ConsoleKeyInfo('\0', ConsoleKey.Insert, false, false, false));
             Assert.True(map.CentralNode.Childs.Count == 1
                 && map.Current.Text == "new node");
@@ -37,8 +35,7 @@ namespace MindMap.Facts
         public void EditShouldAddANewSiblingToCurrentNodeIfEnterKeyIsPressed()
         {
             var map = new Map();
-            map.MaxHeight = 30;
-            map.MaxWidth = 120;
+            map.WindowSize = (30, 120);
             map.Edit(new ConsoleKeyInfo('\0', ConsoleKey.Insert, false, false, false));
             map.Edit(new ConsoleKeyInfo('\r', ConsoleKey.Enter, false, false, false));
             Assert.True(map.CentralNode.Childs.Count == 2);
@@ -48,8 +45,7 @@ namespace MindMap.Facts
         public void EditShouldDeleteCurrentNodeIfDeleteKeyIsPressed()
         {
             var map = new Map();
-            map.MaxHeight = 30;
-            map.MaxWidth = 120;
+            map.WindowSize = (30, 120);
             map.Edit(new ConsoleKeyInfo('\0', ConsoleKey.Insert, false, false, false));
             map.Edit(new ConsoleKeyInfo('\0', ConsoleKey.Delete, false, false, false));
             Assert.True(map.CentralNode.Childs.Count == 0);
@@ -59,8 +55,7 @@ namespace MindMap.Facts
         public void EditShouldRemoveCurrentNodeTextLastCharacterIfBackspaceKeyIsPressed()
         {
             var map = new Map();
-            map.MaxHeight = 30;
-            map.MaxWidth = 120;
+            map.WindowSize = (30, 120);
             map.Edit(new ConsoleKeyInfo('\b', ConsoleKey.Backspace, false, false, false));
             Assert.True(map.CentralNode.Text == "central nod");
         }
@@ -69,8 +64,7 @@ namespace MindMap.Facts
         public void EditShouldSetCurrentNodeToPreviousSiblingIfUpArrowKeyIsPressed()
         {
             var map = new Map();
-            map.MaxHeight = 30;
-            map.MaxWidth = 120;
+            map.WindowSize = (30, 120);
             new Control(map).Insert("first");
             new Control(map).Enter("second");
             map.Edit(new ConsoleKeyInfo('\0', ConsoleKey.UpArrow, false, false, false));
@@ -81,8 +75,7 @@ namespace MindMap.Facts
         public void EditShouldSetCurrentNodeToNextSiblingIfDownArrowKeyIsPressed()
         {
             var map = new Map();
-            map.MaxHeight = 30;
-            map.MaxWidth = 120;
+            map.WindowSize = (30, 120);
             new Control(map).Insert("first");
             new Control(map).Enter("second");
             map.Edit(new ConsoleKeyInfo('\0', ConsoleKey.UpArrow, false, false, false));
@@ -94,8 +87,7 @@ namespace MindMap.Facts
         public void EditShouldSetCurrentNodeToCurrentNodeParentIfLeftArrowIsPressed()
         {
             var map = new Map();
-            map.MaxHeight = 30;
-            map.MaxWidth = 120;
+            map.WindowSize = (30, 120);
             new Control(map).Insert("first");
             map.Edit(new ConsoleKeyInfo('\0', ConsoleKey.LeftArrow, false, false, false));
             Assert.True(map.Current.Text == "central node");
@@ -105,8 +97,7 @@ namespace MindMap.Facts
         public void EditShouldSetCurrentNodeToCurrentNodeFirstChildIfRightArrowIsPressed()
         {
             var map = new Map();
-            map.MaxHeight = 30;
-            map.MaxWidth = 120;
+            map.WindowSize = (30, 120);
             new Control(map).Insert("first");
             map.Edit(new ConsoleKeyInfo('\0', ConsoleKey.LeftArrow, false, false, false));
             map.Edit(new ConsoleKeyInfo('\0', ConsoleKey.RightArrow, false, false, false));
@@ -117,8 +108,7 @@ namespace MindMap.Facts
         public void EditShouldAddTheCharToCurrentNodeTextIfAnyCharKeyIsPressed()
         {
             var map = new Map();
-            map.MaxHeight = 30;
-            map.MaxWidth = 120;
+            map.WindowSize = (30, 120);
             map.Edit(new ConsoleKeyInfo('X', ConsoleKey.X, true, false, false));
             Assert.True(map.Current.Text == "central nodeX");
         }

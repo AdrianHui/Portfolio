@@ -9,21 +9,29 @@ namespace MindMap
         public Map()
         {
             Current = CentralNode;
+            FirstNode = CentralNode;
+            CentralNode.Coordinates = (0, 0);
         }
 
-        public int MaxWidth { get; set; }
+        public (int height, int width) WindowSize { get; set; }
 
-        public int MaxHeight { get; set; }
+        public int MaxNodesNumber { get; set; }
+
+        public int DisplayedNodesCount { get; set; }
 
         internal Node CentralNode { get; } = new Node("central node");
 
         internal Node Current { get; set; }
 
+        internal Node FirstNode { get; set; }
+
+        internal (int left, int top) CursorPosition { get; set; }
+
         public void PrintMindMap()
         {
             new DisplayMap(this).PrintMap(CentralNode);
             Console.WriteLine("\n\n" + HelpMenu());
-            Console.SetCursorPosition(Current.LeftCoord, Current.TopCoord);
+            Console.SetCursorPosition(CursorPosition.left, CursorPosition.top);
         }
 
         public void Edit(ConsoleKeyInfo currentKey)

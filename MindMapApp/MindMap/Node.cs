@@ -12,9 +12,7 @@ namespace MindMap
             Childs = new List<Node>();
         }
 
-        public int LeftCoord { get; set; }
-
-        public int TopCoord { get; set; }
+        public (int left, int top) Coordinates { get; set; } = (-1, -1);
 
         public string Text { get; set; }
 

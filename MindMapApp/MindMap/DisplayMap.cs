@@ -17,7 +17,7 @@ namespace MindMap
         {
             if (node == map.CentralNode)
             {
-                PrintNode(node, map.CentralNode.Collapsed ? "+" : "-");
+                PrintNode(node, indent);
             }
 
             for (int i = 0; i < node.Childs.Count && !node.Collapsed; i++)
@@ -33,23 +33,63 @@ namespace MindMap
 
         private void PrintNode(Node node, string indent)
         {
-            if (node == map.CentralNode)
+            string nodeText = node == map.Current
+                                       ? $"\u001b[48;5;{4}m{node.Text}\u001b[0m"
+                                       : node.Text;
+            if (map.DisplayedNodesCount == map.MaxNodesNumber
+                || (node.Coordinates.top != -1 && node.Coordinates.top < map.FirstNode.Coordinates.top))
             {
-                Console.Write(indent + (map.Current == map.CentralNode
-                                       ? $"\u001b[48;5;{4}m{map.CentralNode.Text}\u001b[0m"
-                                       : map.CentralNode.Text));
+                return;
+            }
+            else if (node == map.CentralNode)
+            {
+                Console.Write(node.Collapsed ? "+" : "-" + nodeText);
             }
             else
             {
                 string collapsedNodeIndent = indent + (node.Collapsed ? "+--" : "|--");
-                Console.Write("\n" + indent + "|");
-                Console.Write("\n" + (map.Current == node
-                    ? collapsedNodeIndent + $"\u001b[48;5;{4}m{node.Text}\u001b[0m"
-                    : collapsedNodeIndent + node.Text));
+                if (node != map.FirstNode)
+                {
+                    Console.Write("\n" + indent + "|");
+                    Console.Write("\n" + collapsedNodeIndent + nodeText);
+                }
+                else
+                {
+                    Console.Write(collapsedNodeIndent + nodeText);
+                }
             }
 
-            node.LeftCoord = Console.CursorLeft;
-            node.TopCoord = Console.CursorTop;
+            map.DisplayedNodesCount++;
+            SetCursorPosition(node);
+            SetNodeCoordinates(node);
+        }
+
+        private void SetNodeCoordinates(Node node)
+        {
+            int topCoordinate = 0;
+            if (node.Siblings != null && node != node.Siblings.First())
+            {
+                var temp = node.Siblings[node.Siblings.IndexOf(node) - 1];
+                while (temp.Childs.Count != 0 && !temp.Collapsed)
+                {
+                    temp = temp.Childs.Last();
+                }
+
+                topCoordinate = temp.Coordinates.top + 2;
+            }
+            else if (node != map.CentralNode)
+            {
+                topCoordinate = node.Parent.Coordinates.top + 2;
+            }
+
+            node.Coordinates = (Console.CursorLeft, topCoordinate);
+        }
+
+        private void SetCursorPosition(Node node)
+        {
+            map.CursorPosition = node == map.Current
+                ? (Console.CursorLeft, Console.CursorTop)
+                : map.CursorPosition;
         }
     }
 }
