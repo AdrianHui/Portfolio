@@ -9,29 +9,30 @@ namespace MindMap
         public Map()
         {
             Current = CentralNode;
-            FirstNode = CentralNode;
             CentralNode.Coordinates = (0, 0);
+            CurrentView = new CurrentView(this);
         }
 
-        public (int height, int width) WindowSize { get; set; }
+        public IList<string> FullMap { get; private set; }
 
-        public int MaxNodesNumber { get; set; }
-
-        public int DisplayedNodesCount { get; set; }
+        public CurrentView CurrentView { get; set; }
 
         internal Node CentralNode { get; } = new Node("central node");
 
         internal Node Current { get; set; }
 
-        internal Node FirstNode { get; set; }
-
-        internal (int left, int top) CursorPosition { get; set; }
+        internal int HelpMenuHeight { get; } = 14;
 
         public void PrintMindMap()
         {
-            new DisplayMap(this).PrintMap(CentralNode);
-            Console.WriteLine("\n\n" + HelpMenu());
-            Console.SetCursorPosition(CursorPosition.left, CursorPosition.top);
+            FullMap = new List<string>();
+            Build(CentralNode);
+            CurrentView.Print();
+            Console.SetCursorPosition(0, CurrentView.Height - HelpMenuHeight + 1);
+            Console.WriteLine(HelpMenu());
+            Console.SetCursorPosition(
+                Current.Coordinates.left + Current.Text.Length - CurrentView.Left,
+                Current.Coordinates.top - CurrentView.Top);
         }
 
         public void Edit(ConsoleKeyInfo currentKey)
@@ -66,6 +67,65 @@ namespace MindMap
                     new Control(this).ChangeNodeText(currentKey.KeyChar);
                     break;
             }
+        }
+
+        internal Node GetNodeAbove(Node node)
+        {
+            if (node == CentralNode)
+            {
+                return node;
+            }
+
+            var index = Current.Siblings.IndexOf(Current);
+            var temp = index == 0 ? node.Parent : node.Siblings[index - 1];
+            if (index != 0 && Current.Siblings[index - 1].Childs.Count > 0)
+            {
+                while (temp.Childs.Count != 0 && !temp.Collapsed)
+                {
+                    temp = temp.Childs.Last();
+                }
+            }
+
+            return temp;
+        }
+
+        private void Build(Node node, string indent = "   ")
+        {
+            if (node == CentralNode)
+            {
+                AddNode(node, indent);
+            }
+
+            for (int i = 0; i < node.Childs.Count && !node.Collapsed; i++)
+            {
+                AddNode(node.Childs[i], indent);
+                if (node.Childs[i].Childs.Count > 0)
+                {
+                    var last = node.Childs[i] == node.Childs.Last();
+                    Build(node.Childs[i], indent + (last ? "   " : "|  "));
+                }
+            }
+        }
+
+        private void AddNode(Node node, string indent)
+        {
+            string nodeText = node == Current
+                                       ? $"\u001b[48;5;{4}m{node.Text}\u001b[0m"
+                                       : node.Text;
+            string collapsedNodeIndent = indent + (node.Collapsed ? "+--" : "|--");
+            if (node == CentralNode)
+            {
+                FullMap.Add((node.Collapsed ? "+" : "-") + nodeText);
+            }
+            else
+            {
+                FullMap.Add(indent + "|");
+                FullMap.Add(collapsedNodeIndent + nodeText);
+            }
+
+            node.Coordinates = node == CentralNode
+                    ? (0, 0)
+                    : (collapsedNodeIndent.Length, FullMap.Count - 1);
         }
 
         private string HelpMenu()

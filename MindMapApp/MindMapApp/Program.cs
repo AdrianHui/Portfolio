@@ -12,9 +12,8 @@ namespace MindMapApp
             ConsoleKeyInfo key = default;
             while (key.Key != ConsoleKey.Escape)
             {
-                map.DisplayedNodesCount = 0;
-                map.WindowSize = (Console.WindowHeight, Console.WindowWidth);
-                map.MaxNodesNumber = (int)Math.Ceiling((decimal)(map.WindowSize.height - 15) / 2);
+                map.CurrentView.Height = Console.WindowHeight;
+                map.CurrentView.Width = Console.WindowWidth;
                 Console.Clear();
                 map.PrintMindMap();
                 key = Console.ReadKey();
