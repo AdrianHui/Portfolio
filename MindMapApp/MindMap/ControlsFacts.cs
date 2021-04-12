@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace MindMap.Facts
@@ -10,9 +11,7 @@ namespace MindMap.Facts
         public void InsertShouldAddAChildToCurrentNode()
         {
             var map = new Map();
-            map.CurrentView.Height = 30;
-            map.CurrentView.Width = 120;
-            new Control(map).Insert();
+            new MapControl(map).Insert();
             Assert.True(map.Current.Text == "new node"
                     && map.Current.Parent == map.CentralNode);
         }
@@ -21,9 +20,7 @@ namespace MindMap.Facts
         public void EnterShouldNotAddASiblingToCentralNode()
         {
             var map = new Map();
-            map.CurrentView.Height = 30;
-            map.CurrentView.Width = 120;
-            new Control(map).Enter();
+            new MapControl(map).Enter();
             Assert.True(map.Current.Text == "central node");
         }
 
@@ -31,22 +28,16 @@ namespace MindMap.Facts
         public void EnterShouldAddASiblingToCurrentNode()
         {
             var map = new Map();
-            map.CurrentView.Height = 30;
-            map.CurrentView.Width = 120;
-            new Control(map).Insert("first");
-            new Control(map).Enter("second");
-            Assert.True(map.Current.Parent.Childs.Count == 2
-                && map.Current.Parent.Childs[0].Text == "first"
-                && map.Current.Parent.Childs[1].Text == "second");
+            new MapControl(map).Insert();
+            new MapControl(map).Enter();
+            Assert.True(map.Current.Parent.Childs.Count == 2);
         }
 
         [Fact]
         public void BackspaceShouldRemoveLastCharacterFromNodeText()
         {
             var map = new Map();
-            map.CurrentView.Height = 30;
-            map.CurrentView.Width = 120;
-            new Control(map).Backspace();
+            new MapControl(map).Backspace();
             Assert.True(map.Current.Text == "central nod");
         }
 
@@ -54,77 +45,64 @@ namespace MindMap.Facts
         public void UpArrowShouldChangeSelectionBetweenSiblings()
         {
             var map = new Map();
-            map.CurrentView.Height = 30;
-            map.CurrentView.Width = 120;
-            new Control(map).Insert("first");
-            new Control(map).Enter("second");
-            new Control(map).UpArrow();
-            Assert.True(map.Current.Text == "first");
+            new MapControl(map).Insert();
+            new MapControl(map).Enter();
+            new MapControl(map).UpArrow();
+            Assert.True(map.Current == map.Current.Siblings.First());
         }
 
         [Fact]
         public void UpArrowShouldChangeSelectionToPreviousSiblingLastChild()
         {
             var map = new Map();
-            map.CurrentView.Height = 30;
-            map.CurrentView.Width = 120;
-            new Control(map).Insert("first");
-            new Control(map).Insert("second");
-            new Control(map).UpArrow();
-            new Control(map).Enter("third");
-            new Control(map).UpArrow();
-            Assert.True(map.Current.Text == "second");
+            new MapControl(map).Insert();
+            new MapControl(map).Insert();
+            new MapControl(map).UpArrow();
+            new MapControl(map).Enter();
+            new MapControl(map).UpArrow();
+            Assert.True(map.Current == map.CentralNode.Childs.First().Childs.First());
         }
 
         [Fact]
         public void DownArrowShouldChangeSelectionBetweenSiblings()
         {
             var map = new Map();
-            map.CurrentView.Height = 30;
-            map.CurrentView.Width = 120;
-            new Control(map).Insert("first");
-            new Control(map).Enter("second");
-            new Control(map).UpArrow();
-            new Control(map).DownArrow();
-            Assert.True(map.Current.Text == "second");
+            new MapControl(map).Insert();
+            new MapControl(map).Enter();
+            new MapControl(map).UpArrow();
+            new MapControl(map).DownArrow();
+            Assert.True(map.Current == map.CentralNode.Childs.Last());
         }
 
         [Fact]
         public void DownArrowShouldChangeSelectionToCurrentNodeFirstChild()
         {
             var map = new Map();
-            map.CurrentView.Height = 30;
-            map.CurrentView.Width = 120;
-            new Control(map).Insert("first");
-            new Control(map).Insert("second");
-            new Control(map).UpArrow();
-            new Control(map).DownArrow();
-            Assert.True(map.Current.Text == "second");
+            new MapControl(map).Insert();
+            new MapControl(map).UpArrow();
+            new MapControl(map).DownArrow();
+            Assert.True(map.Current == map.CentralNode.Childs.First());
         }
 
         [Fact]
         public void DownArrowShouldChangeSelectionToTheNodeBelowEvenIfItsNotAChild()
         {
             var map = new Map();
-            map.CurrentView.Height = 30;
-            map.CurrentView.Width = 120;
-            new Control(map).Insert("first");
-            new Control(map).Enter("third");
-            new Control(map).UpArrow();
-            new Control(map).Insert("second");
-            new Control(map).DownArrow();
-            Assert.True(map.Current.Text == "third");
+            new MapControl(map).Insert();
+            new MapControl(map).Enter();
+            new MapControl(map).UpArrow();
+            new MapControl(map).Insert();
+            new MapControl(map).DownArrow();
+            Assert.True(map.Current == map.CentralNode.Childs.Last());
         }
 
         [Fact]
         public void LeftArrowShouldCollapseCurrentNodeIfItHasChilds()
         {
             var map = new Map();
-            map.CurrentView.Height = 30;
-            map.CurrentView.Width = 120;
-            new Control(map).Insert();
-            new Control(map).UpArrow();
-            new Control(map).LeftArrow();
+            new MapControl(map).Insert();
+            new MapControl(map).UpArrow();
+            new MapControl(map).LeftArrow();
             Assert.True(map.Current.Collapsed);
         }
 
@@ -132,10 +110,8 @@ namespace MindMap.Facts
         public void LeftArrowShouldNotCollapseCurrentNodeAndChangeSelectionToCurrentNodesParentIfItDoesNotHaveChilds()
         {
             var map = new Map();
-            map.CurrentView.Height = 30;
-            map.CurrentView.Width = 120;
-            new Control(map).Insert();
-            new Control(map).LeftArrow();
+            new MapControl(map).Insert();
+            new MapControl(map).LeftArrow();
             Assert.False(map.Current.Collapsed && map.Current == map.CentralNode);
         }
 
@@ -143,13 +119,11 @@ namespace MindMap.Facts
         public void LeftArrowShouldChangeSelectionToCurrentNodeParentIfNodeIsAlereadyCollapsed()
         {
             var map = new Map();
-            map.CurrentView.Height = 30;
-            map.CurrentView.Width = 120;
-            new Control(map).Insert();
-            new Control(map).Insert();
-            new Control(map).UpArrow();
-            new Control(map).LeftArrow();
-            new Control(map).LeftArrow();
+            new MapControl(map).Insert();
+            new MapControl(map).Insert();
+            new MapControl(map).UpArrow();
+            new MapControl(map).LeftArrow();
+            new MapControl(map).LeftArrow();
             Assert.True(map.Current == map.CentralNode);
         }
 
@@ -157,9 +131,7 @@ namespace MindMap.Facts
         public void RightArrowShouldNotChangeSelectionIfCurrentNodeHasNoChilds()
         {
             var map = new Map();
-            map.CurrentView.Height = 30;
-            map.CurrentView.Width = 120;
-            new Control(map).RightArrow();
+            new MapControl(map).RightArrow();
             Assert.True(map.Current.Text == "central node");
         }
 
@@ -167,13 +139,11 @@ namespace MindMap.Facts
         public void RightArrowShouldExpandCurrentNodeIfItIsCollapsed()
         {
             var map = new Map();
-            map.CurrentView.Height = 30;
-            map.CurrentView.Width = 120;
-            new Control(map).Insert("first");
-            new Control(map).Insert("second");
-            new Control(map).UpArrow();
-            new Control(map).LeftArrow();
-            new Control(map).RightArrow();
+            new MapControl(map).Insert();
+            new MapControl(map).Insert();
+            new MapControl(map).UpArrow();
+            new MapControl(map).LeftArrow();
+            new MapControl(map).RightArrow();
             Assert.False(map.Current.Collapsed);
         }
 
@@ -181,22 +151,18 @@ namespace MindMap.Facts
         public void RightArrowShouldChangeSelectionToCurrentNodeFirstChildIfNodeIsNotCollapsed()
         {
             var map = new Map();
-            map.CurrentView.Height = 30;
-            map.CurrentView.Width = 120;
-            new Control(map).Insert("first");
-            new Control(map).Insert("second");
-            new Control(map).LeftArrow();
-            new Control(map).RightArrow();
-            Assert.True(map.Current.Text == "second");
+            new MapControl(map).Insert();
+            new MapControl(map).Insert();
+            new MapControl(map).LeftArrow();
+            new MapControl(map).RightArrow();
+            Assert.True(map.Current.Parent == map.CentralNode.Childs.First());
         }
 
         [Fact]
         public void DeleteShouldNotDeleteCurrentNodeIfItsCentralNode()
         {
             var map = new Map();
-            map.CurrentView.Height = 30;
-            map.CurrentView.Width = 120;
-            new Control(map).Delete();
+            new MapControl(map).Delete();
             Assert.True(map.Current.Text == "central node");
         }
 
@@ -204,11 +170,9 @@ namespace MindMap.Facts
         public void DeleteShouldDeleteCurrentNodeAndSetCurrentToNextSibling()
         {
             var map = new Map();
-            map.CurrentView.Height = 30;
-            map.CurrentView.Width = 120;
-            new Control(map).Insert();
-            new Control(map).Enter();
-            new Control(map).Delete();
+            new MapControl(map).Insert();
+            new MapControl(map).Enter();
+            new MapControl(map).Delete();
             Assert.True(map.Current.Text == "new node"
                     && map.Current.Parent.Childs.Count == 1);
         }
@@ -217,10 +181,8 @@ namespace MindMap.Facts
         public void DeleteShouldDeleteCurrentNodeAndSetCurrentToCurrentNodeParentIfDoesNotHaveSiblings()
         {
             var map = new Map();
-            map.CurrentView.Height = 30;
-            map.CurrentView.Width = 120;
-            new Control(map).Insert();
-            new Control(map).Delete();
+            new MapControl(map).Insert();
+            new MapControl(map).Delete();
             Assert.True(map.Current.Text == "central node" && map.Current.Childs.Count == 0);
         }
 
@@ -228,9 +190,7 @@ namespace MindMap.Facts
         public void ChangeNodeTextShouldAddGivenCharToNodeTextIfGivenKeyIsALetter()
         {
             var map = new Map();
-            map.CurrentView.Height = 30;
-            map.CurrentView.Width = 120;
-            new Control(map).ChangeNodeText('X');
+            new MapControl(map).ChangeText('X');
             Assert.Equal("central nodeX", map.Current.Text);
         }
 
@@ -238,9 +198,7 @@ namespace MindMap.Facts
         public void ChangeNodeTextShouldAddGivenCharToNodeTextIfGivenKeyIsASymbol()
         {
             var map = new Map();
-            map.CurrentView.Height = 30;
-            map.CurrentView.Width = 120;
-            new Control(map).ChangeNodeText('%');
+            new MapControl(map).ChangeText('%');
             Assert.Equal("central node%", map.Current.Text);
         }
     }

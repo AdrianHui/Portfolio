@@ -8,16 +8,15 @@ namespace MindMapApp
     {
         static void Main()
         {
-            var map = new Map();
-            ConsoleKeyInfo key = default;
-            while (key.Key != ConsoleKey.Escape)
+            var coord = new ApplicationViewCoordinates();
+            var mindMaps = new MindMaps();
+            while (true)
             {
-                map.CurrentView.Height = Console.WindowHeight;
-                map.CurrentView.Width = Console.WindowWidth;
+                coord.WindowWidth = Console.WindowWidth;
+                coord.WindowHeight = Console.WindowHeight;
                 Console.Clear();
-                map.PrintMindMap();
-                key = Console.ReadKey();
-                map.Edit(key);
+                mindMaps.Print();
+                mindMaps.Edit(Console.ReadKey());
             }
         }
     }

@@ -1,73 +1,30 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace MindMap
 {
-    public class Map
+    class Map : ApplicationViewCoordinates, IMenu
     {
         public Map()
         {
             Current = CentralNode;
-            CentralNode.Coordinates = (0, 0);
-            CurrentView = new CurrentView(this);
+            CentralNode.Coordinates = (DefaultMapLeft, 1);
+            CurrentView = new MapCurrentView(this);
+            Control = new MapControl(this);
         }
 
-        public IList<string> FullMap { get; private set; }
+        public string Title { get; set; } = "New Map";
 
-        public CurrentView CurrentView { get; set; }
+        public ICurrentView CurrentView { get; set; }
+
+        public IControl Control { get; set; }
+
+        internal IList<string> FullMap { get; set; }
 
         internal Node CentralNode { get; } = new Node("central node");
 
         internal Node Current { get; set; }
-
-        internal int HelpMenuHeight { get; } = 14;
-
-        public void PrintMindMap()
-        {
-            FullMap = new List<string>();
-            Build(CentralNode);
-            CurrentView.Print();
-            Console.SetCursorPosition(0, CurrentView.Height - HelpMenuHeight + 1);
-            Console.WriteLine(HelpMenu());
-            Console.SetCursorPosition(
-                Current.Coordinates.left + Current.Text.Length - CurrentView.Left,
-                Current.Coordinates.top - CurrentView.Top);
-        }
-
-        public void Edit(ConsoleKeyInfo currentKey)
-        {
-            switch (currentKey.Key)
-            {
-                case ConsoleKey.Insert:
-                    new Control(this).Insert();
-                    break;
-                case ConsoleKey.Enter:
-                    new Control(this).Enter();
-                    break;
-                case ConsoleKey.Delete:
-                    new Control(this).Delete();
-                    break;
-                case ConsoleKey.Backspace:
-                    new Control(this).Backspace();
-                    break;
-                case ConsoleKey.UpArrow:
-                    new Control(this).UpArrow();
-                    break;
-                case ConsoleKey.DownArrow:
-                    new Control(this).DownArrow();
-                    break;
-                case ConsoleKey.LeftArrow:
-                    new Control(this).LeftArrow();
-                    break;
-                case ConsoleKey.RightArrow:
-                    new Control(this).RightArrow();
-                    break;
-                default:
-                    new Control(this).ChangeNodeText(currentKey.KeyChar);
-                    break;
-            }
-        }
 
         internal Node GetNodeAbove(Node node)
         {
@@ -89,7 +46,7 @@ namespace MindMap
             return temp;
         }
 
-        private void Build(Node node, string indent = "   ")
+        internal void Build(Node node, string indent = "   ")
         {
             if (node == CentralNode)
             {
@@ -102,7 +59,7 @@ namespace MindMap
                 if (node.Childs[i].Childs.Count > 0)
                 {
                     var last = node.Childs[i] == node.Childs.Last();
-                    Build(node.Childs[i], indent + (last ? "   " : "|  "));
+                    Build(node.Childs[i], indent + (last ? "   " : "│  "));
                 }
             }
         }
@@ -110,44 +67,24 @@ namespace MindMap
         private void AddNode(Node node, string indent)
         {
             string nodeText = node == Current
-                                       ? $"\u001b[48;5;{4}m{node.Text}\u001b[0m"
+                                       ? $"\u001b[33m{node.Text}\u001b[0m"
                                        : node.Text;
-            string collapsedNodeIndent = indent + (node.Collapsed ? "+--" : "|--");
+            string collapsedNodeIndent = indent + (node.Collapsed ? "├>" : "├─");
             if (node == CentralNode)
             {
-                FullMap.Add((node.Collapsed ? "+" : "-") + nodeText);
+                FullMap.Add((node.Collapsed ? ">" : "─") + nodeText);
             }
             else
             {
-                FullMap.Add(indent + "|");
+                FullMap.Add(indent + "│");
                 FullMap.Add(collapsedNodeIndent + nodeText);
             }
 
             node.Coordinates = node == CentralNode
-                    ? (0, 0)
-                    : (collapsedNodeIndent.Length, FullMap.Count - 1);
-        }
-
-        private string HelpMenu()
-        {
-            string[] elements =
-            {
-                " Shortcut Keys:",
-                "  - Esc - stops the application.",
-                "  - Insert - adds new child node.",
-                "  - Enter - adds new sibling node.",
-                "  - Delete - deletes current node.",
-                "  - Backspace - erases last character from node's name.",
-                "  - RightArrow -  expands the node or changes selection to current node's first child node.",
-                "  - LeftArrow - collapses the node or changes selection to current node's parent.",
-                "  - DownArrow - changes selection to node below the current node.",
-                "  - UpArrow - changes selection to node above the current node."
-            };
-            var maxLength = elements.Max(x => x.Length);
-            var helpBox = elements.Select(x => x.PadRight(maxLength, ' '))
-                                    .Select(x => $"\u001b[48;5;{17}m{"*" + x + "*"}\u001b[0m");
-            var border = $"\u001b[48;5;{17}m{"".PadRight(maxLength + 2, '*')}\u001b[0m";
-            return $"{border}\n{string.Join('\n', helpBox)}\n{border}";
+                    ? (OpenedMapsMenuWidth + 4, 1)
+                    : (OpenedMapsMenuWidth + 3
+                        + collapsedNodeIndent.Length,
+                        FullMap.Count);
         }
     }
 }

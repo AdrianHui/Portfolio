@@ -4,44 +4,49 @@ using System.Linq;
 
 namespace MindMap
 {
-    class Control
+    class MapControl : ApplicationViewCoordinates, IControl
     {
         private readonly Map map;
 
-        public Control(Map map)
+        public MapControl(Map map)
         {
             this.map = map;
         }
 
-        public void Insert(string nodeText = "new node")
+        public void Insert()
         {
             if (map.Current.Collapsed)
             {
                 return;
             }
 
-            Node newNode = new Node(nodeText);
+            Node newNode = new Node("new node");
             newNode.Parent = map.Current;
             map.Current.Childs.Add(newNode);
             newNode.Siblings = map.Current.Childs;
-            newNode.Coordinates = (map.Current.Coordinates.left + 3, map.Current.Coordinates.top + 2);
             map.Current = newNode;
+            var nodeAbove = map.GetNodeAbove(map.Current);
+            map.Current.Coordinates = (nodeAbove.Coordinates.left + 3,
+                nodeAbove.Coordinates.top + 2);
             map.CurrentView.MoveDown();
             map.CurrentView.MoveRight();
         }
 
-        public void Enter(string nodeText = "new node")
+        public void Enter()
         {
             if (map.Current == map.CentralNode)
             {
                 return;
             }
 
-            Node newNode = new Node(nodeText);
+            Node newNode = new Node("new node");
             newNode.Parent = map.Current.Parent;
             map.Current.Parent.Childs.Add(newNode);
             newNode.Siblings = map.Current.Parent.Childs;
             map.Current = newNode;
+            var nodeAbove = map.GetNodeAbove(map.Current);
+            map.Current.Coordinates = (map.Current.Parent.Coordinates.left + 3,
+                nodeAbove.Coordinates.top + 2);
             map.CurrentView.MoveDown();
         }
 
@@ -76,6 +81,7 @@ namespace MindMap
             }
 
             map.CurrentView.MoveUp();
+            map.CurrentView.MoveRight();
             map.CurrentView.MoveLeft();
         }
 
@@ -92,6 +98,7 @@ namespace MindMap
 
             map.CurrentView.MoveDown();
             map.CurrentView.MoveRight();
+            map.CurrentView.MoveLeft();
         }
 
         public void RightArrow()
@@ -143,12 +150,13 @@ namespace MindMap
             }
         }
 
-        public void ChangeNodeText(char character)
+        public void ChangeText(char character)
         {
             const int low = 31;
             const int high = 127;
-            if ((map.Current.Coordinates.left - map.CurrentView.Left) + map.Current.Text.Length + 1
-                >= map.CurrentView.Width)
+            if ((map.Current.Coordinates.left - map.CurrentView.Left)
+                + OpenedMapsMenuWidth + 3 + map.Current.Text.Length + 1
+                >= WindowWidth - 1)
             {
                 map.CurrentView.Left++;
             }
