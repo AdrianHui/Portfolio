@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace MindMap
 {
-    class Borders : ApplicationViewCoordinates
+    class Borders
     {
         private readonly MindMaps appView;
 
@@ -12,6 +12,8 @@ namespace MindMap
         {
             this.appView = appView;
         }
+
+        public int OpenedMapsMenuWidth { get => appView.WindowWidth / 4; }
 
         public void DrawBorders()
         {
@@ -25,7 +27,7 @@ namespace MindMap
             Console.WriteLine(appView.SelectedMenu is OpenedMaps
                 ? "\u001b[32m┌─ Opened Maps ".PadRight(OpenedMapsMenuWidth + 5, '─') + "┐ "
                 : "┌─ Opened Maps ".PadRight(OpenedMapsMenuWidth, '─') + "┐ ");
-            while (Console.CursorTop != WindowHeight - 12)
+            while (Console.CursorTop != appView.WindowHeight - 12)
             {
                 Console.WriteLine("│" + "".PadRight(OpenedMapsMenuWidth - 1, ' ') + "│ ");
             }
@@ -36,7 +38,7 @@ namespace MindMap
         private void HelpMenuBorders()
         {
             Console.WriteLine("┌─ Shortcut Keys ".PadRight(OpenedMapsMenuWidth, '─') + "┐ ");
-            while (Console.CursorTop != WindowHeight - 2)
+            while (Console.CursorTop != appView.WindowHeight - 2)
             {
                 Console.WriteLine("│" + "".PadRight(OpenedMapsMenuWidth - 1, ' ') + "│ ");
             }
@@ -49,16 +51,16 @@ namespace MindMap
             int top = 0;
             Console.SetCursorPosition(OpenedMapsMenuWidth + 2, top++);
             Console.WriteLine(appView.SelectedMenu is Map
-                ? "\u001b[32m┌" + "".PadRight(WindowWidth - 2 - OpenedMapsMenuWidth - 2, '─') + "┐"
-                : "┌" + "".PadRight(WindowWidth - 2 - OpenedMapsMenuWidth - 2, '─') + "┐");
-            while (Console.CursorTop != WindowHeight - 2)
+                ? "\u001b[32m┌" + "".PadRight(appView.WindowWidth - 2 - OpenedMapsMenuWidth - 2, '─') + "┐"
+                : "┌" + "".PadRight(appView.WindowWidth - 2 - OpenedMapsMenuWidth - 2, '─') + "┐");
+            while (Console.CursorTop != appView.WindowHeight - 2)
             {
                 Console.SetCursorPosition(OpenedMapsMenuWidth + 2, top++);
-                Console.WriteLine("│" + "".PadRight(WindowWidth - 2 - OpenedMapsMenuWidth - 2, ' ') + "│");
+                Console.WriteLine("│" + "".PadRight(appView.WindowWidth - 2 - OpenedMapsMenuWidth - 2, ' ') + "│");
             }
 
             Console.SetCursorPosition(OpenedMapsMenuWidth + 2, top);
-            Console.WriteLine("└" + "".PadRight(WindowWidth - 2 - OpenedMapsMenuWidth - 2, '─') + "┘\u001b[0m");
+            Console.WriteLine("└" + "".PadRight(appView.WindowWidth - 2 - OpenedMapsMenuWidth - 2, '─') + "┘\u001b[0m");
         }
     }
 }

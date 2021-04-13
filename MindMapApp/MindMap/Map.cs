@@ -4,12 +4,11 @@ using System.Linq;
 
 namespace MindMap
 {
-    class Map : ApplicationViewCoordinates, IMenu
+    class Map : IMenu
     {
         public Map()
         {
             Current = CentralNode;
-            CentralNode.Coordinates = (DefaultMapLeft, 1);
             CurrentView = new MapCurrentView(this);
             Control = new MapControl(this);
         }
@@ -81,8 +80,8 @@ namespace MindMap
             }
 
             node.Coordinates = node == CentralNode
-                    ? (OpenedMapsMenuWidth + 4, 1)
-                    : (OpenedMapsMenuWidth + 3
+                    ? (Console.WindowWidth / 4 + 4, 1)
+                    : (Console.WindowWidth / 4 + 3
                         + collapsedNodeIndent.Length,
                         FullMap.Count);
         }

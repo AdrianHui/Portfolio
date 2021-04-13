@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace MindMap
 {
-    public class OpenedMaps : ApplicationViewCoordinates, IMenu
+    class OpenedMaps : IMenu
     {
         public OpenedMaps()
         {

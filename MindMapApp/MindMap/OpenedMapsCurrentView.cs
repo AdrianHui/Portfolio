@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MindMap
 {
-    class OpenedMapsCurrentView : ApplicationViewCoordinates, ICurrentView
+    class OpenedMapsCurrentView : ICurrentView
     {
         private readonly OpenedMaps openedMaps;
 
@@ -13,20 +13,27 @@ namespace MindMap
             this.openedMaps = openedMaps;
         }
 
+        public (int Width, int Height) Window { get; set; }
+
         public int Top { get; set; }
 
         public int Left { get; set; } = 1;
+
+        public int CurrentViewWidth { get => Window.Width / 4; }
+
+        public int CurrentViewHeight { get => Window.Height - 12; }
 
         public void Print()
         {
             var mapsTop = 1;
             foreach (var map in openedMaps.Maps)
             {
-                string mapTitle = map.Title.Length + 2 - (openedMaps.CurrentView.Left - 1) >= OpenedMapsMenuWidth
-                    ? map.Title.Substring(openedMaps.CurrentView.Left - 1, OpenedMapsMenuWidth - 2)
+                string mapTitle = map.Title.Length + 2 - (openedMaps.CurrentView.Left - 1)
+                                  >= CurrentViewWidth
+                    ? map.Title.Substring(openedMaps.CurrentView.Left - 1, CurrentViewWidth - 2)
                     : map.Title;
                 if (openedMaps.Maps.IndexOf(map) + 1 > openedMaps.CurrentView.Top
-                    && openedMaps.Maps.IndexOf(map) - openedMaps.CurrentView.Top < OpenedMapsMenuHeight - 1)
+                    && openedMaps.Maps.IndexOf(map) - openedMaps.CurrentView.Top < CurrentViewHeight - 1)
                 {
                     Console.SetCursorPosition(1, mapsTop++);
                     Console.WriteLine(map == openedMaps.CurrentMap
@@ -38,7 +45,7 @@ namespace MindMap
 
         public void MoveDown()
         {
-            if (openedMaps.Maps.IndexOf(openedMaps.CurrentMap) - Top < OpenedMapsMenuHeight - 1)
+            if (openedMaps.Maps.IndexOf(openedMaps.CurrentMap) - Top < CurrentViewHeight - 1)
             {
                 return;
             }
@@ -58,7 +65,7 @@ namespace MindMap
 
         public void MoveRight()
         {
-            if (openedMaps.CurrentMap.Title.Length + 1 - (Left - 1) < OpenedMapsMenuWidth)
+            if (openedMaps.CurrentMap.Title.Length + 1 - (Left - 1) < CurrentViewWidth)
             {
                 return;
             }
@@ -69,7 +76,7 @@ namespace MindMap
         public void MoveUp()
         {
             if (Top == 0
-                || (openedMaps.Maps.IndexOf(openedMaps.CurrentMap) - Top < WindowHeight
+                || (openedMaps.Maps.IndexOf(openedMaps.CurrentMap) - Top < CurrentViewHeight
                 && openedMaps.Maps.IndexOf(openedMaps.CurrentMap) + 1 != Top))
             {
                 return;

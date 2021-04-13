@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MindMap
 {
-    public class MindMaps : ApplicationViewCoordinates
+    public class MindMaps
     {
         public MindMaps()
         {
@@ -14,10 +14,20 @@ namespace MindMap
 
         public IMenu SelectedMenu { get; set; }
 
+        public int WindowWidth { get; set; }
+
+        public int WindowHeight { get; set; }
+
         internal OpenedMaps OpenedMaps { get; set; }
 
         public void Print()
         {
+            OpenedMaps.CurrentMap.CurrentView.Window = (WindowWidth, WindowHeight);
+            OpenedMaps.CurrentMap.CurrentView.Left =
+                OpenedMaps.CurrentMap.CurrentView.Left > WindowWidth / 4 + 3
+                ? OpenedMaps.CurrentMap.CurrentView.Left
+                : WindowWidth / 4 + 3;
+            OpenedMaps.CurrentView.Window = (WindowWidth, WindowHeight);
             new Borders(this).DrawBorders();
             PrintShortcutKeys();
             OpenedMaps.CurrentMap.FullMap = new List<string>();
@@ -93,7 +103,7 @@ namespace MindMap
                 "\u001b[33mBackspace\u001b[0m - erase character",
                 "\u001b[33mArrows\u001b[0m - navigation"
             };
-            var helpMentuTop = WindowHeight - 10;
+            var helpMentuTop = Console.WindowHeight - 10;
             for (int i = 0; i < elements.Length; i++)
             {
                 Console.SetCursorPosition(1, helpMentuTop++);
@@ -106,8 +116,8 @@ namespace MindMap
             if (SelectedMenu is OpenedMaps)
             {
                 Console.SetCursorPosition(
-                    OpenedMaps.CurrentMap.Title.Length + 1 >= OpenedMapsMenuWidth
-                    ? OpenedMapsMenuWidth - 1
+                    OpenedMaps.CurrentMap.Title.Length + 1 >= Console.WindowWidth / 4
+                    ? Console.WindowWidth / 4 - 1
                     : OpenedMaps.CurrentMap.Title.Length + 1 - (OpenedMaps.CurrentView.Left - 1),
                     OpenedMaps.Maps.IndexOf(OpenedMaps.CurrentMap) + 1 - OpenedMaps.CurrentView.Top);
             }
@@ -115,7 +125,7 @@ namespace MindMap
             {
                 Console.SetCursorPosition(
                     OpenedMaps.CurrentMap.Current.Coordinates.left + OpenedMaps.CurrentMap.Current.Text.Length
-                        - OpenedMaps.CurrentMap.CurrentView.Left + OpenedMapsMenuWidth + 3,
+                        - OpenedMaps.CurrentMap.CurrentView.Left + Console.WindowWidth / 4 + 3,
                     OpenedMaps.CurrentMap.Current.Coordinates.top - OpenedMaps.CurrentMap.CurrentView.Top + 1);
             }
         }

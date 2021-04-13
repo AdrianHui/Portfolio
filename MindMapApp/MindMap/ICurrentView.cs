@@ -6,9 +6,15 @@ namespace MindMap
 {
     public interface ICurrentView
     {
+        public (int Width, int Height) Window { get; set; }
+
         public int Top { get; set; }
 
         public int Left { get; set; }
+
+        public int CurrentViewWidth { get; }
+
+        public int CurrentViewHeight { get; }
 
         public void Print();
 

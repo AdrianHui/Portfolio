@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace MindMap
 {
-    class MapControl : ApplicationViewCoordinates, IControl
+    class MapControl : IControl
     {
         private readonly Map map;
 
@@ -155,8 +155,8 @@ namespace MindMap
             const int low = 31;
             const int high = 127;
             if ((map.Current.Coordinates.left - map.CurrentView.Left)
-                + OpenedMapsMenuWidth + 3 + map.Current.Text.Length + 1
-                >= WindowWidth - 1)
+                + map.CurrentView.Window.Width / 4 + 3 + map.Current.Text.Length + 1
+                >= map.CurrentView.Window.Width - 1)
             {
                 map.CurrentView.Left++;
             }
@@ -168,6 +168,11 @@ namespace MindMap
 
         private Node GetNodeBelow(Node node)
         {
+            if (node == map.CentralNode && node.Childs.Count == 0)
+            {
+                return node;
+            }
+
             while (node == node.Siblings.Last()
                 && node != map.CentralNode.Childs.Last())
             {

@@ -4,28 +4,33 @@ using System.Linq;
 
 namespace MindMap
 {
-    class MapCurrentView : ApplicationViewCoordinates, ICurrentView
+    class MapCurrentView : ICurrentView
     {
         private readonly Map map;
 
         public MapCurrentView(Map map)
         {
             this.map = map;
-            Left = DefaultMapLeft;
         }
+
+        public (int Width, int Height) Window { get; set; }
 
         public int Top { get; set; } = 1;
 
         public int Left { get; set; }
+
+        public int CurrentViewWidth { get => Window.Width - (Window.Width / 4 + 3); }
+
+        public int CurrentViewHeight { get => Window.Height - 2; }
 
         public void Print()
         {
             var tempTop = 1;
             for (int i = 0; i < map.FullMap.Count; i++)
             {
-                if (i >= Top - 1 && i < (WindowHeight - 2) + Top - 2)
+                if (i >= Top - 1 && i < CurrentViewHeight + Top - 2)
                 {
-                    Console.SetCursorPosition(OpenedMapsMenuWidth + 3, tempTop++);
+                    Console.SetCursorPosition(Window.Width / 4 + 3, tempTop++);
                     Console.WriteLine(GetSubString(map.FullMap[i]));
                 }
             }
@@ -33,7 +38,7 @@ namespace MindMap
 
         public void MoveDown()
         {
-            while (map.Current.Coordinates.top - Top >= WindowHeight - 2)
+            while (map.Current.Coordinates.top - Top >= CurrentViewHeight)
             {
                 Top += 2;
             }
@@ -57,19 +62,19 @@ namespace MindMap
             }
 
             Left = map.Current == map.CentralNode
-                ? OpenedMapsMenuWidth + 3
+                ? Window.Width / 4 + 3
                 : map.Current.Coordinates.left - 3;
         }
 
         public void MoveRight()
         {
             if ((map.Current.Coordinates.left - Left) + map.Current.Text.Length + 1
-                < WindowWidth - OpenedMapsMenuWidth - 2)
+                < CurrentViewWidth)
             {
                 return;
             }
 
-            while (map.Current.Coordinates.left + map.Current.Text.Length - Left > 85)
+            while (map.Current.Coordinates.left + map.Current.Text.Length - Left > CurrentViewWidth - 2)
             {
                 Left += 3;
             }
@@ -77,18 +82,18 @@ namespace MindMap
 
         private string GetSubString(string line)
         {
-            var substring = line.Substring(Left - (OpenedMapsMenuWidth + 3) > line.Length
+            var substring = line.Substring(Left - (Window.Width / 4 + 3) > line.Length
                 ? line.Length
-                : Left - (OpenedMapsMenuWidth + 3));
+                : Left - (Window.Width / 4 + 3));
             if (substring.Contains('\u001b'))
             {
-                return substring.Length - 10 > WindowWidth - 1 - (OpenedMapsMenuWidth + 3)
-                    ? string.Concat(substring.Take(WindowWidth - 1 - (OpenedMapsMenuWidth + 3)))
+                return substring.Length - 10 > Window.Width - 1 - (Window.Width / 4 + 3)
+                    ? string.Concat(substring.Take(Window.Width - 1 - (Window.Width / 4 + 3)))
                     : substring;
             }
 
-            return substring.Length > WindowWidth - 1 - (OpenedMapsMenuWidth + 3)
-                ? string.Concat(substring.Take(WindowWidth - 1 - (OpenedMapsMenuWidth + 3)))
+            return substring.Length > Window.Width - 1 - (Window.Width / 4 + 3)
+                ? string.Concat(substring.Take(Window.Width - 1 - (Window.Width / 4 + 3)))
                 : substring;
         }
     }
