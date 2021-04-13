@@ -5,7 +5,7 @@ using Xunit;
 
 namespace MindMap.Facts
 {
-    public class ControlsFacts
+    public class MapControlFacts
     {
         [Fact]
         public void InsertShouldAddAChildToCurrentNode()
