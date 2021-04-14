@@ -97,6 +97,7 @@ namespace MindMap
                 return;
             }
 
+            maps.CurrentView.Left = 1;
             maps.CurrentMap = maps.Maps[maps.Maps.IndexOf(maps.CurrentMap) - 1];
             maps.CurrentView.MoveUp();
         }

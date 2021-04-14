@@ -116,8 +116,8 @@ namespace MindMap
             if (SelectedMenu is OpenedMaps)
             {
                 Console.SetCursorPosition(
-                    OpenedMaps.CurrentMap.Title.Length + 1 >= Console.WindowWidth / 4
-                    ? Console.WindowWidth / 4 - 1
+                    OpenedMaps.CurrentMap.Title.Length + 1 >= WindowWidth / 4
+                    ? WindowWidth / 4 - 1
                     : OpenedMaps.CurrentMap.Title.Length + 1 - (OpenedMaps.CurrentView.Left - 1),
                     OpenedMaps.Maps.IndexOf(OpenedMaps.CurrentMap) + 1 - OpenedMaps.CurrentView.Top);
             }
