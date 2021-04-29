@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace MindMap
 {
@@ -83,6 +82,12 @@ namespace MindMap
                     }
 
                     control.LeftArrow();
+                    break;
+                case ConsoleKey.F1:
+                    _ = new SaveMap(OpenedMaps.CurrentMap);
+                    break;
+                case ConsoleKey.F2:
+                    _ = new OpenMap(OpenedMaps);
                     break;
                 default:
                     control.ChangeText(currentKey.KeyChar);

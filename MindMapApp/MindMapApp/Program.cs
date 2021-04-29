@@ -5,6 +5,7 @@ namespace MindMapApp
 {
     class Program
     {
+        [STAThread]
         static void Main()
         {
             var mindMaps = new MindMaps();

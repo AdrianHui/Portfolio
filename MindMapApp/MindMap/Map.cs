@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace MindMap
 {
@@ -15,15 +16,17 @@ namespace MindMap
 
         public string Title { get; set; } = "New Map";
 
+        public IList<string> FullMap { get; set; }
+
         public ICurrentView CurrentView { get; set; }
 
+        [JsonIgnore]
         public IControl Control { get; set; }
 
-        internal IList<string> FullMap { get; set; }
+        public Node CentralNode { get; } = new Node("central node");
 
-        internal Node CentralNode { get; } = new Node("central node");
-
-        internal Node Current { get; set; }
+        [JsonIgnore]
+        public Node Current { get; set; }
 
         internal Node GetNodeAbove(Node node)
         {
