@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup Label="Globals">
 		<SccProjectName>SAK</SccProjectName>
@@ -9,17 +9,16 @@
 
 	<PropertyGroup>
 		<TargetFramework>netcoreapp3.1</TargetFramework>
-		<UseWPF>true</UseWPF>
-		<UseWindowsForms>true</UseWindowsForms>
 	</PropertyGroup>
 	
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0-windows</TargetFramework>
   </PropertyGroup>
 
 	<PropertyGroup>
 		<CodeAnalysisRuleSet>juniormind.ruleset</CodeAnalysisRuleSet>
+		<StartupObject></StartupObject>
 	</PropertyGroup>
 
 	<ItemGroup>

@@ -88,6 +88,7 @@ namespace MindMap
                     break;
                 case ConsoleKey.F2:
                     _ = new OpenMap(OpenedMaps);
+                    SelectedMenu = OpenedMaps;
                     break;
                 default:
                     control.ChangeText(currentKey.KeyChar);

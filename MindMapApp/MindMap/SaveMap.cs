@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Windows.Forms;
-using Newtonsoft.Json;
 
 namespace MindMap
 {
@@ -30,7 +31,14 @@ namespace MindMap
             dataFile = saveDialog.FileName;
             using (StreamWriter sw = File.CreateText(dataFile))
             {
-                sw.WriteLine(JsonConvert.SerializeObject(map));
+                JsonSerializerOptions options = new JsonSerializerOptions()
+                {
+                    ReferenceHandler = ReferenceHandler.Preserve,
+                    WriteIndented = true
+                };
+
+                var serializedMap = JsonSerializer.Serialize(new SerializableMap(map), options);
+                sw.WriteLine(serializedMap);
             }
         }
     }

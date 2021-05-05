@@ -1,7 +1,5 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace MindMap
 {
@@ -18,12 +16,10 @@ namespace MindMap
 
         public string Text { get; set; }
 
-        [JsonIgnore]
         public Node Parent { get; set; }
 
         public IList<Node> Childs { get; }
 
-        [JsonIgnore]
         public IList<Node> Siblings { get; set; }
 
         public bool Collapsed { get; set; }
