@@ -19,8 +19,8 @@ namespace MindMap
 
         public ICurrentView CurrentView { get => map.CurrentView; }
 
-        public Node CentralNode { get => map.CentralNode; }
+        public SerializableNode CentralNode { get => new SerializableNode(map.CentralNode); }
 
-        public Node Current { get => map.Current; }
+        public string SavedMapFile { get => map.SavedMapFile; }
     }
 }
