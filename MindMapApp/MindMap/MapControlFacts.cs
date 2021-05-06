@@ -48,7 +48,7 @@ namespace MindMap.Facts
             new MapControl(map).Insert();
             new MapControl(map).Enter();
             new MapControl(map).UpArrow();
-            Assert.True(map.Current == map.Current.Siblings.First());
+            Assert.True(map.Current == map.Current.Parent.Childs.First());
         }
 
         [Fact]

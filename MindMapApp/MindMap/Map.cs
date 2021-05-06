@@ -25,6 +25,8 @@ namespace MindMap
 
         public Node Current { get; set; }
 
+        public string SavedMapFile { get; set; }
+
         internal Node GetNodeAbove(Node node)
         {
             if (node == CentralNode)
@@ -32,9 +34,9 @@ namespace MindMap
                 return node;
             }
 
-            var index = Current.Siblings.IndexOf(Current);
-            var temp = index == 0 ? node.Parent : node.Siblings[index - 1];
-            if (index != 0 && Current.Siblings[index - 1].Childs.Count > 0)
+            var index = Current.Parent.Childs.IndexOf(Current);
+            var temp = index == 0 ? node.Parent : node.Parent.Childs[index - 1];
+            if (index != 0 && Current.Parent.Childs[index - 1].Childs.Count > 0)
             {
                 while (temp.Childs.Count != 0 && !temp.Collapsed)
                 {

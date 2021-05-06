@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Windows.Forms;
 
 namespace MindMap
@@ -10,8 +9,6 @@ namespace MindMap
     class SaveMap
     {
         private readonly Map map;
-
-        private string dataFile = "";
 
         public SaveMap(Map map)
         {
@@ -21,19 +18,22 @@ namespace MindMap
 
         private void SaveMapDialog()
         {
-            SaveFileDialog saveDialog = new SaveFileDialog();
-            saveDialog.Dispose();
-            if (saveDialog.ShowDialog() != DialogResult.OK)
+            if (!File.Exists(map.SavedMapFile))
             {
-                return;
+                SaveFileDialog saveDialog = new SaveFileDialog();
+                saveDialog.Dispose();
+                if (saveDialog.ShowDialog() != DialogResult.OK)
+                {
+                    return;
+                }
+
+                map.SavedMapFile = saveDialog.FileName;
             }
 
-            dataFile = saveDialog.FileName;
-            using (StreamWriter sw = File.CreateText(dataFile))
+            using (StreamWriter sw = File.CreateText(map.SavedMapFile))
             {
                 JsonSerializerOptions options = new JsonSerializerOptions()
                 {
-                    ReferenceHandler = ReferenceHandler.Preserve,
                     WriteIndented = true
                 };
 

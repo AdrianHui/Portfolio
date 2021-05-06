@@ -21,7 +21,7 @@ namespace MindMap
 
         public int CurrentViewWidth { get => Window.Width / 4; }
 
-        public int CurrentViewHeight { get => Window.Height - 12; }
+        public int CurrentViewHeight { get => Window.Height - 15; }
 
         public void Print()
         {

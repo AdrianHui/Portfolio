@@ -49,7 +49,6 @@ namespace MindMap
                     if (SelectedMenu is OpenedMaps)
                     {
                         SelectedMenu = OpenedMaps.CurrentMap;
-                        control = new MapControl(OpenedMaps.CurrentMap);
                         control.Enter();
                         break;
                     }
@@ -78,10 +77,13 @@ namespace MindMap
                     if (SelectedMenu is Map)
                     {
                         SelectedMenu = OpenedMaps;
-                        control = new OpenedMapsControl(OpenedMaps);
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Environment.Exit(0);
                     }
 
-                    control.LeftArrow();
                     break;
                 case ConsoleKey.F1:
                     _ = new SaveMap(OpenedMaps.CurrentMap);
@@ -104,12 +106,14 @@ namespace MindMap
                 "       - add new child node",
                 "\u001b[33mEnter\u001b[0m - open map",
                 "      - add new sibling node",
-                "\u001b[33mEsc\u001b[0m - exit map",
+                "\u001b[33mEsc\u001b[0m - exit map / applivation",
                 "\u001b[33mDelete\u001b[0m - delete current node",
                 "\u001b[33mBackspace\u001b[0m - erase character",
-                "\u001b[33mArrows\u001b[0m - navigation"
+                "\u001b[33mArrows\u001b[0m - navigation",
+                "\u001b[33mF1\u001b[0m - save map",
+                "\u001b[33mF2\u001b[0m - open map"
             };
-            var helpMentuTop = Console.WindowHeight - 10;
+            var helpMentuTop = Console.WindowHeight - 13;
             for (int i = 0; i < elements.Length; i++)
             {
                 Console.SetCursorPosition(1, helpMentuTop++);

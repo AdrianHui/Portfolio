@@ -27,7 +27,7 @@ namespace MindMap
             Console.WriteLine(appView.SelectedMenu is OpenedMaps
                 ? "\u001b[32m┌─ Opened Maps ".PadRight(OpenedMapsMenuWidth + 5, '─') + "┐ "
                 : "┌─ Opened Maps ".PadRight(OpenedMapsMenuWidth, '─') + "┐ ");
-            while (Console.CursorTop != appView.WindowHeight - 12)
+            while (Console.CursorTop != appView.WindowHeight - 15)
             {
                 Console.WriteLine("│" + "".PadRight(OpenedMapsMenuWidth - 1, ' ') + "│ ");
             }

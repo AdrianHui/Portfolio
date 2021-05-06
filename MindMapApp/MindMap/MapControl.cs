@@ -23,7 +23,6 @@ namespace MindMap
             Node newNode = new Node("new node");
             newNode.Parent = map.Current;
             map.Current.Childs.Add(newNode);
-            newNode.Siblings = map.Current.Childs;
             map.Current = newNode;
             var nodeAbove = map.GetNodeAbove(map.Current);
             map.Current.Coordinates = (nodeAbove.Coordinates.left + 3,
@@ -42,7 +41,6 @@ namespace MindMap
             Node newNode = new Node("new node");
             newNode.Parent = map.Current.Parent;
             map.Current.Parent.Childs.Add(newNode);
-            newNode.Siblings = map.Current.Parent.Childs;
             map.Current = newNode;
             var nodeAbove = map.GetNodeAbove(map.Current);
             map.Current.Coordinates = (map.Current.Parent.Coordinates.left + 3,
@@ -68,8 +66,8 @@ namespace MindMap
                 return;
             }
 
-            var index = map.Current.Siblings.IndexOf(map.Current);
-            if (index != 0 && map.Current.Siblings[index - 1].Childs.Count > 0)
+            var index = map.Current.Parent.Childs.IndexOf(map.Current);
+            if (index != 0 && map.Current.Parent.Childs[index - 1].Childs.Count > 0)
             {
                 map.Current = map.GetNodeAbove(map.Current);
             }
@@ -173,20 +171,20 @@ namespace MindMap
                 return node;
             }
 
-            while (node == node.Siblings.Last()
+            while (node == node.Parent.Childs.Last()
                 && node != map.CentralNode.Childs.Last())
             {
                 node = node.Parent;
             }
 
-            if (node.Childs.Count > 0 && node == node.Siblings.Last())
+            if (node.Childs.Count > 0 && node == node.Parent.Childs.Last())
             {
                 return map.Current;
             }
 
-            return node == node.Siblings.Last()
+            return node == node.Parent.Childs.Last()
                 ? node
-                : node.Siblings[node.Siblings.IndexOf(node) + 1];
+                : node.Parent.Childs[node.Parent.Childs.IndexOf(node) + 1];
         }
     }
 }
