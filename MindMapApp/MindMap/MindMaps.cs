@@ -38,21 +38,28 @@ namespace MindMap
 
         public void Edit(ConsoleKeyInfo currentKey)
         {
-            IControl control = SelectedMenu.Control;
+            if (currentKey.Modifiers == ConsoleModifiers.Control)
+            {
+                if (currentKey.Key == ConsoleKey.S)
+                {
+                    _ = new SaveMap(OpenedMaps.CurrentMap);
+                }
+                else if (currentKey.Key == ConsoleKey.O)
+                {
+                    _ = new OpenMap(OpenedMaps);
+                }
 
+                return;
+            }
+
+            IControl control = SelectedMenu.Control;
             switch (currentKey.Key)
             {
                 case ConsoleKey.Insert:
                     control.Insert();
                     break;
                 case ConsoleKey.Enter:
-                    if (SelectedMenu is OpenedMaps)
-                    {
-                        SelectedMenu = OpenedMaps.CurrentMap;
-                        control.Enter();
-                        break;
-                    }
-
+                    SelectedMenu = SelectedMenu is OpenedMaps ? OpenedMaps.CurrentMap : SelectedMenu;
                     control.Enter();
                     break;
                 case ConsoleKey.Delete:
@@ -85,13 +92,6 @@ namespace MindMap
                     }
 
                     break;
-                case ConsoleKey.F1:
-                    _ = new SaveMap(OpenedMaps.CurrentMap);
-                    break;
-                case ConsoleKey.F2:
-                    _ = new OpenMap(OpenedMaps);
-                    SelectedMenu = OpenedMaps;
-                    break;
                 default:
                     control.ChangeText(currentKey.KeyChar);
                     break;
@@ -106,14 +106,14 @@ namespace MindMap
                 "       - add new child node",
                 "\u001b[33mEnter\u001b[0m - open map",
                 "      - add new sibling node",
-                "\u001b[33mEsc\u001b[0m - exit map / applivation",
+                "\u001b[33mEsc\u001b[0m - exit map / exit app",
                 "\u001b[33mDelete\u001b[0m - delete current node",
                 "\u001b[33mBackspace\u001b[0m - erase character",
                 "\u001b[33mArrows\u001b[0m - navigation",
-                "\u001b[33mF1\u001b[0m - save map",
-                "\u001b[33mF2\u001b[0m - open map"
+                "\u001b[33mCTRL + S\u001b[0m - save map",
+                "\u001b[33mCTRL + O\u001b[0m - open map"
             };
-            var helpMentuTop = Console.WindowHeight - 13;
+            var helpMentuTop = Console.WindowHeight - 12;
             for (int i = 0; i < elements.Length; i++)
             {
                 Console.SetCursorPosition(1, helpMentuTop++);
