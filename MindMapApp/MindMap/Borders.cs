@@ -27,7 +27,7 @@ namespace MindMap
             Console.WriteLine(appView.SelectedMenu is OpenedMaps
                 ? "\u001b[32m┌─ Opened Maps ".PadRight(OpenedMapsMenuWidth + 5, '─') + "┐ "
                 : "┌─ Opened Maps ".PadRight(OpenedMapsMenuWidth, '─') + "┐ ");
-            while (Console.CursorTop != appView.WindowHeight - 15)
+            while (Console.CursorTop != appView.OpenedMaps.CurrentView.CurrentViewHeight)
             {
                 Console.WriteLine("│" + "".PadRight(OpenedMapsMenuWidth - 1, ' ') + "│ ");
             }
@@ -56,11 +56,15 @@ namespace MindMap
             while (Console.CursorTop != appView.WindowHeight - 2)
             {
                 Console.SetCursorPosition(OpenedMapsMenuWidth + 2, top++);
-                Console.WriteLine("│" + "".PadRight(appView.WindowWidth - 2 - OpenedMapsMenuWidth - 2, ' ') + "│");
+                Console.WriteLine("│"
+                    + "".PadRight(appView.WindowWidth - 2 - OpenedMapsMenuWidth - 2, ' ')
+                    + "│");
             }
 
             Console.SetCursorPosition(OpenedMapsMenuWidth + 2, top);
-            Console.WriteLine("└" + "".PadRight(appView.WindowWidth - 2 - OpenedMapsMenuWidth - 2, '─') + "┘\u001b[0m");
+            Console.WriteLine("└"
+                + "".PadRight(appView.WindowWidth - 2 - OpenedMapsMenuWidth - 2, '─')
+                + "┘\u001b[0m");
         }
     }
 }

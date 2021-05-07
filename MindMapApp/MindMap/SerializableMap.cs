@@ -17,8 +17,6 @@ namespace MindMap
 
         public IList<string> FullMap { get => map.FullMap; }
 
-        public ICurrentView CurrentView { get => map.CurrentView; }
-
         public SerializableNode CentralNode { get => new SerializableNode(map.CentralNode); }
 
         public string SavedMapFile { get => map.SavedMapFile; }
