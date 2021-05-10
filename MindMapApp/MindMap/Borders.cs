@@ -13,7 +13,7 @@ namespace MindMap
             this.appView = appView;
         }
 
-        public int OpenedMapsMenuWidth { get => appView.WindowWidth / 4; }
+        public int OpenedMapsMenuWidth { get; } = 30;
 
         public void DrawBorders()
         {

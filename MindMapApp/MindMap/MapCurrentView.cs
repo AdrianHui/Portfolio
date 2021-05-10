@@ -15,11 +15,13 @@ namespace MindMap
 
         public (int Width, int Height) Window { get; set; }
 
+        public int HelpMenuWidth { get => 30; }
+
         public int Top { get; set; } = 1;
 
         public int Left { get; set; }
 
-        public int CurrentViewWidth { get => Window.Width - (Window.Width / 4 + 3); }
+        public int CurrentViewWidth { get => Window.Width - (HelpMenuWidth + 3); }
 
         public int CurrentViewHeight { get => Window.Height - 2; }
 
@@ -30,7 +32,7 @@ namespace MindMap
             {
                 if (i >= Top - 1 && i < CurrentViewHeight + Top - 2)
                 {
-                    Console.SetCursorPosition(Window.Width / 4 + 3, tempTop++);
+                    Console.SetCursorPosition(HelpMenuWidth + 3, tempTop++);
                     Console.WriteLine(GetSubString(map.FullMap[i]));
                 }
             }
@@ -38,7 +40,7 @@ namespace MindMap
 
         public void MoveDown()
         {
-            while (map.Current.Coordinates.top - Top >= CurrentViewHeight)
+            while (map.Current.Coordinates.top - Top >= CurrentViewHeight - 1)
             {
                 Top += 2;
             }
@@ -62,7 +64,7 @@ namespace MindMap
             }
 
             Left = map.Current == map.CentralNode
-                ? Window.Width / 4 + 3
+                ? HelpMenuWidth + 3
                 : map.Current.Coordinates.left - 3;
         }
 
@@ -82,18 +84,18 @@ namespace MindMap
 
         private string GetSubString(string line)
         {
-            var substring = line.Substring(Left - (Window.Width / 4 + 3) > line.Length
+            var substring = line.Substring(Left - (HelpMenuWidth + 3) > line.Length
                 ? line.Length
-                : Left - (Window.Width / 4 + 3));
+                : Left - (HelpMenuWidth + 3));
             if (substring.Contains('\u001b'))
             {
-                return substring.Length - 10 > Window.Width - 1 - (Window.Width / 4 + 3)
-                    ? string.Concat(substring.Take(Window.Width - 1 - (Window.Width / 4 + 3)))
+                return substring.Length - 10 > Window.Width - 1 - (HelpMenuWidth + 3)
+                    ? string.Concat(substring.Take(Window.Width - 1 - (HelpMenuWidth + 3)))
                     : substring;
             }
 
-            return substring.Length > Window.Width - 1 - (Window.Width / 4 + 3)
-                ? string.Concat(substring.Take(Window.Width - 1 - (Window.Width / 4 + 3)))
+            return substring.Length > Window.Width - 1 - (HelpMenuWidth + 3)
+                ? string.Concat(substring.Take(Window.Width - 1 - (HelpMenuWidth + 3)))
                 : substring;
         }
     }

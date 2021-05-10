@@ -15,11 +15,13 @@ namespace MindMap
 
         public (int Width, int Height) Window { get; set; }
 
+        public int HelpMenuWidth { get => 30; }
+
         public int Top { get; set; }
 
         public int Left { get; set; } = 1;
 
-        public int CurrentViewWidth { get => Window.Width / 4; }
+        public int CurrentViewWidth { get => HelpMenuWidth; }
 
         public int CurrentViewHeight { get => Window.Height - 14; }
 

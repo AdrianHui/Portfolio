@@ -153,7 +153,7 @@ namespace MindMap
             const int low = 31;
             const int high = 127;
             if ((map.Current.Coordinates.left - map.CurrentView.Left)
-                + map.CurrentView.Window.Width / 4 + 3 + map.Current.Text.Length + 1
+                + map.CurrentView.HelpMenuWidth + 3 + map.Current.Text.Length + 1
                 >= map.CurrentView.Window.Width - 1)
             {
                 map.CurrentView.Left++;

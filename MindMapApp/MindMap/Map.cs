@@ -82,8 +82,8 @@ namespace MindMap
             }
 
             node.Coordinates = node == CentralNode
-                    ? (Console.WindowWidth / 4 + 4, 1)
-                    : (Console.WindowWidth / 4 + 3
+                    ? (CurrentView.HelpMenuWidth + 4, 1)
+                    : (CurrentView.HelpMenuWidth + 3
                         + collapsedNodeIndent.Length,
                         FullMap.Count);
         }

@@ -8,6 +8,8 @@ namespace MindMap
     {
         public (int Width, int Height) Window { get; set; }
 
+        public int HelpMenuWidth { get; }
+
         public int Top { get; set; }
 
         public int Left { get; set; }

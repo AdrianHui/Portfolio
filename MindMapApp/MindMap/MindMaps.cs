@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MindMap
 {
@@ -17,15 +18,17 @@ namespace MindMap
 
         public int WindowHeight { get; set; }
 
+        public int HelpMenuWidth { get => 30; }
+
         internal OpenedMaps OpenedMaps { get; set; }
 
         public void Print()
         {
             OpenedMaps.CurrentMap.CurrentView.Window = (WindowWidth, WindowHeight);
             OpenedMaps.CurrentMap.CurrentView.Left =
-                OpenedMaps.CurrentMap.CurrentView.Left > WindowWidth / 4 + 3
+                OpenedMaps.CurrentMap.CurrentView.Left > HelpMenuWidth + 3
                 ? OpenedMaps.CurrentMap.CurrentView.Left
-                : WindowWidth / 4 + 3;
+                : HelpMenuWidth + 3;
             OpenedMaps.CurrentView.Window = (WindowWidth, WindowHeight);
             new Borders(this).DrawBorders();
             PrintShortcutKeys();
@@ -126,8 +129,8 @@ namespace MindMap
             if (SelectedMenu is OpenedMaps)
             {
                 Console.SetCursorPosition(
-                    OpenedMaps.CurrentMap.Title.Length + 1 >= WindowWidth / 4
-                    ? WindowWidth / 4 - 1
+                    OpenedMaps.CurrentMap.Title.Length + 1 >= HelpMenuWidth
+                    ? HelpMenuWidth - 1
                     : OpenedMaps.CurrentMap.Title.Length + 1 - (OpenedMaps.CurrentView.Left - 1),
                     OpenedMaps.Maps.IndexOf(OpenedMaps.CurrentMap) + 1 - OpenedMaps.CurrentView.Top);
             }
@@ -135,7 +138,7 @@ namespace MindMap
             {
                 Console.SetCursorPosition(
                     OpenedMaps.CurrentMap.Current.Coordinates.left + OpenedMaps.CurrentMap.Current.Text.Length
-                        - OpenedMaps.CurrentMap.CurrentView.Left + Console.WindowWidth / 4 + 3,
+                        - OpenedMaps.CurrentMap.CurrentView.Left + HelpMenuWidth + 3,
                     OpenedMaps.CurrentMap.Current.Coordinates.top - OpenedMaps.CurrentMap.CurrentView.Top + 1);
             }
         }
