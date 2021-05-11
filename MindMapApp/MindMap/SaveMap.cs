@@ -22,7 +22,7 @@ namespace MindMap
             {
                 Console.Clear();
                 Console.WriteLine("Please enter file path: ");
-                map.SavedMapFile = Console.ReadLine();
+                map.SavedMapFile = Console.ReadLine() + "\\" + map.Title + ".txt";
                 CreateFile();
             }
             else
@@ -60,12 +60,14 @@ namespace MindMap
                 catch (UnauthorizedAccessException)
                 {
                     Console.Clear();
+                    Console.WriteLine("The path you entered is not valid.");
                     Console.WriteLine("Please enter a valid file path: ");
                     map.SavedMapFile = Console.ReadLine();
                 }
                 catch (ArgumentException)
                 {
                     Console.Clear();
+                    Console.WriteLine("The path you entered is not valid.");
                     Console.WriteLine("Please enter a valid file path: ");
                     map.SavedMapFile = Console.ReadLine();
                 }

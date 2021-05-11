@@ -15,10 +15,6 @@ namespace MindMap
 
         public string Title { get => map.Title; }
 
-        public IList<string> FullMap { get => map.FullMap; }
-
         public SerializableNode CentralNode { get => new SerializableNode(map.CentralNode); }
-
-        public string SavedMapFile { get => map.SavedMapFile; }
     }
 }

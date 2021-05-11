@@ -20,15 +20,23 @@ namespace MindMap
 
         private void OpenFile()
         {
-            while (!File.Exists(dataFile))
+            if (!File.Exists(dataFile))
             {
                 Console.Clear();
                 Console.WriteLine("Please enter file path: ");
                 dataFile = Console.ReadLine();
+                while (!File.Exists(dataFile))
+                {
+                    Console.Clear();
+                    Console.WriteLine("The path you entered is not valid.");
+                    Console.WriteLine("Please enter file path: ");
+                    dataFile = Console.ReadLine();
+                }
             }
 
             Map map = JsonConvert.DeserializeObject<Map>(File.ReadAllText(dataFile));
             SetParentReferences(map.CentralNode);
+            map.SavedMapFile = dataFile;
             maps.Maps.Add(map);
         }
 
