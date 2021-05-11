@@ -13,32 +13,62 @@ namespace MindMap
         public SaveMap(Map map)
         {
             this.map = map;
-            SaveMapDialog();
+            SaveFile();
         }
 
-        private void SaveMapDialog()
+        private void SaveFile()
         {
             if (!File.Exists(map.SavedMapFile))
             {
-                SaveFileDialog saveDialog = new SaveFileDialog();
-                saveDialog.Dispose();
-                if (saveDialog.ShowDialog() != DialogResult.OK)
-                {
-                    return;
-                }
-
-                map.SavedMapFile = saveDialog.FileName;
+                Console.Clear();
+                Console.WriteLine("Please enter file path: ");
+                map.SavedMapFile = Console.ReadLine();
+                CreateFile();
             }
-
-            using (StreamWriter sw = File.CreateText(map.SavedMapFile))
+            else
             {
-                JsonSerializerOptions options = new JsonSerializerOptions()
+                using (StreamWriter sw = new StreamWriter(map.SavedMapFile, false))
                 {
-                    WriteIndented = true
-                };
+                    JsonSerializerOptions options = new JsonSerializerOptions()
+                    {
+                        WriteIndented = true
+                    };
 
-                var serializedMap = JsonSerializer.Serialize(new SerializableMap(map), options);
-                sw.WriteLine(serializedMap);
+                    var serializedMap = JsonSerializer.Serialize(new SerializableMap(map), options);
+                    sw.WriteLine(serializedMap);
+                }
+            }
+        }
+
+        private void CreateFile()
+        {
+            while (!File.Exists(map.SavedMapFile))
+            {
+                try
+                {
+                    using (StreamWriter sw = File.CreateText(map.SavedMapFile))
+                    {
+                        JsonSerializerOptions options = new JsonSerializerOptions()
+                        {
+                            WriteIndented = true
+                        };
+
+                        var serializedMap = JsonSerializer.Serialize(new SerializableMap(map), options);
+                        sw.WriteLine(serializedMap);
+                    }
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    Console.Clear();
+                    Console.WriteLine("Please enter a valid file path: ");
+                    map.SavedMapFile = Console.ReadLine();
+                }
+                catch (ArgumentException)
+                {
+                    Console.Clear();
+                    Console.WriteLine("Please enter a valid file path: ");
+                    map.SavedMapFile = Console.ReadLine();
+                }
             }
         }
     }

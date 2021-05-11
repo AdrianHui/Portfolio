@@ -15,19 +15,18 @@ namespace MindMap
         public OpenMap(OpenedMaps maps)
         {
             this.maps = maps;
-            OpenMapDialog();
+            OpenFile();
         }
 
-        private void OpenMapDialog()
+        private void OpenFile()
         {
-            OpenFileDialog openFile = new OpenFileDialog();
-            openFile.Dispose();
-            if (openFile.ShowDialog() != DialogResult.OK)
+            while (!File.Exists(dataFile))
             {
-                return;
+                Console.Clear();
+                Console.WriteLine("Please enter file path: ");
+                dataFile = Console.ReadLine();
             }
 
-            dataFile = openFile.FileName;
             Map map = JsonConvert.DeserializeObject<Map>(File.ReadAllText(dataFile));
             SetParentReferences(map.CentralNode);
             maps.Maps.Add(map);
