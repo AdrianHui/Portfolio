@@ -45,11 +45,19 @@ namespace MindMap
             {
                 if (currentKey.Key == ConsoleKey.S)
                 {
-                    _ = new SaveMap(OpenedMaps.CurrentMap);
+                    var file = new SaveFile(
+                        OpenedMaps.CurrentMap.Title + ".txt",
+                        OpenedMaps.CurrentMap.Serialize(),
+                        OpenedMaps.CurrentMap.SavedMapFile);
+                    OpenedMaps.CurrentMap.SavedMapFile = file.Path;
                 }
                 else if (currentKey.Key == ConsoleKey.O)
                 {
                     _ = new OpenMap(OpenedMaps);
+                }
+                else if (currentKey.Key == ConsoleKey.E)
+                {
+                    new Export(OpenedMaps.CurrentMap).ChooseLayout();
                 }
 
                 return;

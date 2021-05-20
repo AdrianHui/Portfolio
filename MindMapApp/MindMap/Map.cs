@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 
 namespace MindMap
 {
@@ -26,6 +27,16 @@ namespace MindMap
         public Node Current { get; set; }
 
         public string SavedMapFile { get; set; }
+
+        public string Serialize()
+        {
+            JsonSerializerOptions options = new JsonSerializerOptions()
+            {
+                WriteIndented = true
+            };
+
+            return JsonSerializer.Serialize(new SerializableMap(this), options);
+        }
 
         internal Node GetNodeAbove(Node node)
         {
