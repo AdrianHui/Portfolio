@@ -60,10 +60,11 @@ namespace MindMap.Facts
         }
 
         [Fact]
-        public void RightArrowShouldNotChangeSelectionIfCurrentNodeHasNoChilds()
+        public void RightArrowShouldMoveCurrentViewToRightIfMapTitleIsLongerThanOpenedMapsMenuWidth()
         {
             var maps = new OpenedMaps();
             maps.CurrentView.Left = 4;
+            maps.CurrentMap.Title = "mapTitleTestTestTestTestTestTestTestTestTest";
             new OpenedMapsControl(maps).RightArrow();
             Assert.True(maps.CurrentView.Left == 5);
         }
