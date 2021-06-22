@@ -17,8 +17,9 @@ namespace MindMap
         public void ChooseLayout()
         {
             Console.Clear();
-            Console.WriteLine("Please choose the layout:");
-            Console.WriteLine("Root node top left corner - press 1.");
+            Console.WriteLine(" Please choose the layout:");
+            Console.WriteLine("  Default - press 1.");
+            Console.WriteLine("  Radial - press 2.");
             var key = Console.ReadKey();
             if (key.Key == ConsoleKey.D1)
             {
@@ -26,7 +27,7 @@ namespace MindMap
             }
             else if (key.Key == ConsoleKey.D2)
             {
-                _ = 1;
+                _ = new SaveFile(map.Title + ".html", new Center(map.Title, map.CentralNode).GetFile(), "");
             }
         }
     }

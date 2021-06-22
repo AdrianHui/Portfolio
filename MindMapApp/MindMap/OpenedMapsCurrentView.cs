@@ -23,7 +23,7 @@ namespace MindMap
 
         public int CurrentViewWidth { get => HelpMenuWidth; }
 
-        public int CurrentViewHeight { get => Window.Height - 14; }
+        public int CurrentViewHeight { get => Window.Height - 15; }
 
         public void Print()
         {

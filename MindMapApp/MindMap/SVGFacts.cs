@@ -10,7 +10,7 @@ namespace MindMap.Facts
         public void CreateShouldReturnGivenTextWrappedInSVGTagsOfGivenWidthAndHeight()
         {
             var svg = new SVG();
-            Assert.Equal("\t<svg width=\"10\" height=\"5\">test\n\t</svg>", svg.Create(10, 5, "test"));
+            Assert.Equal("\t<svg viewbox=\"0 0 10 5\" width=\"10\" height=\"5\">test\n\t</svg>", svg.Create(10, 5, "test"));
         }
 
         [Fact]

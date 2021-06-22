@@ -122,9 +122,10 @@ namespace MindMap
                 "\u001b[33mBackspace\u001b[0m - erase character",
                 "\u001b[33mArrows\u001b[0m - navigation",
                 "\u001b[33mCTRL + S\u001b[0m - save map",
-                "\u001b[33mCTRL + O\u001b[0m - open map"
+                "\u001b[33mCTRL + O\u001b[0m - open map",
+                "\u001b[33mCTRL + E\u001b[0m - export map"
             };
-            var helpMentuTop = Console.WindowHeight - 12;
+            var helpMentuTop = Console.WindowHeight - 13;
             for (int i = 0; i < elements.Length; i++)
             {
                 Console.SetCursorPosition(1, helpMentuTop++);

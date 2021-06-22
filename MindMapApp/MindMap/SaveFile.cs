@@ -56,21 +56,21 @@ namespace MindMap
                     Console.Clear();
                     Console.WriteLine("The path you entered is not valid.");
                     Console.WriteLine("Please enter a valid file path: ");
-                    Path = Console.ReadLine();
+                    Path = Console.ReadLine() + "\\" + fileName;
                 }
                 catch (ArgumentException)
                 {
                     Console.Clear();
                     Console.WriteLine("The path you entered is not valid.");
                     Console.WriteLine("Please enter a valid file path: ");
-                    Path = Console.ReadLine();
+                    Path = Console.ReadLine() + "\\" + fileName;
                 }
                 catch (DirectoryNotFoundException)
                 {
                     Console.Clear();
                     Console.WriteLine("The path you entered is not valid.");
                     Console.WriteLine("Please enter a valid file path: ");
-                    Path = Console.ReadLine();
+                    Path = Console.ReadLine() + "\\" + fileName;
                 }
             }
         }
