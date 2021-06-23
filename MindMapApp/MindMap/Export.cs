@@ -27,7 +27,7 @@ namespace MindMap
             }
             else if (key.Key == ConsoleKey.D2)
             {
-                _ = new SaveFile(map.Title + ".html", new Center(map.Title, map.CentralNode).GetFile(), "");
+                _ = new SaveFile(map.Title + ".html", new Radial(map.Title, map.CentralNode).GetFile(), "");
             }
         }
     }
