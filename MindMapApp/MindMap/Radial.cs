@@ -31,8 +31,7 @@ namespace MindMap
         public string GetFile()
         {
             string htmlFile = new HTML().DocType();
-            const double angle = 0;
-            string result = GetMapNodes("", centralNode, CanvasWidth / 2, CanvasHeight / 2, angle);
+            string result = GetMapNodes("", centralNode, CanvasWidth / 2, CanvasHeight / 2, 0);
             result += AddNode(0, 0, CanvasWidth / 2, CanvasHeight / 2, centralNode);
             htmlFile += new HTML().SetHTML(
                             new HTML().Head(

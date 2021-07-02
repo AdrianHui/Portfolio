@@ -91,7 +91,7 @@ namespace MindMap
             }
             else
             {
-                map.Current = GetNodeBelow(map.Current);
+                map.Current = map.GetNodeBelow(map.Current);
             }
 
             map.CurrentView.MoveDown();
@@ -162,29 +162,6 @@ namespace MindMap
             map.Current.Text = character > low && character < high
                         ? map.Current.Text + character
                         : map.Current.Text;
-        }
-
-        private Node GetNodeBelow(Node node)
-        {
-            if (node == map.CentralNode && node.Childs.Count == 0)
-            {
-                return node;
-            }
-
-            while (node == node.Parent.Childs.Last()
-                && node != map.CentralNode.Childs.Last())
-            {
-                node = node.Parent;
-            }
-
-            if (node.Childs.Count > 0 && node == node.Parent.Childs.Last())
-            {
-                return map.Current;
-            }
-
-            return node == node.Parent.Childs.Last()
-                ? node
-                : node.Parent.Childs[node.Parent.Childs.IndexOf(node) + 1];
         }
     }
 }

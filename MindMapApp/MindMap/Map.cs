@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 
@@ -56,6 +55,29 @@ namespace MindMap
             }
 
             return temp;
+        }
+
+        internal Node GetNodeBelow(Node node)
+        {
+            if (node == CentralNode && node.Childs.Count == 0)
+            {
+                return node;
+            }
+
+            while (node == node.Parent.Childs.Last()
+                && node != CentralNode.Childs.Last())
+            {
+                node = node.Parent;
+            }
+
+            if (node.Childs.Count > 0 && node == node.Parent.Childs.Last())
+            {
+                return Current;
+            }
+
+            return node == node.Parent.Childs.Last()
+                ? node
+                : node.Parent.Childs[node.Parent.Childs.IndexOf(node) + 1];
         }
 
         internal void Build(Node node, string indent = "   ")
